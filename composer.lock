@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "92afd95e6d00fc8a1a4a30a16c8a7b55",
+    "content-hash": "ef3184d40c701c9bb0b759f435c3af70",
     "packages": [
         {
             "name": "fig/http-message-util",
@@ -61,6 +61,86 @@
                 "source": "https://github.com/php-fig/http-message-util/tree/1.1.5"
             },
             "time": "2020-11-24T22:02:12+00:00"
+        },
+        {
+            "name": "frostybee/swarm-icons",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/frostybee/swarm-icons.git",
+                "reference": "960b8e9b970a77cdee6abafd2e6cd86e91862c29"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/frostybee/swarm-icons/zipball/960b8e9b970a77cdee6abafd2e6cd86e91862c29",
+                "reference": "960b8e9b970a77cdee6abafd2e6cd86e91862c29",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^8.2",
+                "psr/simple-cache": "^3.0"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^3.64",
+                "league/commonmark": "^2.0",
+                "phpstan/phpstan": "^1.10",
+                "phpstan/phpstan-strict-rules": "^1.5",
+                "phpunit/phpunit": "^10.5",
+                "symfony/console": "^7.0",
+                "symfony/var-dumper": "^6.4|^7.0",
+                "twig/twig": "^3.0"
+            },
+            "suggest": {
+                "iconify/json": "Install to use JsonCollectionProvider for offline access to 200,000+ icons",
+                "symfony/console": "For CLI commands (^6.4|^7.0)",
+                "twig/twig": "For Twig template integration (^3.0)"
+            },
+            "bin": [
+                "bin/swarm-icons"
+            ],
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-main": "1.0-dev"
+                }
+            },
+            "autoload": {
+                "files": [
+                    "src/helpers.php"
+                ],
+                "psr-4": {
+                    "Frostybee\\SwarmIcons\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "frostybee",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Framework-agnostic PHP SVG icon library with first-class Twig support and Iconify API integration",
+            "homepage": "https://github.com/frostybee/swarm-icons",
+            "keywords": [
+                "Heroicons",
+                "Phosphor",
+                "bootstrap-icons",
+                "iconify",
+                "icons",
+                "lucide",
+                "simple-icons",
+                "svg",
+                "tabler-icons",
+                "twig"
+            ],
+            "support": {
+                "issues": "https://github.com/frostybee/swarm-icons/issues",
+                "source": "https://github.com/frostybee/swarm-icons/tree/v1.0.0"
+            },
+            "time": "2026-02-26T06:01:58+00:00"
         },
         {
             "name": "laravel/serializable-closure",
@@ -727,6 +807,57 @@
                 "source": "https://github.com/php-fig/log/tree/3.0.2"
             },
             "time": "2024-09-11T13:17:53+00:00"
+        },
+        {
+            "name": "psr/simple-cache",
+            "version": "3.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-fig/simple-cache.git",
+                "reference": "764e0b3939f5ca87cb904f570ef9be2d78a07865"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-fig/simple-cache/zipball/764e0b3939f5ca87cb904f570ef9be2d78a07865",
+                "reference": "764e0b3939f5ca87cb904f570ef9be2d78a07865",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.0.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Psr\\SimpleCache\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "PHP-FIG",
+                    "homepage": "https://www.php-fig.org/"
+                }
+            ],
+            "description": "Common interfaces for simple caching",
+            "keywords": [
+                "cache",
+                "caching",
+                "psr",
+                "psr-16",
+                "simple-cache"
+            ],
+            "support": {
+                "source": "https://github.com/php-fig/simple-cache/tree/3.0.0"
+            },
+            "time": "2021-10-29T13:26:27+00:00"
         },
         {
             "name": "ralouphie/getallheaders",

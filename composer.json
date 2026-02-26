@@ -25,7 +25,8 @@
         "php-di/php-di": "^7.0",
         "fig/http-message-util": "^1.1",
         "monolog/monolog": "^3.9",
-        "slim/psr7": "^1.8"
+        "slim/psr7": "^1.8",
+        "frostybee/swarm-icons": "^1.0"
     },
     "autoload": {
         "psr-4": {
