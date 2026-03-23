@@ -6,6 +6,7 @@ declare(strict_types=1);
  * This file contains the routes for the web application.
  */
 
+use App\Controllers\AdminController;
 use App\Controllers\HomeController;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -33,5 +34,12 @@ return static function (Slim\App $app): void {
     // A route to test runtime error handling and custom exceptions.
     $app->get('/error', function (Request $request, Response $response, $args) {
         throw new \Slim\Exception\HttpBadRequestException($request, "This is a runtime error. Something went wrong");
+    });
+
+    // Route for to show Admin Dashboard
+    $app->group('/admin', function ($group) {
+        // Admin Dashboard route
+        $group->get('/dashboard', [AdminController::class, 'dashboard'])
+            ->setName('admin.dashboard');
     });
 };
