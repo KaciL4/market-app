@@ -11,7 +11,7 @@ ViewHelper::loadHeader($title);
         <h3 class="mb-2 text-center">User Login</h3>
         <p class="text-center text-muted mb-4">Access your account</p>
 
-        <form method="POST" action="<?= APP_BASE_URL ?>/login">
+        <form method="POST" action="<?= APP_BASE_URL ?>/auth/login">
 
             <div class="mb-3">
                 <label class="form-label">Email</label>
@@ -27,7 +27,7 @@ ViewHelper::loadHeader($title);
         </form>
 
         <p class="text-center mb-0">
-            <small>No account? <a href="<?= APP_BASE_URL ?>/register">Register</a></small>
+            <small>No account? <a href="<?= APP_BASE_URL ?>/auth/register">Register</a></small>
         </p>
     </div>
 </div>

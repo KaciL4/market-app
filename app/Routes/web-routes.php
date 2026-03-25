@@ -42,33 +42,32 @@ return static function (Slim\App $app): void {
         // Admin Dashboard route
         $group->get('/dashboard', [AdminController::class, 'dashboard'])
             ->setName('admin.dashboard');
+        $group->get('/user_management', [AdminController::class, 'userManagement'])
+        ->setName('admin.userManagement');
+
+        $group->post('/user_management/delete/{id}', [AdminController::class, 'deleteUser'])
+            ->setName('admin.deleteUser');
     });
 
     // Route for to show Admin Dashboard + Admin Auth
-    $app->group('/admin', function ($group) {
+    $app->group('/auth', function ($group) {
+    // User Login (GET)
+        $group->get('/login', [AuthController::class, 'showLogin'])
+            ->setName('auth.showLogin');
 
-    // Admin Login (GET)
-    $group->get('/login', [AdminController::class, 'showLogin'])
-        ->setName('admin.showLogin');
+        // User Login Submit (POST)
+        $group->post('/login', [AuthController::class, 'login'])
+            ->setName('auth.login');
 
-    // Admin Login Submit (POST)
-    $group->post('/login', [AdminController::class, 'login'])
-        ->setName('admin.login');
+        // User Register (GET)
+        $group->get('/register', [AuthController::class, 'showRegister'])
+            ->setName('auth.showRegister');
+
+        // User Register Submit (POST)
+        $group->post('/register', [AuthController::class, 'register'])
+            ->setName('auth.register');
+
 });
 
-    // User Login (GET)
-    $app->get('/login', [AuthController::class, 'showLogin'])
-        ->setName('auth.showLogin');
 
-    // User Login Submit (POST)
-    $app->post('/login', [AuthController::class, 'login'])
-        ->setName('auth.login');
-
-    // User Register (GET)
-    $app->get('/register', [AuthController::class, 'showRegister'])
-        ->setName('auth.showRegister');
-
-    // User Register Submit (POST)
-    $app->post('/register', [AuthController::class, 'register'])
-        ->setName('auth.register');
 };

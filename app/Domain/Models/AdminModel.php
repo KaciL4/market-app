@@ -2,6 +2,7 @@
 
 namespace App\Domain\Models;
 use App\Helpers\Core\PDOService;
+use PDO;
 class AdminModel extends BaseModel
 {
     public function __construct(PDOService $db_service)
@@ -24,4 +25,18 @@ class AdminModel extends BaseModel
        $sql= "SELECT COUNT(*)FROM transactions";
         return $this->count($sql);
     }
+    public function getAllUsers(): array{
+        $stmt = $this->pdo->query(
+            'SELECT user_id, username, email, role, created_at FROM users'
+        );
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    public function deleteUser(int $id): bool
+    {
+        $stmt = $this->pdo->prepare(
+            'DELETE FROM users WHERE user_id = :id'
+        );
+        return $stmt->execute(['id' => $id]);
+    }
+
 }

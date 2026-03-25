@@ -11,17 +11,12 @@ ViewHelper::loadHeader($title);
         <h3 class="mb-2 text-center">Create Account</h3>
         <p class="text-center text-muted mb-4">Join the marketplace</p>
 
-        <form method="POST" action="<?= APP_BASE_URL ?>/register">
+        <form method="POST" action="<?= APP_BASE_URL ?>/auth/register">
 
             <div class="row">
                 <div class="col-md-6 mb-3">
-                    <label class="form-label">First Name</label>
-                    <input type="text" name="first_name" class="form-control" required>
-                </div>
-
-                <div class="col-md-6 mb-3">
-                    <label class="form-label">Last Name</label>
-                    <input type="text" name="last_name" class="form-control" required>
+                    <label class="form-label">Username</label>
+                    <input type="text" name="username" class="form-control" required>
                 </div>
             </div>
 
@@ -44,7 +39,7 @@ ViewHelper::loadHeader($title);
         </form>
 
         <p class="text-center mb-0">
-            <small>Already have an account? <a href="<?= APP_BASE_URL ?>/login">Login</a></small>
+            <small>Already have an account? <a href="<?= APP_BASE_URL ?>/auth/login">Login</a></small>
         </p>
     </div>
 </div>

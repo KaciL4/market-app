@@ -1,7 +1,11 @@
 <?php
 
 declare(strict_types=1);
-
+// use App\Controllers\AdminController;
+// use App\Controllers\AuthController;
+// use App\Controllers\HomeController;
+// use App\Domain\Models\AdminModel;
+// use App\Domain\Models\UserModel;
 use App\Helpers\Core\AppSettings;
 use App\Helpers\Core\JsonRenderer;
 use App\Helpers\Core\PDOService;
@@ -78,5 +82,37 @@ $definitions = [
             (bool) $settings['display_error_details'],
         );
     },
+      // Models
+    // AdminModel::class => function (ContainerInterface $container): AdminModel {
+    //     return new AdminModel(
+    //         $container->get(PDOService::class)
+    //     );
+    // },
+
+    // UserModel::class => function (ContainerInterface $container): UserModel {
+    //     return new UserModel(
+    //         $container->get(PDOService::class)
+    //     );
+    // },
+
+    // // Controllers
+    // AdminController::class => function (ContainerInterface $container): AdminController {
+    //     return new AdminController(
+    //         $container,
+    //         $container->get(AdminModel::class)
+    //     );
+    // },
+
+    // AuthController::class => function (ContainerInterface $container): AuthController {
+    //     return new AuthController(
+    //         $container->get(UserModel::class)
+    //     );
+    // },
+
+    // HomeController::class => function (ContainerInterface $container): HomeController {
+    //     return new HomeController(
+    //         $container
+    //     );
+    // },
 ];
 return $definitions;
