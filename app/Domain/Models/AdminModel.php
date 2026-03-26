@@ -25,6 +25,16 @@ class AdminModel extends BaseModel
        $sql= "SELECT COUNT(*)FROM transactions";
         return $this->count($sql);
     }
+    // find user by username for admin login
+    public function findByUsername(string $username){
+        $stmt = $this->pdo->prepare("SELECT * FROM users WHERE username = :username AND role =:role LIMIT 1");
+        $stmt->execute([
+            'username'=>$username,
+            'role'=> 'admin'
+        ]);
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $user ?:null;
+    }
     public function getAllUsers(string $search =''): array{
         if($search !==''){
             $stmt = $this->pdo->prepare(

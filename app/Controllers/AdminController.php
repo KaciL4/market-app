@@ -31,7 +31,7 @@ class AdminController extends BaseController
     }
     public function showLogin(Request $request, Response $response): Response{
         ob_start();
-        require __DIR__ . '/../Views/admin/adminLogin.php';
+        require __DIR__ . '/../Views/admin/login.php';
         $html = ob_get_clean();
         $response->getBody()->write($html);
         return $response;
@@ -40,15 +40,27 @@ class AdminController extends BaseController
         $data = $request->getParsedBody();
         $username = $data['username'] ?? '';
         $password = $data['password'] ?? '';
-        if($username === 'admin' && $password === 'admin123'){
-            session_start();
-            $_SESSION['user_id'] = 0;
-            $_SESSION['username'] = 'Admin';
-            $_SESSION['role'] = 'admin';
+        $user = $this->dashboardModel-> findByUsername($username);
+        // check user exist and role = admin
+        if(!$user || $user['role']!=='admin'){
             return $response
-                ->withHeader('Location', '/admin/dashboard')
+                ->withHeader('Location', '/admin/login?error=invalid')
                 ->withStatus(302);
         }
+        // check password
+        if($password!== $user['password']){
+            return $response
+                ->withHeader('Location', '/admin/login?error=invalid')
+                ->withStatus(302);
+        }
+        session_start();
+        $_SESSION['user_id'] = $user['user_id'];
+        $_SESSION['username'] = $user['username'];
+        $_SESSION['role'] = $user['role'];
+        return $response
+            ->withHeader('Location', '/admin/dashboard')
+            ->withStatus(302);
+
         return $response
             ->withHeader('Location', '/admin/login')
             ->withStatus(302);

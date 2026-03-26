@@ -32,16 +32,22 @@ class AuthController extends BaseController
         $email = $data['email'] ?? '';
         $password = $data['password'] ?? '';
         $user = $this->userModel->findByEmail($email);
+        
         if(!$user || !$this->userModel->verifyPassword($password, $user['password'])){
             return $response
-            ->withHeader('Location','/login')
+            ->withHeader('Location','/auth/login?error=invalid_credentials')
             ->withStatus(302);
         }
         session_start();
         $_SESSION['user_id'] = $user['user_id'];
         $_SESSION['username'] = $user['username'];
         $_SESSION['role'] = $user['role'];
-
+        // Redirect based on the role
+        if ($user['role'] === 'admin') {
+            return $response
+                ->withHeader('Location', '/admin/dashboard')
+                ->withStatus(302);
+        }
         return $response
             ->withHeader('Location','/')
             ->withStatus(302);
