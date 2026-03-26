@@ -54,4 +54,5 @@ class UserModel extends BaseModel
         $stmt = $this->pdo->prepare("DELETE FROM users WHERE user_id = :user_id");
         return $stmt->execute(['user_id' => $userId]);
     }
+    
 }

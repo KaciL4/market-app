@@ -44,7 +44,7 @@
 <body>
 
 <?php
-    // ✅ Helper to mark the active sidebar link
+    // Helper to mark the active sidebar link
     $currentUri = $_SERVER['REQUEST_URI'];
     function isActive(string $path): string {
         global $currentUri;
@@ -76,7 +76,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <!-- ✅ Show logged in admin username -->
+                            <!-- show logged in admin username -->
                             <span class="nav-link">
                                 <i class="bi bi-person-circle"></i>
                                 <?= htmlspecialchars($_SESSION['username'] ?? 'Admin') ?>
@@ -101,7 +101,7 @@
             <nav class="col-md-3 col-lg-2 d-md-block admin-sidebar p-0">
                 <ul class="nav flex-column px-2 mt-2">
                     <li class="nav-item">
-                        <!-- ✅ active class set dynamically for each link -->
+                        <!-- active class set dynamically for each link -->
                         <a class="nav-link <?= isActive('dashboard') ?>" href="<?= APP_BASE_URL ?>/admin/dashboard">
                             <i class="bi bi-speedometer2 me-2"></i>Dashboard
                         </a>
