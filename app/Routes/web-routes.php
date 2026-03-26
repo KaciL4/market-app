@@ -37,7 +37,7 @@ return static function (Slim\App $app): void {
         throw new \Slim\Exception\HttpBadRequestException($request, "This is a runtime error. Something went wrong");
     });
 
-    // Route for to show Admin Dashboard
+    // Route for to show Admin Pages
     $app->group('/admin', function ($group) {
         // Admin Dashboard route
         $group->get('/dashboard', [AdminController::class, 'dashboard'])
@@ -47,9 +47,20 @@ return static function (Slim\App $app): void {
 
         $group->post('/user_management/delete/{id}', [AdminController::class, 'deleteUser'])
             ->setName('admin.deleteUser');
+        $group->get('/categories', [AdminController::class, 'categories'])
+         ->setName('admin.categories');
+
+        $group->post('/categories/add', [AdminController::class, 'addCategory'])
+            ->setName('admin.addCategory');
+
+        $group->post('/categories/edit/{id}', [AdminController::class, 'editCategory'])
+            ->setName('admin.editCategory');
+
+        $group->post('/categories/delete/{id}', [AdminController::class, 'deleteCategory'])
+            ->setName('admin.deleteCategory');
     });
 
-    // Route for to show Admin Dashboard + Admin Auth
+    // Route for to show Auth
     $app->group('/auth', function ($group) {
     // User Login (GET)
         $group->get('/login', [AuthController::class, 'showLogin'])

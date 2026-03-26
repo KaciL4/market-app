@@ -17,7 +17,39 @@ ViewHelper::loadAdminHeader($title); // ← this loads the sidebar automatically
         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
     </div>
 <?php endif; ?>
-
+<!--Search Bar -->
+<div class="card border-0 shadow-sm mb-3">
+    <div class="card-body py-2">
+        <div class="input-group">
+            <span class="input-group-text bg-transparent border-end-0">
+                <i class="bi bi-search"></i>
+            </span>
+            <input
+                type="text"
+                id="searchInput"
+                class="form-control border-start-0"
+                placeholder="Search by username..."
+                value="<?= htmlspecialchars($_GET['search'] ?? '') ?>">
+            <button class="btn btn-primary" id="searchBtn">
+                Search
+            </button>
+            <?php if (!empty($_GET['search'])): ?>
+                <a href="<?= APP_BASE_URL ?>/admin/user_management" class="btn btn-secondary">
+                    <i class="bi bi-x"></i> Clear
+                </a>
+            <?php endif; ?>
+        </div>
+    </div>
+</div>
+<!-- Results count -->
+<p class="text-muted small mb-2">
+    <?php if (!empty($_GET['search'])): ?>
+        Showing results for: <strong><?= htmlspecialchars($_GET['search']) ?></strong>
+        — <?= count($users) ?> user(s) found
+    <?php else: ?>
+        Total users: <strong><?= count($users) ?></strong>
+    <?php endif; ?>
+</p>
 <!-- Users Table -->
 <div class="card border-0 shadow-sm">
     <div class="card-body">
@@ -35,7 +67,14 @@ ViewHelper::loadAdminHeader($title); // ← this loads the sidebar automatically
             <tbody>
                 <?php if (empty($users)): ?>
                     <tr>
-                        <td colspan="6" class="text-center text-muted">No users found.</td>
+                        <td colspan="6" class="text-center text-muted py-4">
+                            <i class="bi bi-person-x fs-3 d-block mb-2"></i>
+                            <?php if (!empty($_GET['search'])): ?>
+                                No user found matching <strong>"<?= htmlspecialchars($_GET['search']) ?>"</strong>.
+                            <?php else: ?>
+                                No users found.
+                            <?php endif; ?>
+                        </td>
                     </tr>
                 <?php else: ?>
                     <?php foreach ($users as $user): ?>
@@ -97,6 +136,18 @@ ViewHelper::loadAdminHeader($title); // ← this loads the sidebar automatically
 </div>
 
 <script>
+        // Search button → redirect with ?search= query
+    document.getElementById('searchBtn').addEventListener('click', function () {
+        const query = document.getElementById('searchInput').value.trim();
+        window.location.href = '<?= APP_BASE_URL ?>/admin/user_management?search=' + encodeURIComponent(query);
+    });
+
+    // Allow pressing Enter to search
+    document.getElementById('searchInput').addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') {
+            document.getElementById('searchBtn').click();
+        }
+    });
     document.getElementById('deleteModal').addEventListener('show.bs.modal', function (event) {
         const button   = event.relatedTarget;
         const userId   = button.getAttribute('data-user-id');
@@ -108,4 +159,4 @@ ViewHelper::loadAdminHeader($title); // ← this loads the sidebar automatically
     });
 </script>
 
-<?php ViewHelper::loadAdminFooter();
+<?php ViewHelper::loadAdminFooter();?>

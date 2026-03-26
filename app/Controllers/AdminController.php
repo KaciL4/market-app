@@ -55,7 +55,8 @@ class AdminController extends BaseController
     }
     // GET /admin/user_management
     public function userManagement(Request $request, Response $response): Response{
-        $users = $this->dashboardModel->getAllUsers();
+    $search = $request->getQueryParams()['search'] ?? '';
+    $users = $this->dashboardModel->getAllUsers($search);
         $data=[
             'title'=>'User Management',
             'users'=>$users,
@@ -69,6 +70,48 @@ class AdminController extends BaseController
         $this->dashboardModel->deleteUser($userId);
         return $response
             ->withHeader('Location', '/admin/user_management')
+            ->withStatus(302);
+    }
+    // GET /admin/categories
+    public function categories(Request $request, Response $response): Response{
+
+        $categories = $this->dashboardModel->getAllCategories();
+        $data=[
+            'title'=>'Categories',
+            'categories'=>$categories,
+            'username'=>$_SESSION['username']??'Admin'
+        ];
+        return $this->render($response,'admin/categories.php', $data);
+    }
+    // POST /admin/categories/add
+    public function addCategory(Request $request, Response $response): Response{
+        $data = $request->getParsedBody();
+        $categoryName = $data['category_name'] ?? '';
+        if($categoryName){
+            $this->dashboardModel->addCategory($categoryName);
+        }
+        return $response
+            ->withHeader('Location', '/admin/categories')
+            ->withStatus(302);
+    }
+    // POST /admin/categories/edit/{id}
+    public function editCategory(Request $request, Response $response, array $args): Response{
+        $categoryId = (int)$args['id'];
+        $data = $request->getParsedBody();
+        $categoryName = $data['category_name'] ?? '';
+        if($categoryName){
+            $this->dashboardModel->editCategory($categoryId, $categoryName);
+        }
+        return $response
+            ->withHeader('Location', '/admin/categories?success=edited')
+            ->withStatus(302);
+    }
+    // POST /admin/categories/delete/{id}
+    public function deleteCategory(Request $request, Response $response, array $args): Response{
+        $categoryId = (int)$args['id'];
+        $this->dashboardModel->deleteCategory($categoryId);
+        return $response
+            ->withHeader('Location', '/admin/categories?success=deleted')
             ->withStatus(302);
     }
 }
