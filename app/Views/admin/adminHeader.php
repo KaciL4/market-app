@@ -43,14 +43,15 @@
 
 <body>
 
-<?php
+    <?php
     // Helper to mark the active sidebar link
     $currentUri = $_SERVER['REQUEST_URI'];
-    function isActive(string $path): string {
+    function isActive(string $path): string
+    {
         global $currentUri;
         return str_contains($currentUri, $path) ? 'active' : '';
     }
-?>
+    ?>
 
     <header>
         <nav class="navbar navbar-expand-lg bg-body-tertiary mb-2 px-2">
@@ -76,14 +77,14 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <!-- show logged in admin username -->
-                            <span class="nav-link">
+                            <a class="nav-link" href="#">
+                                <!-- show logged in admin username -->
                                 <i class="bi bi-person-circle"></i>
                                 <?= htmlspecialchars($_SESSION['username'] ?? 'Admin') ?>
-                            </span>
+                            </a>
                         </li>
                         <li class="nav-item">
-                            <a href="<?= APP_BASE_URL ?>/admin/logout">
+                            <a href="<?= APP_BASE_URL ?>/auth/login"> <!-- Click Logout button will redirect to Login page -->
                                 <button type="button" class="btn btn-danger">
                                     <i class="bi bi-box-arrow-right"></i>
                                     Logout

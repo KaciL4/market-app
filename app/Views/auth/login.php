@@ -3,7 +3,7 @@
 use App\Helpers\ViewHelper;
 
 $title = "Login";
-ViewHelper::loadHeader($title);
+ViewHelper::loadAuthHeader($title);
 ?>
 
 <div class="container mt-5" style="max-width: 500px;">
@@ -32,4 +32,4 @@ ViewHelper::loadHeader($title);
     </div>
 </div>
 
-<?php ViewHelper::loadFooter(); ?>
+<?php ViewHelper::loadAuthFooter(); ?>

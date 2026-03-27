@@ -101,4 +101,15 @@ class ViewHelper
     {
         require_once APP_VIEWS_PATH . '/admin/adminFooter.php';
     }
+
+    public static function loadAuthHeader(string $page_title): void
+    {
+        $page_title = $page_title ?? 'Authentication';
+        require_once APP_VIEWS_PATH . '/auth/authHeader.php';
+    }
+
+    public static function loadAuthFooter(): void
+    {
+        require_once APP_VIEWS_PATH . '/auth/authFooter.php';
+    }
 }
