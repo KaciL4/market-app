@@ -59,6 +59,9 @@ return static function (Slim\App $app): void {
 
         $group->post('/categories/delete/{id}', [AdminController::class, 'deleteCategory'])
             ->setName('admin.deleteCategory');
+
+        $group->get('/item_management', [AdminController::class, 'itemManagement'])
+            ->setName('admin.itemManagement');
     });
 
     // Route for to show Auth

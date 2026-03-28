@@ -1,10 +1,12 @@
 <?php
 
 namespace App\Controllers;
+
 use App\Domain\Models\AdminModel;
 use DI\Container;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
+
 class AdminController extends BaseController
 {
     public function __construct(
@@ -13,42 +15,45 @@ class AdminController extends BaseController
     ) {
         parent::__construct($container);
     }
-    public function dashboard(Request $resquest, Response $response, array $args): Response{
+    public function dashboard(Request $resquest, Response $response, array $args): Response
+    {
         $totalUsers = $this->dashboardModel->getTotalUsers();
         $totalCategories = $this->dashboardModel->getTotalCategories();
         $totalItems = $this->dashboardModel->getTotalItems();
         $totalTransactions = $this->dashboardModel->getTotalTransactions();
         $title = 'Admin Dashboard';
-        $data=[
-            'title'=>$title,
-            'totalUsers'=>$totalUsers,
-            'totalCategories'=>$totalCategories,
-            'totalItems'=>$totalItems,
-            'totalTransactions'=>$totalTransactions,
-            'username'=>$_SESSION['username']??'Admin'
+        $data = [
+            'title' => $title,
+            'totalUsers' => $totalUsers,
+            'totalCategories' => $totalCategories,
+            'totalItems' => $totalItems,
+            'totalTransactions' => $totalTransactions,
+            'username' => $_SESSION['username'] ?? 'Admin'
         ];
-        return $this->render($response,'admin/adminDashboard.php', $data);
+        return $this->render($response, 'admin/adminDashboard.php', $data);
     }
-    public function showLogin(Request $request, Response $response): Response{
+    public function showLogin(Request $request, Response $response): Response
+    {
         ob_start();
         require __DIR__ . '/../Views/admin/login.php';
         $html = ob_get_clean();
         $response->getBody()->write($html);
         return $response;
     }
-    public function login(Request $request, Response $response): Response{
+    public function login(Request $request, Response $response): Response
+    {
         $data = $request->getParsedBody();
         $username = $data['username'] ?? '';
         $password = $data['password'] ?? '';
-        $user = $this->dashboardModel-> findByUsername($username);
+        $user = $this->dashboardModel->findByUsername($username);
         // check user exist and role = admin
-        if(!$user || $user['role']!=='admin'){
+        if (!$user || $user['role'] !== 'admin') {
             return $response
                 ->withHeader('Location', '/admin/login?error=invalid')
                 ->withStatus(302);
         }
         // check password
-        if($password!== $user['password']){
+        if ($password !== $user['password']) {
             return $response
                 ->withHeader('Location', '/admin/login?error=invalid')
                 ->withStatus(302);
@@ -66,18 +71,20 @@ class AdminController extends BaseController
             ->withStatus(302);
     }
     // GET /admin/user_management
-    public function userManagement(Request $request, Response $response): Response{
-    $search = $request->getQueryParams()['search'] ?? '';
-    $users = $this->dashboardModel->getAllUsers($search);
-        $data=[
-            'title'=>'User Management',
-            'users'=>$users,
-            'username'=>$_SESSION['username']??'Admin'
+    public function userManagement(Request $request, Response $response): Response
+    {
+        $search = $request->getQueryParams()['search'] ?? '';
+        $users = $this->dashboardModel->getAllUsers($search);
+        $data = [
+            'title' => 'User Management',
+            'users' => $users,
+            'username' => $_SESSION['username'] ?? 'Admin'
         ];
-        return $this->render($response,'admin/userManagement.php', $data);
+        return $this->render($response, 'admin/userManagement.php', $data);
     }
     // POST /admin/user_management/delete/{id}
-    public function deleteUser(Request $request, Response $response, array $args): Response{
+    public function deleteUser(Request $request, Response $response, array $args): Response
+    {
         $userId = (int)$args['id'];
         $this->dashboardModel->deleteUser($userId);
         return $response
@@ -85,21 +92,23 @@ class AdminController extends BaseController
             ->withStatus(302);
     }
     // GET /admin/categories
-    public function categories(Request $request, Response $response): Response{
+    public function categories(Request $request, Response $response): Response
+    {
 
         $categories = $this->dashboardModel->getAllCategories();
-        $data=[
-            'title'=>'Categories',
-            'categories'=>$categories,
-            'username'=>$_SESSION['username']??'Admin'
+        $data = [
+            'title' => 'Categories',
+            'categories' => $categories,
+            'username' => $_SESSION['username'] ?? 'Admin'
         ];
-        return $this->render($response,'admin/categories.php', $data);
+        return $this->render($response, 'admin/categories.php', $data);
     }
     // POST /admin/categories/add
-    public function addCategory(Request $request, Response $response): Response{
+    public function addCategory(Request $request, Response $response): Response
+    {
         $data = $request->getParsedBody();
         $categoryName = $data['category_name'] ?? '';
-        if($categoryName){
+        if ($categoryName) {
             $this->dashboardModel->addCategory($categoryName);
         }
         return $response
@@ -107,11 +116,12 @@ class AdminController extends BaseController
             ->withStatus(302);
     }
     // POST /admin/categories/edit/{id}
-    public function editCategory(Request $request, Response $response, array $args): Response{
+    public function editCategory(Request $request, Response $response, array $args): Response
+    {
         $categoryId = (int)$args['id'];
         $data = $request->getParsedBody();
         $categoryName = $data['category_name'] ?? '';
-        if($categoryName){
+        if ($categoryName) {
             $this->dashboardModel->editCategory($categoryId, $categoryName);
         }
         return $response
@@ -119,11 +129,33 @@ class AdminController extends BaseController
             ->withStatus(302);
     }
     // POST /admin/categories/delete/{id}
-    public function deleteCategory(Request $request, Response $response, array $args): Response{
+    public function deleteCategory(Request $request, Response $response, array $args): Response
+    {
         $categoryId = (int)$args['id'];
         $this->dashboardModel->deleteCategory($categoryId);
         return $response
             ->withHeader('Location', '/admin/categories?success=deleted')
             ->withStatus(302);
+    }
+
+    //This function retrieves search and status parameters, filters items accordingly, and renders the item management page with the data.
+    public function itemManagement(Request $request, Response $response): Response
+    {
+        $queryParams = $request->getQueryParams();
+
+        $search = trim($queryParams['search'] ?? '');
+        $status = strtolower(trim($queryParams['status'] ?? 'all'));
+
+        $items = $this->dashboardModel->getAllItems($search, $status);
+
+        $data = [
+            'title' => 'Item Management',
+            'items' => $items,
+            'search' => $search,
+            'status' => $status,
+            'username' => $_SESSION['username'] ?? 'Admin'
+        ];
+
+        return $this->render($response, 'admin/itemManagement.php', $data);
     }
 }
