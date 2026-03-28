@@ -4,7 +4,6 @@ namespace App\Domain\Models;
 
 use App\Helpers\Core\PDOService;
 use PDO;
-
 class AdminModel extends BaseModel
 {
     public function __construct(PDOService $db_service)
@@ -58,10 +57,13 @@ class AdminModel extends BaseModel
     }
     public function deleteUser(int $id): bool
     {
-        $stmt = $this->pdo->prepare(
-            'DELETE FROM users WHERE user_id = :id'
-        );
-        return $stmt->execute(['id' => $id]);
+        //* Handle with try catch block
+        try {
+            $stmt = $this->pdo->prepare('DELETE FROM users WHERE user_id = :id');
+            return $stmt->execute(['id' => $id]);
+        } catch (PDOException $e) {
+            return false;
+        }
     }
     public function getAllCategories(): array
     {

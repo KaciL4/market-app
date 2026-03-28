@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Controllers;
-
 use App\Domain\Models\AdminModel;
 use DI\Container;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -86,9 +85,16 @@ class AdminController extends BaseController
     public function deleteUser(Request $request, Response $response, array $args): Response
     {
         $userId = (int)$args['id'];
-        $this->dashboardModel->deleteUser($userId);
+        $deleted = $this->dashboardModel->deleteUser($userId);
+
+        if ($deleted) {
+            FlashMessage::success("User deleted successfully");
+        } else {
+            FlashMessage::error("Failed to delete as user owns item(s)");
+        }
+
         return $response
-            ->withHeader('Location', '/admin/user_management')
+            ->withHeader('Location', APP_BASE_URL . '/admin/user_management')
             ->withStatus(302);
     }
     // GET /admin/categories

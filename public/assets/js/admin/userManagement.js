@@ -23,6 +23,7 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('modalUsername').textContent = username;
         document.getElementById('deleteForm').action =
             window.APP_BASE_URL + '/admin/user_management/delete/' + userId;
+s
     });
 
 });

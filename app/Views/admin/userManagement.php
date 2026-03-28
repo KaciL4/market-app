@@ -1,5 +1,6 @@
 <?php
 
+use App\Helpers\FlashMessage;
 use App\Helpers\ViewHelper;
 
 ViewHelper::loadAdminHeader($title); // ← this loads the sidebar automatically
@@ -11,12 +12,14 @@ ViewHelper::loadAdminHeader($title); // ← this loads the sidebar automatically
 </div>
 
 <!-- Success message -->
-<?php if (isset($_GET['success'])): ?>
+<!-- <?php if (isset($_GET['success'])): ?>
     <div class="alert alert-success alert-dismissible fade show" role="alert">
         User deleted successfully.
         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
     </div>
-<?php endif; ?>
+<?php endif; ?> -->
+<?= FlashMessage::render() ?>
+
 <!--Search Bar -->
 <div class="card border-0 shadow-sm mb-3">
     <div class="card-body py-2">
