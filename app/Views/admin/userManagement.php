@@ -134,9 +134,14 @@ ViewHelper::loadAdminHeader($title); // ← this loads the sidebar automatically
         </div>
     </div>
 </div>
+<script>
+    window.APP_BASE_URL = '<?= APP_BASE_URL ?>';
+</script>
 
 <script>
     const BASE_URL = "<?= APP_BASE_URL ?>";
+</script>
+<script src="<?= APP_BASE_URL ?>/public/assets/js/admin/userManagement.js">
 </script>
 
 <?php ViewHelper::loadAdminFooter();?>

@@ -195,7 +195,11 @@ ViewHelper::loadAdminHeader($title);
         box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4) !important;
     }
 </style>
+<script>
+    window.APP_BASE_URL = '<?= APP_BASE_URL ?>';
+</script>
+<script src="<?= APP_BASE_URL ?>/public/assets/js/admin/categories.js">
 
-<script src="<?= APP_BASE_URL ?>/js/admin/categories.js"></script>
+</script>
 
 <?php ViewHelper::loadAdminFooter(); ?>
