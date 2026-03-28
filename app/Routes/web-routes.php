@@ -43,12 +43,12 @@ return static function (Slim\App $app): void {
         $group->get('/dashboard', [AdminController::class, 'dashboard'])
             ->setName('admin.dashboard');
         $group->get('/user_management', [AdminController::class, 'userManagement'])
-        ->setName('admin.userManagement');
+            ->setName('admin.userManagement');
 
         $group->post('/user_management/delete/{id}', [AdminController::class, 'deleteUser'])
             ->setName('admin.deleteUser');
         $group->get('/categories', [AdminController::class, 'categories'])
-         ->setName('admin.categories');
+            ->setName('admin.categories');
 
         $group->post('/categories/add', [AdminController::class, 'addCategory'])
             ->setName('admin.addCategory');
@@ -58,11 +58,14 @@ return static function (Slim\App $app): void {
 
         $group->post('/categories/delete/{id}', [AdminController::class, 'deleteCategory'])
             ->setName('admin.deleteCategory');
+
+        $group->get('/item_management', [AdminController::class, 'itemManagement'])
+            ->setName('admin.itemManagement');
     });
 
     // Route for to show Auth
     $app->group('/auth', function ($group) {
-    // User Login (GET)
+        // User Login (GET)
         $group->get('/login', [AuthController::class, 'showLogin'])
             ->setName('auth.showLogin');
 
@@ -77,8 +80,5 @@ return static function (Slim\App $app): void {
         // User Register Submit (POST)
         $group->post('/register', [AuthController::class, 'register'])
             ->setName('auth.register');
-
-});
-
-
+    });
 };
