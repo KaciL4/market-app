@@ -1,7 +1,7 @@
         // Search button → redirect with ?search= query
     document.getElementById('searchBtn').addEventListener('click', function () {
         const query = document.getElementById('searchInput').value.trim();
-        window.location.href = '<?= APP_BASE_URL ?>/admin/user_management?search=' + encodeURIComponent(query);
+        window.location.href = BASE_URL + '/admin/user_management?search=' + encodeURIComponent(query);
     });
 
     // Allow pressing Enter to search
