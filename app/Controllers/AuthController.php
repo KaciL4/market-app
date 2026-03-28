@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Helpers\SessionManager;
 use App\Domain\Models\UserModel;
 use App\Helpers\ViewHelper;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -40,13 +41,17 @@ class AuthController extends BaseController
                 ->withStatus(302);
         }
 
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
-        }
+        // if (session_status() === PHP_SESSION_NONE) {
+        //     session_start();
+        // }
 
-        $_SESSION['user_id'] = $user['user_id'];
-        $_SESSION['username'] = $user['username'];
-        $_SESSION['role'] = $user['role'];
+        // $_SESSION['user_id'] = $user['user_id'];
+        // $_SESSION['username'] = $user['username'];
+        // $_SESSION['role'] = $user['role'];
+
+        SessionManager::set('user_id', $user['user_id']);
+        SessionManager::set('username', $user['username']);
+        SessionManager::set('role', $user['role']);
 
         // Redirect based on the role
         if (strtolower($user['role']) === 'admin') {

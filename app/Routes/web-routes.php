@@ -6,6 +6,7 @@ declare(strict_types=1);
  * This file contains the routes for the web application.
  */
 
+use App\Helpers\SessionManager;
 use App\Controllers\AdminController;
 use App\Controllers\HomeController;
 use App\Controllers\AuthController;
