@@ -3,8 +3,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Search
     document.getElementById('searchBtn').addEventListener('click', function () {
         const query = document.getElementById('searchInput').value.trim();
-        window.location.href = BASE_URL + '/admin/user_management?search=' + encodeURIComponent(query);
-         window.location.href = window.APP_BASE_URL + '/admin/user_management?search=' + encodeURIComponent(query);
+        window.location.href = window.APP_BASE_URL + '/admin/user_management?search=' + encodeURIComponent(query);
     });
 
     // Enter key

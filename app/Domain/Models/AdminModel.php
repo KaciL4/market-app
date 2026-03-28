@@ -4,6 +4,7 @@ namespace App\Domain\Models;
 
 use App\Helpers\Core\PDOService;
 use PDO;
+use PDOException;
 class AdminModel extends BaseModel
 {
     public function __construct(PDOService $db_service)
@@ -31,7 +32,7 @@ class AdminModel extends BaseModel
         return $this->count($sql);
     }
     // find user by username for admin login
-    public function findByUsername(string $username)
+    public function findByUsername(string $username) : String
     {
         $stmt = $this->pdo->prepare("SELECT * FROM users WHERE username = :username AND role =:role LIMIT 1");
         $stmt->execute([
