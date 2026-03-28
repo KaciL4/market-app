@@ -45,6 +45,9 @@
 
     <?php
     // Helper to mark the active sidebar link
+
+            use App\Helpers\SessionManager;
+
     $currentUri = $_SERVER['REQUEST_URI'];
     function isActive(string $path): string
     {
@@ -80,7 +83,7 @@
                             <a class="nav-link" href="#">
                                 <!-- show logged in admin username -->
                                 <i class="bi bi-person-circle"></i>
-                                <?= htmlspecialchars($_SESSION['username'] ?? 'Admin') ?>
+                                <?= htmlspecialchars(SessionManager::get('username', 'Admin')) ?>
                             </a>
                         </li>
                         <li class="nav-item">
