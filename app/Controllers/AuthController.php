@@ -2,6 +2,8 @@
 
 namespace App\Controllers;
 
+
+use  App\Helpers\FlashMessage;
 use App\Helpers\SessionManager;
 use App\Domain\Models\UserModel;
 use App\Helpers\ViewHelper;
@@ -36,6 +38,7 @@ class AuthController extends BaseController
         $user = $this->userModel->findByEmail($email);
 
         if (!$user || !$this->userModel->verifyPassword($password, $user['password'])) {
+            FlashMessage::error("Login Failed");
             return $response
                 ->withHeader('Location', APP_BASE_URL . '/auth/login?error=invalid_credentials')
                 ->withStatus(302);

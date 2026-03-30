@@ -4,6 +4,7 @@ use App\Helpers\FlashMessage;
 use App\Helpers\ViewHelper;
 
 ViewHelper::loadAdminHeader($title); // ← this loads the sidebar automatically
+// $users = $_GET['users'];
 ?>
 
 <div class="mb-4 border-bottom">

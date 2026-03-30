@@ -46,12 +46,12 @@ class AdminModel extends BaseModel
     {
         if ($search !== '') {
             $stmt = $this->pdo->prepare(
-                'SELECT user_id, username, email, role, created_at FROM users WHERE username LIKE :search'
+                "SELECT user_id, username, email, role, created_at FROM users WHERE username AND role = 'user' LIKE :search "
             );
             $stmt->execute(['search' => "%$search%"]);
         } else {
             $stmt = $this->pdo->query(
-                'SELECT user_id, username, email, role, created_at FROM users'
+                "SELECT user_id, username, email, role, created_at FROM users WHERE role = 'user'"
             );
         }
         return $stmt->fetchAll(PDO::FETCH_ASSOC);

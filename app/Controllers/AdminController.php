@@ -6,6 +6,7 @@ use DI\Container;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use App\Helpers\FlashMessage;
+use App\Helpers\SessionManager;
 
 class AdminController extends BaseController
 {
@@ -47,21 +48,25 @@ class AdminController extends BaseController
         $password = $data['password'] ?? '';
         $user = $this->dashboardModel->findByUsername($username);
         // check user exist and role = admin
-        if (!$user || $user['role'] !== 'admin') {
+        if (!$user || $data['role'] !== 'admin') { // If cause any problem change $data with $user
             return $response
                 ->withHeader('Location', '/admin/login?error=invalid')
                 ->withStatus(302);
         }
         // check password
-        if ($password !== $user['password']) {
+        if ($password !== $data['password']) {
             return $response
                 ->withHeader('Location', '/admin/login?error=invalid')
                 ->withStatus(302);
         }
-        session_start();
-        $_SESSION['user_id'] = $user['user_id'];
-        $_SESSION['username'] = $user['username'];
-        $_SESSION['role'] = $user['role'];
+        // session_start();
+        // $_SESSION['user_id'] = $user['user_id'];
+        // $_SESSION['username'] = $user['username'];
+        // $_SESSION['role'] = $user['role'];
+
+        SessionManager::set('user_id', $data['user_id']);
+        SessionManager::set('username', $data['username']);
+        SessionManager::set('role', $data['role']);
         return $response
             ->withHeader('Location', '/admin/dashboard')
             ->withStatus(302);
@@ -78,7 +83,7 @@ class AdminController extends BaseController
         $data = [
             'title' => 'User Management',
             'users' => $users,
-            'username' => $_SESSION['username'] ?? 'Admin'
+            'username' => SessionManager::get('username', 'Admin')
         ];
         return $this->render($response, 'admin/userManagement.php', $data);
     }
@@ -106,7 +111,7 @@ class AdminController extends BaseController
         $data = [
             'title' => 'Categories',
             'categories' => $categories,
-            'username' => $_SESSION['username'] ?? 'Admin'
+            'username' => SessionManager::get('username', 'Admin')
         ];
         return $this->render($response, 'admin/categories.php', $data);
     }
@@ -160,7 +165,7 @@ class AdminController extends BaseController
             'items' => $items,
             'search' => $search,
             'status' => $status,
-            'username' => $_SESSION['username'] ?? 'Admin'
+            'username' => SessionManager::get('username', 'Admin')
         ];
 
         return $this->render($response, 'admin/itemManagement.php', $data);

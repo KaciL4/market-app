@@ -1,10 +1,13 @@
 <?php
 
+use App\Helpers\FlashMessage;
 use App\Helpers\ViewHelper;
 
 $title = "Login";
 ViewHelper::loadAuthHeader($title);
 ?>
+
+<?= FlashMessage::render() ?>
 
 <div class="container mt-5" style="max-width: 500px;">
     <div class="card p-4 shadow-sm border-0">
