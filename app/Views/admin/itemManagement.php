@@ -2,12 +2,14 @@
 
 use App\Helpers\ViewHelper;
 
+$title = $data['title'] ?? 'Item Management';
+
 ViewHelper::loadAdminHeader($title);
 ?>
 
 <div class="mb-4 border-bottom pb-2">
     <h2>Item Management</h2>
-    <p class="text-muted mb-0">Review and manage marketplace listings</p>
+    <p class="text-secondary mb-0">Review and manage marketplace listings</p>
 </div>
 
 <div class="card p-3 mb-4">

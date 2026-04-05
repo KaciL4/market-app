@@ -65,6 +65,9 @@ return static function (Slim\App $app): void {
 
         $group->get('/profile', [AdminController::class, 'profile'])
             ->setName('admin.profile');
+
+        $group->get('/transactions', [AdminController::class, 'transactions'])
+            ->setName('admin.transactions');
     });
 
     // Route for to show Auth

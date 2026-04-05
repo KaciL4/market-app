@@ -13,7 +13,7 @@ ViewHelper::loadAdminHeader($title);
 
 <div class="mb-4 border-bottom">
     <h2>Admin Dashboard</h2>
-    <p>System overview & statistics</p>
+    <p class="text-secondary mb-3">System overview & statistics</p>
 </div>
 
 <div class="row mb-4">

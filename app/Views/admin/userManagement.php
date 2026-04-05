@@ -11,7 +11,7 @@ ViewHelper::loadAdminHeader($title); // ← this loads the sidebar automatically
 
 <div class="mb-4 border-bottom">
     <h2>User Management</h2>
-    <p>View and manage all registered users</p>
+    <p class="text-secondary mb-3">View and manage all registered users</p>
 </div>
 
 <!-- Success message -->

@@ -182,4 +182,15 @@ class AdminController extends BaseController
         ];
         return $this->render($response, 'profile/profile.php', $data);
     }
+
+    public function transactions(Request $request, Response $response): Response
+    {
+        $transactions = $this->dashboardModel->getAllTransactions();
+
+        $data = [
+            'title' => 'Transactions',
+            'transactions' => $transactions
+        ];
+        return $this->render($response, 'admin/transactions.php', $data);
+    }
 }

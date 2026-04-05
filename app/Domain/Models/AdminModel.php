@@ -5,6 +5,7 @@ namespace App\Domain\Models;
 use App\Helpers\Core\PDOService;
 use PDO;
 use PDOException;
+
 class AdminModel extends BaseModel
 {
     public function __construct(PDOService $db_service)
@@ -32,7 +33,7 @@ class AdminModel extends BaseModel
         return $this->count($sql);
     }
     // find user by username for admin login
-    public function findByUsername(string $username) : String
+    public function findByUsername(string $username): String
     {
         $stmt = $this->pdo->prepare("SELECT * FROM users WHERE username = :username AND role =:role LIMIT 1");
         $stmt->execute([
@@ -46,7 +47,7 @@ class AdminModel extends BaseModel
     {
         if ($search !== '') {
             $stmt = $this->pdo->prepare(
-                "SELECT user_id, username, email, role, created_at FROM users WHERE username AND role = 'user' LIKE :search "
+                "SELECT user_id, username, email, role, created_at FROM users WHERE role = 'user' AND username LIKE :search"
             );
             $stmt->execute(['search' => "%$search%"]);
         } else {
@@ -145,6 +146,24 @@ class AdminModel extends BaseModel
                 'user_id' => $id,
                 'role' => $data['role'] ?? 'admin'
             ]
+        );
+    }
+
+    public function getAllTransactions() : array {
+        return $this->selectAll(
+            "SELECT
+                t.transaction_id,
+                t.item_purchased,
+                t.transaction_date,
+                u.username,
+                i.listing_product,
+                i.price,
+                i.detail,
+                i.status
+            FROM transactions t
+            INNER JOIN users u ON t.user_id = u.user_id
+            LEFT JOIN items i ON t.item_id = i.item_id
+            "
         );
     }
 }

@@ -2,13 +2,15 @@
 
 use App\Helpers\ViewHelper;
 
+$title = $data['title'] ?? 'Categories';
+
 ViewHelper::loadAdminHeader($title);
 ?>
 
 <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-3">
     <div>
-        <h2 class="mb-1">Categories</h2>
-        <p class="text-muted mb-0">Manage marketplace categories</p>
+        <h2 class="mb-2">Categories</h2>
+        <p class="text-secondary mb-0">Manage marketplace categories</p>
     </div>
     <button class="btn btn-primary px-4" data-bs-toggle="modal" data-bs-target="#addCategoryModal">
         <i class="bi bi-plus-lg me-2"></i> Add Category
@@ -19,13 +21,13 @@ ViewHelper::loadAdminHeader($title);
 <?php if (isset($_GET['success'])): ?>
     <div class="alert alert-success alert-dismissible fade show">
         <?php
-            $msg = match($_GET['success']) {
-                'added'   => 'Category added successfully.',
-                'edited'  => 'Category updated successfully.',
-                'deleted' => 'Category deleted successfully.',
-                default   => 'Action completed.'
-            };
-            echo $msg;
+        $msg = match ($_GET['success']) {
+            'added'   => 'Category added successfully.',
+            'edited'  => 'Category updated successfully.',
+            'deleted' => 'Category deleted successfully.',
+            default   => 'Action completed.'
+        };
+        echo $msg;
         ?>
         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
     </div>
@@ -190,6 +192,7 @@ ViewHelper::loadAdminHeader($title);
     .category-card {
         transition: transform 0.2s, box-shadow 0.2s;
     }
+
     .category-card:hover {
         transform: translateY(-3px);
         box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4) !important;
