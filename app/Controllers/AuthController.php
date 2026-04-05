@@ -3,7 +3,7 @@
 namespace App\Controllers;
 
 
-use  App\Helpers\FlashMessage;
+use App\Helpers\FlashMessage;
 use App\Helpers\SessionManager;
 use App\Domain\Models\UserModel;
 use App\Helpers\ViewHelper;

@@ -136,4 +136,15 @@ class AdminModel extends BaseModel
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function getAdminProfile(int $id, array $data): ?array
+    {
+        return $this->selectOne(
+            'SELECT user_id, username, email, role, created_at FROM users WHERE user_id = :user_id AND role = :role',
+            [
+                'user_id' => $id,
+                'role' => $data['role'] ?? 'admin'
+            ]
+        );
+    }
 }

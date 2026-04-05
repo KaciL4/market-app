@@ -12,6 +12,8 @@ const APP_BASE_URL = APP_ROOT_DIR_NAME
     ? 'http://localhost/' . APP_ROOT_DIR_NAME
     : 'http://localhost:8080';
 
+define('APP_ADMIN_URL', APP_BASE_URL . '/admin');
+
 const APP_ASSETS_DIR_URL = APP_BASE_URL . APP_ASSETS_DIR;
 const APP_ASSETS_DIR_PATH = APP_BASE_DIR_PATH . APP_ASSETS_DIR;
 

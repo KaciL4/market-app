@@ -3,8 +3,10 @@
 use App\Helpers\FlashMessage;
 use App\Helpers\ViewHelper;
 
+$users = $data['users'] ?? [];
+$title = $data['title'] ?? "User Management";
+
 ViewHelper::loadAdminHeader($title); // ← this loads the sidebar automatically
-// $users = $_GET['users'];
 ?>
 
 <div class="mb-4 border-bottom">
@@ -146,4 +148,4 @@ ViewHelper::loadAdminHeader($title); // ← this loads the sidebar automatically
 <script src="<?= APP_BASE_URL ?>/public/assets/js/admin/userManagement.js">
 </script>
 
-<?php ViewHelper::loadAdminFooter();?>
+<?php ViewHelper::loadAdminFooter(); ?>

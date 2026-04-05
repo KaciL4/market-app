@@ -29,7 +29,7 @@ class AdminController extends BaseController
             'totalCategories' => $totalCategories,
             'totalItems' => $totalItems,
             'totalTransactions' => $totalTransactions,
-            'username' => $_SESSION['username'] ?? 'Admin'
+            'username' => SessionManager::get('username', 'Admin')
         ];
         return $this->render($response, 'admin/adminDashboard.php', $data);
     }
@@ -169,5 +169,17 @@ class AdminController extends BaseController
         ];
 
         return $this->render($response, 'admin/itemManagement.php', $data);
+    }
+
+    public function profile(Request $request, Response $response): Response
+    {
+        $profile = $this->dashboardModel->getAdminProfile(SessionManager::get('user_id'), ['role' => 'admin']);
+
+        $data = [
+            'title' => 'Admin Profile',
+            'username' => SessionManager::get('username', 'Admin'),
+            'profile' => $profile
+        ];
+        return $this->render($response, 'profile/profile.php', $data);
     }
 }

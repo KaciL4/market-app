@@ -2,6 +2,12 @@
 
 use App\Helpers\ViewHelper;
 
+$totalUsers = $data['totalUsers'] ?? 0;
+$totalCategories = $data['totalCategories'] ?? 0;
+$totalItems = $data['totalItems'] ?? 0;
+$totalTransactions = $data['totalTransactions'] ?? 0;
+$title = $data['title'] ?? "Admin Dashboard";
+
 ViewHelper::loadAdminHeader($title);
 ?>
 

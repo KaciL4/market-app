@@ -46,7 +46,7 @@
     <?php
     // Helper to mark the active sidebar link
 
-            use App\Helpers\SessionManager;
+    use App\Helpers\SessionManager;
 
     $currentUri = $_SERVER['REQUEST_URI'];
     function isActive(string $path): string
@@ -80,7 +80,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">
+                            <a class="nav-link" href="<?= APP_ADMIN_URL ?>/profile"> <!-- Click username will redirect to Admin Profile page -->
                                 <!-- show logged in admin username -->
                                 <i class="bi bi-person-circle"></i>
                                 <?= htmlspecialchars(SessionManager::get('username', 'Admin')) ?>
@@ -88,7 +88,7 @@
                         </li>
                         <li class="nav-item">
                             <a href="<?= APP_BASE_URL ?>/auth/login"> <!-- Click Logout button will redirect to Login page -->
-                                <button type="button" class="btn btn-danger">
+                                <button type="button" class="btn btn-outline-danger">
                                     <i class="bi bi-box-arrow-right"></i>
                                     Logout
                                 </button>

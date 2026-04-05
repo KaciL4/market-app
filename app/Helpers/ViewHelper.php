@@ -112,4 +112,15 @@ class ViewHelper
     {
         require_once APP_VIEWS_PATH . '/auth/authFooter.php';
     }
+
+    public static function loadProfileHeader(string $page_title): void
+    {
+        $page_title = $page_title ?? 'Profile';
+        require_once APP_VIEWS_PATH . '/profile/profileHeader.php';
+    }
+
+    public static function loadProfileFooter(): void
+    {
+        require_once APP_VIEWS_PATH . '/profile/profileFooter.php';
+    }
 }
