@@ -1,0 +1,12 @@
+/* Align inline SVG icons with surrounding text */
+svg {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+/* Color utility classes for icons */
+.text-success { color: #28a745; }
+.text-danger  { color: #dc3545; }
+.text-primary { color: #007bff; }
+.text-warning { color: #ffc107; }
+.text-muted   { color: #6c757d; }

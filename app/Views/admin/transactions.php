@@ -41,9 +41,13 @@ ViewHelper::loadAdminHeader($title);
                         <td><?= hs($transaction['listing_product']) ?></td>
                         <td><?= hs($transaction['price']) ?></td>
                         <td><?php if (htmlspecialchars($transaction['item_purchased'])) { ?>
-                                <i class="bi bi-check-lg"></i> <!-- tinyint(1) -->
+                                <span class="text-success">
+                                    <?= swarm_icon('lucide:circle-check') ?>
+                                </span> <!-- tinyint(1) -->
                             <?php } else { ?>
-                                <i class="bi bi-x-lg"></i> <!-- tinyint(0) -->
+                                <span class="text-danger">
+                                    <?= swarm_icon('lucide:x-circle') ?>
+                                </span> <!-- tinyint(0) -->
                             <?php } ?>
                         </td>
                         <td><?= hs($transaction['transaction_date']) ?></td>

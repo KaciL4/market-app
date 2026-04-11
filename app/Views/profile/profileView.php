@@ -10,8 +10,9 @@ ViewHelper::loadProfileHeader($title);
 ?>
 
 <h5 class="card-header d-flex justify-content-between align-items-center">
-    <div>
-        <i class="bi bi-person-circle"></i> <?= hs($username) ?>
+    <div class="d-flex align-items-center">
+        <span class="me-1"><?= swarm_icon('lucide:square-user') ?></span>
+        <?= hs($username) ?>
     </div>
 
     <a href="<?= APP_ADMIN_URL ?>/dashboard" class="btn btn-outline-primary">Go Back</a>

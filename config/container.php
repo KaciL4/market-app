@@ -6,6 +6,9 @@ declare(strict_types=1);
 // use App\Controllers\HomeController;
 // use App\Domain\Models\AdminModel;
 // use App\Domain\Models\UserModel;
+use Frostybee\SwarmIcons\SwarmIcons;
+use Frostybee\SwarmIcons\IconManager;
+use Frostybee\SwarmIcons\SwarmIconsConfig;
 use App\Helpers\Core\AppSettings;
 use App\Helpers\Core\JsonRenderer;
 use App\Helpers\Core\PDOService;
@@ -82,7 +85,28 @@ $definitions = [
             (bool) $settings['display_error_details'],
         );
     },
-      // Models
+
+    IconManager::class => function () {
+        $manager = SwarmIconsConfig::create()
+            ->discoverJsonSets(APP_BASE_DIR_PATH . '/public/assets/svg-icons')
+            ->cachePath(APP_BASE_DIR_PATH . '/var/cache/icons')
+            ->defaultPrefix('tabler')
+            ->defaultAttributes([
+                'width'  => '24',
+                'height' => '24',
+                'fill'   => 'none',
+                'stroke' => 'currentColor',
+                'stroke-width' => '2',
+            ])
+            ->build();
+
+        // Wire the icon manager to the global swarm_icon() helper.
+        SwarmIcons::setManager($manager);
+
+        return $manager;
+    },
+
+    // Models
     // AdminModel::class => function (ContainerInterface $container): AdminModel {
     //     return new AdminModel(
     //         $container->get(PDOService::class)

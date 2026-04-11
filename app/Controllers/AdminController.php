@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Controllers;
+
 use App\Domain\Models\AdminModel;
 use DI\Container;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -180,7 +181,7 @@ class AdminController extends BaseController
             'username' => SessionManager::get('username', 'Admin'),
             'profile' => $profile
         ];
-        return $this->render($response, 'profile/profile.php', $data);
+        return $this->render($response, 'profile/profileView.php', $data);
     }
 
     public function transactions(Request $request, Response $response): Response
