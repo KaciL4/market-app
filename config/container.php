@@ -25,6 +25,8 @@ use Slim\Psr7\Factory\ServerRequestFactory;
 use Slim\Psr7\Factory\StreamFactory;
 use Slim\Psr7\Factory\UriFactory;
 use Slim\Views\PhpRenderer;
+use App\Controllers\HomeController;
+use App\Domain\Models\AdminModel;
 
 $definitions = [
     AppSettings::class => function () {
@@ -133,10 +135,11 @@ $definitions = [
     //     );
     // },
 
-    // HomeController::class => function (ContainerInterface $container): HomeController {
-    //     return new HomeController(
-    //         $container
-    //     );
-    // },
+    HomeController::class => function (ContainerInterface $container): HomeController {
+        return new HomeController(
+            $container,
+            $container->get(AdminModel::class)
+        );
+    },
 ];
 return $definitions;

@@ -1,6 +1,7 @@
 <?php
 
 use App\Helpers\ViewHelper;
+use App\Controllers\HomeController;
 //TODO: set the page title dynamically based on the view being rendered in the controller.
 $page_title = 'Home';
 ViewHelper::loadHeader($page_title);
@@ -68,7 +69,51 @@ ViewHelper::loadHeader($page_title);
         <span class="visually-hidden">Next</span>
     </button>
 </div>
+<!-- Categories Section -->
+ <?php
+ $defaultImage = 'https://placehold.co/300x200/adb5bd/white?text=Category';
+ $categoryImage=[
+    'Books' => APP_BASE_URL . '/public/assets/images/categories/book.jpg',
+    'Furnitures' =>APP_BASE_URL . '/public/assets/images/categories/furnitures.jpg',
+    'Clothing'=> APP_BASE_URL . '/public/assets/images/categories/clothing.jpg',
+    'Electronics' => APP_BASE_URL . '/public/assets/images/categories/electronics.jpg',
+    'Other' => $defaultImage,
+ ];
+ ?>
+ <div class="container my-5">
+    <h4 class="mb-4 fw-bold">Browse by Category</h4>
+    <div class="row g-4">
+        <?php if(!empty($categories)):?>
+            <?php foreach ($categories as $category): ?>
+                <?php
+                    $img=$categoryImage[$category['category_name']]??$defaultImage
+                ?>
+                <div class="col-md-4 col-sm-6">
+                     <a href="<?= APP_BASE_URL ?>/items?category=<?= $category['category_id'] ?>"
+                       class="text-decoration-none">
+                        <div class="card h-100 border-0 shadow-sm category-card">
+                           <img
+                            src="<?= $img ?>"
+                            class="card-img-top"
+                            alt="<?= hs($category['category_name']) ?>"
+                            style="height: 250px; object-fit: cover; width: 400px;">
+                            <div class="card-body text-center py-2">
+                                <h5 class="mb-0 fw-bold"><?= hs($category['category_name']) ?></h5>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                 <?php endforeach; ?>
+        <?php else: ?>
+            <div class="col-12 text-center text-muted">
+                <i class="bi bi-tags fs-1 d-block mb-2"></i>
+                No categories available.
+            </div>
+        <?php endif; ?>
+    </div>
 
+
+ </div>
 <?php
 
 ViewHelper::loadJsScripts();
