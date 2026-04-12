@@ -12,10 +12,10 @@
 <body>
 
     <header>
-        <nav class="navbar navbar-expand-lg bg-body-tertiary mb-2 px-2">
-            <div class="container-fluid">
+        <nav class="navbar navbar-expand-lg bg-body-tertiary mb-2 px-1">
+            <div class="container-fluid py-1">
                 <a class="navbar-brand" href="#">
-                    <h5>Resale Management System</h5>
+                    <span class="fw-bold">Resale Management System</span>
                 </a>
             </div>
         </nav>
