@@ -71,7 +71,7 @@ ViewHelper::loadHeader($page_title);
 </div>
 <!-- Categories Section -->
  <?php
- $defaultImage = 'https://placehold.co/300x200/adb5bd/white?text=Category';
+ $defaultImage = 'https://placehold.co/300x200/adb5bd/white?text=Other';
  $categoryImage=[
     'Books' => APP_BASE_URL . '/public/assets/images/categories/book.jpg',
     'Furnitures' =>APP_BASE_URL . '/public/assets/images/categories/furnitures.jpg',
