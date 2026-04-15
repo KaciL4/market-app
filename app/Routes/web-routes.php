@@ -10,6 +10,7 @@ use App\Helpers\SessionManager;
 use App\Controllers\AdminController;
 use App\Controllers\HomeController;
 use App\Controllers\AuthController;
+use App\Controllers\ItemController;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
@@ -88,4 +89,7 @@ return static function (Slim\App $app): void {
         $group->post('/register', [AuthController::class, 'register'])
             ->setName('auth.register');
     });
+    // Items routes
+    $app->get('/items', [ItemController:: class, 'index'])->setName('items.index');
+    $app->get('/items/{id}', [ItemController:: class, 'show'])->setName('items.show');
 };
