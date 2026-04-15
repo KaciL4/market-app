@@ -27,7 +27,7 @@ ViewHelper::loadAdminHeader($title);
                     <th>Product</th>
                     <th>Price</th>
                     <th>Purchased</th>
-                    <th>Trnsaction Date</th>
+                    <th>Transaction Date</th>
                     <th>Status</th>
                 </tr>
             </thead>

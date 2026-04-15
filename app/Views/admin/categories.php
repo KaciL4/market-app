@@ -44,7 +44,7 @@ ViewHelper::loadAdminHeader($title);
         <?php
         $icons = [
             'Books'       => ['icon' => 'bi-book-fill',   'color' => 'text-warning'],
-            'Furniture'   => ['icon' => 'bi-house-fill',  'color' => 'text-info'],
+            'Furnitures'   => ['icon' => 'bi-house-fill',  'color' => 'text-info'],
             'Clothing'    => ['icon' => 'bi-bag-fill',    'color' => 'text-success'],
             'Electronics' => ['icon' => 'bi-laptop-fill', 'color' => 'text-primary'],
         ];
