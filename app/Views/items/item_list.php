@@ -12,7 +12,8 @@ ViewHelper::loadHeader($title);
     <?php else: ?>
         <?php foreach($items as $item): ?>
             <div class="col-md-3 col-sm-6">
-                <div class="card h-100 border-0 shadow bg-dark text-white rounded-4 overflow-hidden item-card">
+                <a href="<?= APP_BASE_URL ?>/items/<?= $item['item_id'] ?>" class="text-decoration-none">
+                    <div class="card h-100 border-0 shadow bg-dark text-white rounded-4 overflow-hidden item-card">
                     <!-- Item Image (To change later) -->
                      <img src="https://placehold.co/600x300/343a40/white?text=No+Image"
                      class="card-img-top"
@@ -46,6 +47,7 @@ ViewHelper::loadHeader($title);
                             </div>
                       </div>
                 </div>
+                </a>
             </div>
         <?php endforeach?>
     <?php endif?>
