@@ -62,9 +62,9 @@ $itemImages = [
                             <?= htmlspecialchars($item['username']) ?>
                         </p>
 
-                        <?php $status = strtolower($item['review_status'] ?? ''); ?>
+                        <?php $status = strtolower($item['status'] ?? ''); ?>
 
-                        <p>Status: <?= htmlspecialchars($item['review_status']) ?></p>
+                        <p>Status: <?= hs($item['status']) ?></p>
 
                         <a href="<?= APP_BASE_URL ?>/items/<?= $item['item_id'] ?>" class="btn btn-outline-light btn-sm w-100 mb-2">
                             View Details
