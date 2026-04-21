@@ -105,11 +105,7 @@ $categoryImage = [
     'Other' => $defaultImage,
 ];
 ?>
-<<<<<<< HEAD
 <div class="container my-5">
-=======
-<div class="container m-5">
->>>>>>> fbf9deaecd7cf77fa35c342feee123b421a4536f
     <h4 class="mb-4 fw-bold">Browse by Category</h4>
     <div class="row g-4">
         <?php if (!empty($categories)): ?>
@@ -142,7 +138,6 @@ $categoryImage = [
     </div>
 
 </div>
-<<<<<<< HEAD
 
 <?php
 $defaultRecentImage = 'https://placehold.co/300x200/adb5bd/white?text=Item';
@@ -182,8 +177,6 @@ $recentItemImages = [
         <?php endif; ?>
     </div>
 </div>
-=======
->>>>>>> fbf9deaecd7cf77fa35c342feee123b421a4536f
 <?php
 
 ViewHelper::loadJsScripts();
