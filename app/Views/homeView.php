@@ -70,40 +70,40 @@ ViewHelper::loadHeader($page_title);
     </button>
 </div>
 <!-- Categories Section -->
- <?php
- $defaultImage = 'https://placehold.co/300x200/adb5bd/white?text=Other';
- $categoryImage=[
+<?php
+$defaultImage = 'https://placehold.co/300x200/adb5bd/white?text=Other';
+$categoryImage = [
     'Books' => APP_BASE_URL . '/public/assets/images/categories/book.jpg',
-    'Furnitures' =>APP_BASE_URL . '/public/assets/images/categories/furnitures.jpg',
-    'Clothing'=> APP_BASE_URL . '/public/assets/images/categories/clothing.jpg',
+    'Furnitures' => APP_BASE_URL . '/public/assets/images/categories/furnitures.jpg',
+    'Clothing' => APP_BASE_URL . '/public/assets/images/categories/clothing.jpg',
     'Electronics' => APP_BASE_URL . '/public/assets/images/categories/electronics.jpg',
     'Other' => $defaultImage,
- ];
- ?>
- <div class="container my-5">
+];
+?>
+<div class="container my-5">
     <h4 class="mb-4 fw-bold">Browse by Category</h4>
     <div class="row g-4">
-        <?php if(!empty($categories)):?>
+        <?php if (!empty($categories)): ?>
             <?php foreach ($categories as $category): ?>
                 <?php
-                    $img=$categoryImage[$category['category_name']]??$defaultImage
+                $img = $categoryImage[$category['category_name']] ?? $defaultImage
                 ?>
                 <div class="col-md-4 col-sm-6">
-                     <a href="<?= APP_BASE_URL ?>/items?category=<?= $category['category_id'] ?>"
-                       class="text-decoration-none">
+                    <a href="<?= APP_BASE_URL ?>/items?category=<?= $category['category_id'] ?>"
+                        class="text-decoration-none">
                         <div class="card h-100 border-0 shadow-sm category-card">
-                           <img
-                            src="<?= $img ?>"
-                            class="card-img-top"
-                            alt="<?= hs($category['category_name']) ?>"
-                            style="height: 250px; object-fit: cover; width: 400px;">
+                            <img
+                                src="<?= $img ?>"
+                                class="card-img-top"
+                                alt="<?= hs($category['category_name']) ?>"
+                                style="height: 250px; object-fit: cover; width: 400px;">
                             <div class="card-body text-center py-2">
                                 <h5 class="mb-0 fw-bold"><?= hs($category['category_name']) ?></h5>
                             </div>
                         </div>
                     </a>
                 </div>
-                 <?php endforeach; ?>
+            <?php endforeach; ?>
         <?php else: ?>
             <div class="col-12 text-center text-muted">
                 <i class="bi bi-tags fs-1 d-block mb-2"></i>
@@ -112,8 +112,46 @@ ViewHelper::loadHeader($page_title);
         <?php endif; ?>
     </div>
 
+</div>
 
- </div>
+<?php
+$defaultRecentImage = 'https://placehold.co/300x200/adb5bd/white?text=Item';
+
+$recentItemImages = [
+    'Chair' => APP_BASE_URL . '/public/assets/images/items/chair.jpg',
+    'Laptop' => APP_BASE_URL . '/public/assets/images/items/macbook.jpg',
+    'Winter Jacket' => APP_BASE_URL . '/public/assets/images/items/jacket.jpg'
+];
+?>
+<div class="container my-5">
+    <h4 class="mb-4 fw-bold">Recent Uploaded Items</h4>
+
+    <div class="row g-4">
+        <?php if (!empty($recentItems)): ?>
+            <?php foreach ($recentItems as $item): ?>
+                <div class="col-md-4">
+                    <div class="card h-100 shadow-sm">
+                        <img
+                            src="<?= $recentItemImages[$item['listing_product']] ?? $defaultRecentImage ?>"
+                            class="card-img-top"
+                            alt="<?= hs($item['listing_product']) ?>"
+                            style="height: 200px; object-fit: cover;">
+
+                        <div class="card-body">
+                            <h5 class="card-title"><?= hs($item['listing_product']) ?></h5>
+                            <p class="card-text"><?= hs($item['detail']) ?></p>
+                            <p class="fw-bold">$<?= number_format((float)$item['price'], 2) ?></p>
+                        </div>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <div class="col-12 text-center text-muted">
+                No recent items available.
+            </div>
+        <?php endif; ?>
+    </div>
+</div>
 <?php
 
 ViewHelper::loadJsScripts();

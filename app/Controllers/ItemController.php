@@ -56,4 +56,6 @@ class ItemController extends BaseController
 
         return $this->render($response, 'items/item_detail.php',$data);
     }
+
+    
 }

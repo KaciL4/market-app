@@ -8,12 +8,14 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use App\Helpers\FlashMessage;
 use App\Helpers\SessionManager;
+use App\Domain\Models\ItemModel;
 
 class AdminController extends BaseController
 {
     public function __construct(
         Container $container,
-        private AdminModel $dashboardModel
+        private AdminModel $dashboardModel,
+        private ItemModel $itemModel
     ) {
         parent::__construct($container);
     }
@@ -154,19 +156,37 @@ class AdminController extends BaseController
     //This function retrieves search and status parameters, filters items accordingly, and renders the item management page with the data.
     public function itemManagement(Request $request, Response $response): Response
     {
-        $queryParams = $request->getQueryParams();
+        if ($request->getMethod() === 'POST') {
+            $data = $request->getParsedBody();
 
-        $search = trim($queryParams['search'] ?? '');
-        $status = strtolower(trim($queryParams['status'] ?? 'all'));
+            $itemId = $data['item_id'] ?? null;
+            $action = $data['action'] ?? '';
 
-        $items = $this->dashboardModel->getAllItems($search, $status);
+            if ($itemId && $action === 'approve') {
+                $this->itemModel->updateReviewStatus((int)$itemId, 'Approved');
+            }
+
+            if ($itemId && $action === 'reject') {
+                $this->itemModel->updateReviewStatus((int)$itemId, 'Rejected');
+            }
+
+            return $response
+                ->withHeader('Location', APP_BASE_URL . '/admin/item_management')
+                ->withStatus(302);
+        }
+
+        $search = trim($request->getQueryParams()['search'] ?? '');
+
+        if ($search !== '') {
+            $items = $this->itemModel->searchItemsForAdmin($search);
+        } else {
+            $items = $this->itemModel->getAllItemsForAdmin();
+        }
 
         $data = [
             'title' => 'Item Management',
             'items' => $items,
-            'search' => $search,
-            'status' => $status,
-            'username' => SessionManager::get('username', 'Admin')
+            'search' => $search
         ];
 
         return $this->render($response, 'admin/itemManagement.php', $data);

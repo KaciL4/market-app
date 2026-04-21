@@ -124,6 +124,11 @@
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link <?= isActive('upload') ?>" href="<?= APP_BASE_URL ?>/admin/upload">
+                            <i class="bi bi-upload me-2"></i>File Upload
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link <?= isActive('item_management') ?>" href="<?= APP_BASE_URL ?>/admin/item_management">
                             <i class="bi bi-box-seam me-2"></i>Item Management
                         </a>

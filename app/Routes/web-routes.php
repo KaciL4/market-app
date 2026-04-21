@@ -9,6 +9,7 @@ declare(strict_types=1);
 use App\Helpers\SessionManager;
 use App\Controllers\AdminController;
 use App\Controllers\HomeController;
+use App\Controllers\UploadController;
 use App\Controllers\AuthController;
 use App\Controllers\ItemController;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -64,11 +65,23 @@ return static function (Slim\App $app): void {
         $group->get('/item_management', [AdminController::class, 'itemManagement'])
             ->setName('admin.itemManagement');
 
+        $group->post('/item_management', [AdminController::class, 'itemManagement'])
+            ->setName('admin.itemManagement.post');
+
         $group->get('/profile', [AdminController::class, 'profile'])
             ->setName('admin.profile');
 
         $group->get('/transactions', [AdminController::class, 'transactions'])
             ->setName('admin.transactions');
+
+        $group->get('/upload', [UploadController::class, 'index'])
+            ->setName('upload.index');
+
+        $group->post('/upload', [UploadController::class, 'upload'])
+            ->setName('upload.process');
+
+        $group->post('/upload/delete', [UploadController::class, 'delete'])
+            ->setName('upload.delete');
     });
 
     // Route for to show Auth
@@ -90,6 +103,6 @@ return static function (Slim\App $app): void {
             ->setName('auth.register');
     });
     // Items routes
-    $app->get('/items', [ItemController:: class, 'index'])->setName('items.index');
-    $app->get('/items/{id}', [ItemController:: class, 'show'])->setName('items.show');
+    $app->get('/items', [ItemController::class, 'index'])->setName('items.index');
+    $app->get('/items/{id}', [ItemController::class, 'show'])->setName('items.show');
 };
