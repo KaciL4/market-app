@@ -4,6 +4,7 @@ use App\Helpers\ViewHelper;
 use App\Controllers\HomeController;
 //TODO: set the page title dynamically based on the view being rendered in the controller.
 $page_title = 'Home';
+$categories = $data['categories'] ?? [];
 ViewHelper::loadHeader($page_title);
 ?>
 
@@ -16,6 +17,29 @@ ViewHelper::loadHeader($page_title);
 
 <p> Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos. </p>
 <p> Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos. </p> -->
+
+<header>
+    <nav class="navbar navbar-expand-lg bg-body-secondary py-1">
+        <div class="container-fluid">
+            <ul class="navbar-nav">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle fw-semibold" href="#" role="button" data-bs-toggle="dropdown">
+                        Categories
+                    </a>
+                    <ul class="dropdown-menu">
+                        <?php foreach ($categories as $category): ?>
+                            <li>
+                                <a class="dropdown-item" href="<?= APP_BASE_URL ?>/items?category=<?= $category['category_id'] ?>">
+                                    <?= hs($category['category_name']) ?>
+                                </a>
+                            </li>
+                        <?php endforeach; ?>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</header>
 
 <div id="carouselCaptions" class="carousel slide" data-bs-ride="carousel"> <!-- carousel-dark  -->
     <div class="carousel-indicators">
@@ -69,6 +93,7 @@ ViewHelper::loadHeader($page_title);
         <span class="visually-hidden">Next</span>
     </button>
 </div>
+
 <!-- Categories Section -->
 <?php
 $defaultImage = 'https://placehold.co/300x200/adb5bd/white?text=Other';
@@ -80,7 +105,11 @@ $categoryImage = [
     'Other' => $defaultImage,
 ];
 ?>
+<<<<<<< HEAD
 <div class="container my-5">
+=======
+<div class="container m-5">
+>>>>>>> fbf9deaecd7cf77fa35c342feee123b421a4536f
     <h4 class="mb-4 fw-bold">Browse by Category</h4>
     <div class="row g-4">
         <?php if (!empty($categories)): ?>
@@ -113,6 +142,7 @@ $categoryImage = [
     </div>
 
 </div>
+<<<<<<< HEAD
 
 <?php
 $defaultRecentImage = 'https://placehold.co/300x200/adb5bd/white?text=Item';
@@ -152,6 +182,8 @@ $recentItemImages = [
         <?php endif; ?>
     </div>
 </div>
+=======
+>>>>>>> fbf9deaecd7cf77fa35c342feee123b421a4536f
 <?php
 
 ViewHelper::loadJsScripts();

@@ -37,7 +37,7 @@ class ItemModel extends BaseModel
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    // TODO get item by ID
+    //TODO get item by ID
     public function getItemById(int $id): array|false
     {
         $sql = "SELECT i.*, c.category_name, u.username
@@ -71,11 +71,11 @@ class ItemModel extends BaseModel
     public function getAllItemsForAdmin(): array
     {
         $sql = "SELECT i.*, c.category_name, u.username, ia.status AS review_status
-            FROM items i
-            JOIN category c ON i.category_id = c.category_id
-            JOIN users u ON i.user_id = u.user_id
-            LEFT JOIN item_approval ia ON i.item_id = ia.item_id
-            ORDER BY i.listing_date DESC";
+                FROM items i
+                JOIN category c ON i.category_id = c.category_id
+                JOIN users u ON i.user_id = u.user_id
+                LEFT JOIN item_approval ia ON i.item_id = ia.item_id
+                ORDER BY i.listing_date DESC";
 
         return $this->selectAll($sql);
     }
@@ -84,8 +84,8 @@ class ItemModel extends BaseModel
     public function updateReviewStatus(int $itemId, string $status): int
     {
         $sql = "UPDATE item_approval
-            SET status = :status
-            WHERE item_id = :item_id";
+                SET status = :status
+                WHERE item_id = :item_id";
 
         return $this->execute($sql, [
             'status' => $status,
@@ -98,14 +98,14 @@ class ItemModel extends BaseModel
         $search = '%' . $search . '%';
 
         $sql = "SELECT i.*, c.category_name, u.username, ia.status AS review_status
-            FROM items i
-            JOIN category c ON i.category_id = c.category_id
-            JOIN users u ON i.user_id = u.user_id
-            LEFT JOIN item_approval ia ON i.item_id = ia.item_id
-            WHERE i.listing_product LIKE ?
-               OR i.detail LIKE ?
-               OR u.username LIKE ?
-            ORDER BY i.listing_date DESC";
+                FROM items i
+                JOIN category c ON i.category_id = c.category_id
+                JOIN users u ON i.user_id = u.user_id
+                LEFT JOIN item_approval ia ON i.item_id = ia.item_id
+                WHERE i.listing_product LIKE ?
+                   OR i.detail LIKE ?
+                   OR u.username LIKE ?
+                ORDER BY i.listing_date DESC";
 
         return $this->selectAll($sql, [$search, $search, $search]);
     }

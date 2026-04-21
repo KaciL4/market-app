@@ -15,13 +15,18 @@
 
     <header>
         <!-- Navbar -->
-        <nav class="navbar navbar-expand-lg bg-body-tertiary mb-2 px-1">
+        <nav class="navbar navbar-expand-lg bg-body-tertiary px-1">
             <div class="container-fluid py-1">
-                <a class="navbar-brand" href="#">
-                    <span class="fw-bold">Resale Management System</span>
+                <a class="navbar-brand" href="<?= APP_BASE_URL ?>">
+                    <div class="d-flex align-items-center gap-1">
+                        <?= swarm_icon('tabler:building-store') ?>
+                        <span class="fw-bold">
+                            Resale Management System
+                        </span>
+                    </div>
                 </a>
 
-                <form method="GET" action="" class="col-6 ms-4">
+                <form method="GET" action="<?= APP_BASE_URL ?>/items?search=<?= $items['listing_product'] ?>" class="d-flex col-6 ">
                     <div class="input-group">
                         <input type="text" id="searchInput" name="search" class="form-control border-start-0" placeholder="Search">
                         <button class="btn btn-primary" id="searchBtn">
@@ -50,17 +55,22 @@
 
                         <li class="nav-item">
                             <a class="nav-link" href="<?= APP_BASE_URL ?>/auth/login">
-                                <div class="d-flex align-items-center">
-                                    <span class="me-1"><?= swarm_icon('lucide:user') ?></span>
-                                    <span class="fw-semibold">Sign in</span>
+                                <div class="d-flex align-items-center gap-1">
+                                    <?= swarm_icon('lucide:user') ?>
+                                    <span class="fw-semibold">
+                                        Sign in
+                                    </span>
                                 </div>
                             </a>
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <div class="d-flex align-items-center">
-                                    <span class="me-1"><?= swarm_icon('lucide:shopping-cart') ?></span> <span class="fw-semibold">Cart</span>
+                            <a class="nav-link" href="<?= APP_BASE_URL ?>/auth/login">
+                                <div class="d-flex align-items-center gap-1">
+                                    <?= swarm_icon('lucide:shopping-cart') ?>
+                                    <span class="fw-semibold">
+                                        Cart
+                                    </span>
                                 </div>
                             </a>
                         </li>
