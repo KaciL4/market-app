@@ -4,6 +4,7 @@ use App\Helpers\ViewHelper;
 use App\Controllers\HomeController;
 //TODO: set the page title dynamically based on the view being rendered in the controller.
 $page_title = 'Home';
+$categories = $data['categories'] ?? [];
 ViewHelper::loadHeader($page_title);
 ?>
 
@@ -16,6 +17,29 @@ ViewHelper::loadHeader($page_title);
 
 <p> Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos. </p>
 <p> Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos. </p> -->
+
+<header>
+    <nav class="navbar navbar-expand-lg bg-body-secondary py-1">
+        <div class="container-fluid">
+            <ul class="navbar-nav">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle fw-semibold" href="#" role="button" data-bs-toggle="dropdown">
+                        Categories
+                    </a>
+                    <ul class="dropdown-menu">
+                        <?php foreach ($categories as $category): ?>
+                            <li>
+                                <a class="dropdown-item" href="<?= APP_BASE_URL ?>/items?category=<?= $category['category_id'] ?>">
+                                    <?= hs($category['category_name']) ?>
+                                </a>
+                            </li>
+                        <?php endforeach; ?>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</header>
 
 <div id="carouselCaptions" class="carousel slide" data-bs-ride="carousel"> <!-- carousel-dark  -->
     <div class="carousel-indicators">
@@ -69,41 +93,42 @@ ViewHelper::loadHeader($page_title);
         <span class="visually-hidden">Next</span>
     </button>
 </div>
+
 <!-- Categories Section -->
- <?php
- $defaultImage = 'https://placehold.co/300x200/adb5bd/white?text=Other';
- $categoryImage=[
+<?php
+$defaultImage = 'https://placehold.co/300x200/adb5bd/white?text=Other';
+$categoryImage = [
     'Books' => APP_BASE_URL . '/public/assets/images/categories/book.jpg',
-    'Furnitures' =>APP_BASE_URL . '/public/assets/images/categories/furnitures.jpg',
-    'Clothing'=> APP_BASE_URL . '/public/assets/images/categories/clothing.jpg',
+    'Furnitures' => APP_BASE_URL . '/public/assets/images/categories/furnitures.jpg',
+    'Clothing' => APP_BASE_URL . '/public/assets/images/categories/clothing.jpg',
     'Electronics' => APP_BASE_URL . '/public/assets/images/categories/electronics.jpg',
     'Other' => $defaultImage,
- ];
- ?>
- <div class="container my-5">
+];
+?>
+<div class="container m-5">
     <h4 class="mb-4 fw-bold">Browse by Category</h4>
     <div class="row g-4">
-        <?php if(!empty($categories)):?>
+        <?php if (!empty($categories)): ?>
             <?php foreach ($categories as $category): ?>
                 <?php
-                    $img=$categoryImage[$category['category_name']]??$defaultImage
+                $img = $categoryImage[$category['category_name']] ?? $defaultImage
                 ?>
                 <div class="col-md-4 col-sm-6">
-                     <a href="<?= APP_BASE_URL ?>/items?category=<?= $category['category_id'] ?>"
-                       class="text-decoration-none">
+                    <a href="<?= APP_BASE_URL ?>/items?category=<?= $category['category_id'] ?>"
+                        class="text-decoration-none">
                         <div class="card h-100 border-0 shadow-sm category-card">
-                           <img
-                            src="<?= $img ?>"
-                            class="card-img-top"
-                            alt="<?= hs($category['category_name']) ?>"
-                            style="height: 250px; object-fit: cover; width: 400px;">
+                            <img
+                                src="<?= $img ?>"
+                                class="card-img-top"
+                                alt="<?= hs($category['category_name']) ?>"
+                                style="height: 250px; object-fit: cover; width: 400px;">
                             <div class="card-body text-center py-2">
                                 <h5 class="mb-0 fw-bold"><?= hs($category['category_name']) ?></h5>
                             </div>
                         </div>
                     </a>
                 </div>
-                 <?php endforeach; ?>
+            <?php endforeach; ?>
         <?php else: ?>
             <div class="col-12 text-center text-muted">
                 <i class="bi bi-tags fs-1 d-block mb-2"></i>
@@ -112,8 +137,7 @@ ViewHelper::loadHeader($page_title);
         <?php endif; ?>
     </div>
 
-
- </div>
+</div>
 <?php
 
 ViewHelper::loadJsScripts();
