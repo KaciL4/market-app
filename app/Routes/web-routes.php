@@ -94,17 +94,18 @@ return static function (Slim\App $app): void {
         $group->post('/login', [AuthController::class, 'login'])
             ->setName('auth.login');
 
-        // User Register (GET)
-        $group->get('/register', [AuthController::class, 'showRegister'])
-            ->setName('auth.showRegister');
-
-        // User Register Submit (POST)
-        $group->post('/register', [AuthController::class, 'register'])
+        // User Register Submit (GET)
+        $group->get('/register', [AuthController::class, 'register'])
             ->setName('auth.register');
+
+        // User Input Store (POST)
+        $group->post('/register', [AuthController::class, 'store'])
+            ->setName('auth.store');
     });
 
     // Items routes
     $app->get('/items', [ItemController::class, 'index'])->setName('items.index');
+
     $app->get('/items/{id}', [ItemController::class, 'show'])->setName('items.show');
 
     $app->get('/api/items/search', [ItemController::class, 'searchApi'])

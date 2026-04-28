@@ -3,6 +3,7 @@
 use App\Helpers\ViewHelper;
 
 $title = "Register";
+$account_info = $data['account_info'] ?? [];
 ViewHelper::loadAuthHeader($title);
 ?>
 
@@ -16,23 +17,23 @@ ViewHelper::loadAuthHeader($title);
             <div class="row">
                 <div class="mb-3">
                     <label class="form-label">Username</label>
-                    <input type="text" name="username" class="form-control" required>
+                    <input type="text" name="username" class="form-control" value="<?= hs($account_info['username'] ?? '') ?>">
                 </div>
             </div>
 
             <div class="mb-3">
                 <label class="form-label">Email</label>
-                <input type="email" name="email" class="form-control" required>
+                <input type="email" name="email" class="form-control"  value="<?= hs($account_info['email'] ?? '') ?>">
             </div>
 
             <div class="mb-3">
                 <label class="form-label">Password</label>
-                <input type="password" name="password" class="form-control" required>
+                <input type="password" name="password" class="form-control">
             </div>
 
             <div class="mb-4">
                 <label class="form-label">Confirm Password</label>
-                <input type="password" name="confirm_password" class="form-control" required>
+                <input type="password" name="confirm_password" class="form-control">
             </div>
 
             <button class="btn btn-success w-100 mb-3">Register</button>

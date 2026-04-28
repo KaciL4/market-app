@@ -6,16 +6,16 @@ namespace App\Controllers;
 use App\Helpers\FlashMessage;
 use App\Helpers\SessionManager;
 use App\Domain\Models\UserModel;
+use DI\Container;
 use App\Helpers\ViewHelper;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
 class AuthController extends BaseController
 {
-    private UserModel $userModel;
-    public function __construct(UserModel $userModel)
+    public function __construct(Container $container, private UserModel $userModel)
     {
-        $this->userModel = $userModel;
+        parent::__construct($container);
     }
 
     // GET/LOGIN
@@ -68,46 +68,102 @@ class AuthController extends BaseController
             ->withStatus(302);
     }
 
-    // GET /register
-    //We don't need to load the header and the footer since they are already loaded by the views!
-    public function showRegister(Request $request, Response $response): Response
+    public function register(Request $request, Response $response, array $args): Response
     {
-        ob_start();
-        require __DIR__ . '/../Views/auth/register.php';
-        $html = ob_get_clean();
-        $response->getBody()->write($html);
-        return $response;
+        $data['data'] = [
+            'title' => 'Register | Create a new Account'
+        ];
+
+        $account_info = SessionManager::get('account_info');
+
+        // Check if there are previously submitted user details
+        if ($account_info !== null) {
+            $data['data']['account_info'] = $account_info;
+
+            //! IMPORTANT: We do NOT remove it here anymore.
+            //* We remove it in the View or after a SUCCESSFUL save to keep it during errors.
+            // SessionManager::remove('account_info');
+        }
+
+        return $this->render($response, 'auth/register.php', $data);
     }
 
-    // POST /register
-    public function register(Request $request, Response $response): Response
+    public function store(Request $request, Response $response, array $args): Response
     {
+        // TODO: Extract the submitted form fields from the request
         $data = $request->getParsedBody();
+        $errors = [];
+
         $email = trim($data['email'] ?? '');
         $username = trim($data['username'] ?? '');
-        $password = $data['password'] ?? '';
-        $confirmPassword = trim($data['confirm_password'] ?? '');
+        $password = $data['password'] ?? ''; //* Password and confirmation can conatin space so no trim()
+        $confirm_password = $data['confirm_password'] ?? '';
 
-        if ($password !== $confirmPassword) {
-            return $response
-                ->withHeader('Location', APP_BASE_URL . '/auth/register?error=password_mismatch')
-                ->withStatus(302);
+        if (empty($username)) {
+            $errors[] = 'Username is required';
+        }
+
+        if (empty($email)) {
+            $errors[] = 'Email is required';
+        }
+
+        if (empty($password)) {
+            $errors[] = 'Password is required';
+        }
+
+        if (empty($confirm_password)) {
+            $errors[] = 'Password confirmation is required';
+        }
+
+        if (!empty($email) && !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $errors[] = 'Invalid email format';
         }
 
         if ($this->userModel->emailExists($email)) {
-            return $response
-                ->withHeader('Location', APP_BASE_URL . '/auth/register?error=email_exists')
-                ->withStatus(302);
+            $errors[] = 'Email already exist';
         }
 
-        $this->userModel->createUser([
+        if ($this->userModel->usernameExists($username)) {
+            $errors[] = 'Username already exist';
+        }
+
+        if (strlen($password) < 8 || !preg_match('/\d/', $password)) { // or preg_match('/[0-9]/', $password)
+            $errors[] = 'Password must be at least 8 characters and contain at least one number';
+        }
+
+        if ($password !== $confirm_password) {
+            $errors[] = 'Password and confirmation must match';
+        }
+
+        if (!empty($errors)) {
+            SessionManager::set('account_info', $data);
+            FlashMessage::error($errors[0]);
+            return $this->redirect($request, $response, 'auth.register');
+        }
+
+        // if (!empty($errors)) {
+        //     foreach ($errors as $error) {
+        //         FlashMessage::error($error);
+        //     }
+        //     return $this->redirect($request, $response, 'auth.register');
+        // }
+
+        $user_data = [
             'email' => $email,
             'username' => $username,
-            'password' => $password
-        ]);
+            'password' => password_hash($password, PASSWORD_BCRYPT),
+            'role' => 'user'
+        ];
+        $create = $this->userModel->createUser($user_data);
 
-        return $response
-            ->withHeader('Location', APP_BASE_URL . '/auth/login')
-            ->withStatus(302);
+        if ($create > 0) {
+            SessionManager::remove('account_info');
+            FlashMessage::success('Account created succeefully');
+            return $this->redirect($request, $response, 'auth.login');
+        } else {
+            SessionManager::set('account_info', $data);
+            FlashMessage::success('Failed to create an account. Please try again');
+            return $this->redirect($request, $response, 'auth.register');
+        }
     }
 }
