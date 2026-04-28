@@ -26,12 +26,21 @@
                     </div>
                 </a>
 
-                <form method="GET" action="<?= APP_BASE_URL ?>/items?search=<?= $items['listing_product'] ?>" class="d-flex col-6 ">
+                <form method="GET" action="<?= APP_BASE_URL ?>/items" class="d-flex col-6">
                     <div class="input-group">
-                        <input type="text" id="searchInput" name="search" class="form-control border-start-0" placeholder="Search">
-                        <button class="btn btn-primary" id="searchBtn">
+
+                        <input
+                            type="text"
+                            id="searchInput"
+                            name="search"
+                            class="form-control border-start-0"
+                            placeholder="Search"
+                            autocomplete="off">
+
+                        <button class="btn btn-primary" type="submit">
                             <?= swarm_icon('tabler:search') ?>
                         </button>
+
                     </div>
                 </form>
 

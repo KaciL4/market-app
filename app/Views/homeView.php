@@ -121,7 +121,7 @@ $categoryImage = [
                                 src="<?= $img ?>"
                                 class="card-img-top"
                                 alt="<?= hs($category['category_name']) ?>"
-                                style="height: 250px; object-fit: cover; width: 400px;">
+                                style="height: 250px; object-fit: cover;">
                             <div class="card-body text-center py-2">
                                 <h5 class="mb-0 fw-bold"><?= hs($category['category_name']) ?></h5>
                             </div>
@@ -177,6 +177,16 @@ $recentItemImages = [
         <?php endif; ?>
     </div>
 </div>
+
+<!-- Pass base URL to JavaScript -->
+<script>
+    // Make APP_BASE_URL available to JavaScript
+    window.APP_BASE_URL = '<?= APP_BASE_URL ?>';
+</script>
+
+<!-- Load JavaScript for live search -->
+<script src="<?= APP_BASE_URL ?>/public/assets/js/item-search.js"></script>
+
 <?php
 
 ViewHelper::loadJsScripts();

@@ -60,8 +60,13 @@
     <header>
         <nav class="navbar navbar-expand-lg bg-body-tertiary mb-2 px-1">
             <div class="container-fluid py-1">
-                <a class="navbar-brand" href="#">
-                    <span class="fw-bold">Resale Management System</span>
+                <a class="navbar-brand" href="<?= APP_BASE_URL ?>">
+                    <div class="d-flex align-items-center gap-1">
+                        <?= swarm_icon('tabler:building-store') ?>
+                        <span class="fw-bold">
+                            Resale Management System
+                        </span>
+                    </div>
                 </a>
 
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">

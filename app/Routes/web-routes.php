@@ -102,7 +102,11 @@ return static function (Slim\App $app): void {
         $group->post('/register', [AuthController::class, 'register'])
             ->setName('auth.register');
     });
+
     // Items routes
     $app->get('/items', [ItemController::class, 'index'])->setName('items.index');
     $app->get('/items/{id}', [ItemController::class, 'show'])->setName('items.show');
+
+    $app->get('/api/items/search', [ItemController::class, 'searchApi'])
+        ->setName('api.items.search');
 };

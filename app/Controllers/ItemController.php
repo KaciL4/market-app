@@ -1,5 +1,7 @@
 <?php
+
 declare(strict_types=1);
+
 namespace App\Controllers;
 
 use App\Domain\Models\ItemModel;
@@ -10,52 +12,80 @@ use DI\Container;
 
 class ItemController extends BaseController
 {
-    public function __construct(Container $container,private ItemModel $itemModel,private AdminModel $adminModel)
+    public function __construct(Container $container, private ItemModel $itemModel, private AdminModel $adminModel)
     {
         return parent::__construct($container);
     }
     //* get all items or filtered by category/search -> GET /items
-    public function index(Request $request, Response $response, array $args): Response{
+    public function index(Request $request, Response $response, array $args): Response
+    {
         $params = $request->getQueryParams();
-        $categoryId = isset($params['category'])? (int)$params['category']:null;
-        $search = trim($params['search']??'');
+        $categoryId = isset($params['category']) ? (int)$params['category'] : null;
+        $search = trim($params['search'] ?? '');
         // fetch items by search
-        if($search!==''){
+        if ($search !== '') {
             $items = $this->itemModel->searchItems($search);
-        }else if($categoryId){
-            $items =$this->itemModel->getItemsByCategory($categoryId);
-        }else{
-            $items=$this->itemModel->getAllItems();
+        } else if ($categoryId) {
+            $items = $this->itemModel->getItemsByCategory($categoryId);
+        } else {
+            $items = $this->itemModel->getAllItems();
         }
 
         // fetch categories
-        $categories =$this->adminModel->getAllCategories();
-        $data=[
-            'title'=>'Items for Sale',
-            'items'=>$items,
-            'categories'=>$categories,
-            'categoryId'=>$categoryId,
-            'search'=> $search
+        $categories = $this->adminModel->getAllCategories();
+        $data = [
+            'title' => 'Items for Sale',
+            'items' => $items,
+            'categories' => $categories,
+            'categoryId' => $categoryId,
+            'search' => $search
         ];
 
-        return $this->render($response, 'items/item_list.php',$data);
+        return $this->render($response, 'items/item_list.php', $data);
     }
 
     // * show a single item detail -> GET /items/{id}
-    public function show(Request $request, Response $response, array $args): Response {
+    public function show(Request $request, Response $response, array $args): Response
+    {
         // code
-        $id =(int)$args['id'];
+        $id = (int)$args['id'];
         $item = $this->itemModel->getItemById($id);
-        if(!$item){
+        if (!$item) {
             return $response->withHeader('Location', '/items')->withStatus(302);
         }
-        $data=[
-            'title'=> $item['listing_product'],
-            'item'=>$item,
+        $data = [
+            'title' => $item['listing_product'],
+            'item' => $item,
         ];
 
-        return $this->render($response, 'items/item_detail.php',$data);
+        return $this->render($response, 'items/item_detail.php', $data);
     }
 
-    
+    public function searchApi(Request $request, Response $response): Response
+    {
+        $params = $request->getQueryParams();
+
+        $search = trim($params['q'] ?? '');
+        $categoryId = isset($params['category']) ? (int)$params['category'] : null;
+
+        // limit length
+        if (strlen($search) > 100) {
+            $search = substr($search, 0, 100);
+        }
+
+        $items = $this->itemModel->searchItems($search);
+        $data = [
+            'success' => true,
+            'count' => count($items),
+            'query' => $search,
+            'category_id' => $categoryId,
+            'products' => $items
+        ];
+
+        $response->getBody()->write(json_encode($data));
+
+        return $response
+            ->withHeader('Content-Type', 'application/json')
+            ->withStatus(200);
+    }
 }

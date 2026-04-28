@@ -7,8 +7,6 @@ $title = "Login";
 ViewHelper::loadAuthHeader($title);
 ?>
 
-<?= FlashMessage::render() ?>
-
 <div class="container mt-5" style="max-width: 500px;">
     <div class="card p-4 shadow-sm border-0">
         <h3 class="mb-2 text-center">User Login</h3>

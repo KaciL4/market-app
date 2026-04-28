@@ -67,6 +67,32 @@ class ItemModel extends BaseModel
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function searchItemsApi(string $searchTerm = '', ?int $categoryId = null): array
+    {
+        $sql = "SELECT i.*, c.category_name, u.username
+            FROM items i
+            JOIN category c ON i.category_id = c.category_id
+            JOIN users u ON i.user_id = u.user_id"; // for available status WHERE i.status = 'Available'
+
+        $params = [];
+
+        if (!empty($searchTerm)) {
+            $sql .= " AND (i.listing_product LIKE CONCAT('%', :search1, '%') OR i.detail LIKE CONCAT('%', :search2, '%'))";
+
+            $params['search1'] = $searchTerm;
+            $params['search2'] = $searchTerm;
+        }
+
+        if (!empty($categoryId)) {
+            $sql .= " AND i.category_id = :category_id";
+            $params['category_id'] = $categoryId;
+        }
+
+        $sql .= " ORDER BY i.listing_date DESC";
+
+        return $this->selectAll($sql, $params);
+    }
+
     //* get all items for admin panel
     public function getAllItemsForAdmin(): array
     {
