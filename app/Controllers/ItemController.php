@@ -73,13 +73,13 @@ class ItemController extends BaseController
             $search = substr($search, 0, 100);
         }
 
-        $items = $this->itemModel->searchItems($search);
+        $items = $this->itemModel->searchItemsApi($search, $categoryId);
         $data = [
             'success' => true,
             'count' => count($items),
             'query' => $search,
             'category_id' => $categoryId,
-            'products' => $items
+            'items' => $items
         ];
 
         $response->getBody()->write(json_encode($data));

@@ -26,16 +26,6 @@
                     </div>
                 </a>
 
-                <form method="GET" action="<?= APP_BASE_URL ?>/items?search=<?= $items['listing_product'] ?>" class="d-flex col-6 ">
-                    <div class="input-group">
-                        <input type="text" id="searchInput" name="search" class="form-control border-start-0" placeholder="Search">
-
-                        <button class="btn btn-primary" id="searchBtn">
-                            <?= swarm_icon('tabler:search') ?>
-                        </button>
-                    </div>
-                </form>
-
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>

@@ -178,15 +178,6 @@ $recentItemImages = [
     </div>
 </div>
 
-<!-- Pass base URL to JavaScript -->
-<script>
-    // Make APP_BASE_URL available to JavaScript
-    window.APP_BASE_URL = '<?= APP_BASE_URL ?>';
-</script>
-
-<!-- Load JavaScript for live search -->
-<script src="<?= APP_BASE_URL ?>/public/assets/js/item-search.js"></script>
-
 <?php
 
 ViewHelper::loadJsScripts();

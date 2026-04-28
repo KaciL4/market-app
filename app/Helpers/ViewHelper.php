@@ -123,4 +123,10 @@ class ViewHelper
     {
         require_once APP_VIEWS_PATH . '/profile/profileFooter.php';
     }
+
+    public static function loadItemHeader(string $page_title): void
+    {
+        $page_title = $page_title ?? 'Items';
+        require_once APP_VIEWS_PATH . '/items/itemHeader.php';
+    }
 }
