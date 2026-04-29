@@ -102,6 +102,17 @@ class ViewHelper
         require_once APP_VIEWS_PATH . '/admin/adminFooter.php';
     }
 
+    public static function loadUserHeader(string $page_title): void
+    {
+        $page_title = $page_title ?? 'User Dashboard';
+        require_once APP_VIEWS_PATH . '/user/userHeader.php';
+    }
+
+    public static function loadUserFooter(): void
+    {
+        require_once APP_VIEWS_PATH . '/user/userFooter.php';
+    }
+
     public static function loadAuthHeader(string $page_title): void
     {
         $page_title = $page_title ?? 'Authentication';

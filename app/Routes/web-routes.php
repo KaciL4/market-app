@@ -8,6 +8,7 @@ declare(strict_types=1);
 
 use App\Helpers\SessionManager;
 use App\Controllers\AdminController;
+use App\Controllers\UserController;
 use App\Controllers\HomeController;
 use App\Controllers\UploadController;
 use App\Controllers\AuthController;
@@ -108,6 +109,11 @@ return static function (Slim\App $app): void {
 
     $app->get('/items/{id}', [ItemController::class, 'show'])->setName('items.show');
 
+    // Live Item Search
     $app->get('/api/items/search', [ItemController::class, 'searchApi'])
         ->setName('api.items.search');
+
+    // User Dashboard
+    $app->get('/dashboard', [UserController::class, 'dashboard'])
+        ->setName('user.dashboard');
 };

@@ -8,8 +8,17 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
     <style>
+        .navbar {
+            position: fixed;
+            width: 100%;
+        }
+
         .profile-content {
             background-color: #212d39be !important;
+        }
+
+        body {
+            padding-top: 65px;
         }
     </style>
 </head>
@@ -22,7 +31,7 @@
     ?>
 
     <header>
-        <nav class="navbar navbar-expand-lg bg-body-tertiary mb-2 px-1">
+        <nav class="navbar navbar-expand-lg bg-body-tertiary mb-2 px-1 fixed-top">
             <div class="container-fluid py-1">
                 <a class="navbar-brand" href="#">
                     <span class="fw-bold">Resale Management System</span>

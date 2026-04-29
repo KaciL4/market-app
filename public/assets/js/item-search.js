@@ -113,6 +113,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const input = document.getElementById("liveSearchInput");
     const resultsContainer = document.getElementById("searchResults");
     const defaultContainer = document.getElementById("defaultProducts");
+    const loadingSpinner = document.getElementById("loadingSpinner"); // added
 
     if (!input || !resultsContainer || !defaultContainer) return;
 
@@ -122,10 +123,16 @@ document.addEventListener("DOMContentLoaded", function () {
         if (!value) {
             resultsContainer.innerHTML = "";
             defaultContainer.style.display = "";
+            if (loadingSpinner) loadingSpinner.style.display = "none"; // hide
             return;
         }
 
+        if (loadingSpinner) loadingSpinner.style.display = "inline-block"; // show
+
         const items = await fetchItems(value);
+
+        if (loadingSpinner) loadingSpinner.style.display = "none"; // hide
+
         renderItems(items);
     }, 300);
 
@@ -136,6 +143,7 @@ document.addEventListener("DOMContentLoaded", function () {
             input.value = "";
             resultsContainer.innerHTML = "";
             defaultContainer.style.display = "";
+            if (loadingSpinner) loadingSpinner.style.display = "none"; // hide
         }
     });
 });

@@ -2,7 +2,7 @@
 
 use App\Helpers\ViewHelper;
 
-$title = "Register";
+$title = $data['title'] ?? "Register";
 $account_info = $data['account_info'] ?? [];
 ViewHelper::loadAuthHeader($title);
 ?>

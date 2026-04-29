@@ -27,6 +27,10 @@
             background-color: #495057;
         }
 
+        body {
+            padding-top: 65px;
+        }
+
         .admin-content {
             background-color: #212d39be;
             min-height: 100vh;
@@ -58,7 +62,7 @@
     ?>
 
     <header>
-        <nav class="navbar navbar-expand-lg bg-body-tertiary mb-2 px-1">
+        <nav class="navbar navbar-expand-lg bg-body-tertiary px-1 fixed-top">
             <div class="container-fluid py-1">
                 <a class="navbar-brand" href="<?= APP_BASE_URL ?>">
                     <div class="d-flex align-items-center gap-1">
@@ -92,7 +96,7 @@
                                 <!-- show logged in admin username -->
                                 <div class="d-flex align-items-center">
                                     <span class="me-1"><?= swarm_icon('tabler:user-circle') ?></span>
-                                    <span class="fw-semibold"><?= htmlspecialchars(SessionManager::get('username', 'Admin')) ?></span>
+                                    <span class="fw-semibold"><?= hs(SessionManager::get('username', 'Admin')) ?></span>
                                 </div>
                             </a>
                         </li>
@@ -100,8 +104,8 @@
                         <li class="nav-item">
                             <a href="<?= APP_BASE_URL ?>/auth/login"> <!-- Click Logout button will redirect to Login page -->
                                 <button type="button" class="btn btn-outline-danger">
-                                    <div class="d-flex align-items-center">
-                                        <span class="me-1"><?= swarm_icon('lucide:log-out') ?></span>
+                                    <div class="d-flex align-items-center gap-1">
+                                        <?= swarm_icon('lucide:log-out') ?>
                                         <span class="fw-semibold">Logout</span>
                                     </div>
                                 </button>

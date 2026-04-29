@@ -37,9 +37,10 @@ class UserModel extends BaseModel
     public function  findByUsername(string $username): ?array
     {
         return $this->selectOne(
-            "SELECT * FROM users WHERE username = :username LIMIT 1",
+            "SELECT * FROM users WHERE username = :username AND role = :role LIMIT 1",
             [
-                ':username' => $username
+                ':username' => $username,
+                ':role' => 'user'
             ]
         ) ?: null;
     }
@@ -90,7 +91,7 @@ class UserModel extends BaseModel
         $stmt = $this->pdo->query("SELECT user_id, username, email, role, created_at FROM users ORDER BY created_at DESC");
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-    
+
     public function deleteUser(int $userId): bool
     {
         $stmt = $this->pdo->prepare("DELETE FROM users WHERE user_id = :user_id");

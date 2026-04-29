@@ -12,6 +12,12 @@ ViewHelper::loadItemHeader($title);
         class="form-control"
         placeholder="Search items"
         autocomplete="off">
+
+    <div class="text-center mt-3">
+        <div id="loadingSpinner" class="spinner-border text-primary" style="display:none;">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
 </div>
 
 <div class="row g-4">

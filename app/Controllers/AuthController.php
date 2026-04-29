@@ -151,7 +151,7 @@ class AuthController extends BaseController
         $user_data = [
             'email' => $email,
             'username' => $username,
-            'password' => password_hash($password, PASSWORD_BCRYPT),
+            'password' => $password,
             'role' => 'user'
         ];
         $create = $this->userModel->createUser($user_data);

@@ -9,13 +9,19 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
     <!-- TODO: include your CSS files here -->
+    <style>
+        body {
+            padding-top: 65px;
+            /* adjusts for fixed navbar */
+        }
+    </style>
 </head>
 
 <body>
 
     <header>
         <!-- Navbar -->
-        <nav class="navbar navbar-expand-lg bg-body-tertiary px-1">
+        <nav class="navbar navbar-expand-lg bg-body-tertiary px-1 fixed-top">
             <div class="container-fluid py-1">
                 <a class="navbar-brand" href="<?= APP_BASE_URL ?>">
                     <div class="d-flex align-items-center gap-1">
