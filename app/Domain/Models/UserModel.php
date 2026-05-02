@@ -20,7 +20,6 @@ class UserModel extends BaseModel
             'created_at' => date('Y-m-d H:i:s'),
         ]);
 
-        // TODO: Return the new user's ID
         return (int)$this->lastInsertId();
     }
 
@@ -29,7 +28,7 @@ class UserModel extends BaseModel
         return $this->selectOne(
             "SELECT * FROM users WHERE email = :email LIMIT 1",
             [
-                ':email' => $email
+                'email' => $email
             ]
         ) ?: null;
     }
@@ -37,10 +36,9 @@ class UserModel extends BaseModel
     public function  findByUsername(string $username): ?array
     {
         return $this->selectOne(
-            "SELECT * FROM users WHERE username = :username AND role = :role LIMIT 1",
+            "SELECT * FROM users WHERE username = :username LIMIT 1",
             [
-                ':username' => $username,
-                ':role' => 'user'
+                'username' => $username
             ]
         ) ?: null;
     }
@@ -76,9 +74,23 @@ class UserModel extends BaseModel
 
         return $username;
     }
-    public function verifyPassword(string $inputPassword, string $hashedPassword): bool
+    public function verifyCredentials(string $identifier, string $password): ?array
     {
-        return password_verify($inputPassword, $hashedPassword);
+        $user = $this->findByEmail($identifier);
+
+        if ($user === null) {
+            $user = $this->findByUsername($identifier);
+        }
+
+        if ($user === null) {
+            return null;
+        }
+
+        if (password_verify($password, $user['password'])) {
+            return $user;
+        }
+
+        return null;
     }
 
     public function countAll(): int

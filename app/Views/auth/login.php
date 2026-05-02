@@ -16,12 +16,12 @@ ViewHelper::loadAuthHeader($title);
 
             <div class="mb-3">
                 <label class="form-label">Email</label>
-                <input type="email" name="email" class="form-control" placeholder="Enter your email" required>
+                <input type="text" name="identifier" class="form-control" placeholder="Enter your email or username">
             </div>
 
             <div class="mb-4">
                 <label class="form-label">Password</label>
-                <input type="password" name="password" class="form-control" placeholder="Enter your password" required>
+                <input type="password" name="password" class="form-control" placeholder="Enter your password">
             </div>
 
             <button class="btn btn-primary w-100 mb-3">Login</button>

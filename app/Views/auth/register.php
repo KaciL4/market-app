@@ -23,12 +23,15 @@ ViewHelper::loadAuthHeader($title);
 
             <div class="mb-3">
                 <label class="form-label">Email</label>
-                <input type="email" name="email" class="form-control"  value="<?= hs($account_info['email'] ?? '') ?>">
+                <input type="email" name="email" class="form-control" value="<?= hs($account_info['email'] ?? '') ?>">
             </div>
 
             <div class="mb-3">
                 <label class="form-label">Password</label>
                 <input type="password" name="password" class="form-control">
+                <div class="form-text">
+                    Password must be at least 8 characters long and contain at least one number.
+                </div>
             </div>
 
             <div class="mb-4">

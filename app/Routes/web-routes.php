@@ -13,6 +13,8 @@ use App\Controllers\HomeController;
 use App\Controllers\UploadController;
 use App\Controllers\AuthController;
 use App\Controllers\ItemController;
+use App\Middleware\AdminAuthMiddleware;
+use App\Middleware\AuthMiddleware;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
@@ -83,17 +85,19 @@ return static function (Slim\App $app): void {
 
         $group->post('/upload/delete', [UploadController::class, 'delete'])
             ->setName('upload.delete');
-    });
+    })->add(AdminAuthMiddleware::class);
 
     // Route for to show Auth
     $app->group('/auth', function ($group) {
         // User Login (GET)
-        $group->get('/login', [AuthController::class, 'showLogin'])
-            ->setName('auth.showLogin');
-
-        // User Login Submit (POST)
-        $group->post('/login', [AuthController::class, 'login'])
+        $group->get('/login', [AuthController::class, 'login'])
             ->setName('auth.login');
+
+        $group->post('/login', [AuthController::class, 'authenticate'])
+            ->setName('auth.authenticate');
+
+        $group->get('/logout', [AuthController::class, 'logout'])
+            ->setName('auth.logout');
 
         // User Register Submit (GET)
         $group->get('/register', [AuthController::class, 'register'])
@@ -115,5 +119,6 @@ return static function (Slim\App $app): void {
 
     // User Dashboard
     $app->get('/dashboard', [UserController::class, 'dashboard'])
-        ->setName('user.dashboard');
+        ->setName('user.dashboard')
+        ->add(AuthMiddleware::class);
 };

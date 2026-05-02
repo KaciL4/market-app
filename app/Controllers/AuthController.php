@@ -18,56 +18,6 @@ class AuthController extends BaseController
         parent::__construct($container);
     }
 
-    // GET/LOGIN
-    //We don't need to load the header and the footer since they are already loaded by the views!
-    public function showLogin(Request $request, Response $response): Response
-    {
-        ob_start();
-        require __DIR__ . '/../Views/auth/login.php';
-        $html = ob_get_clean();
-        $response->getBody()->write($html);
-        return $response;
-    }
-
-    // POST/LOGIN
-    public function login(Request $request, Response $response): Response
-    {
-        $data = $request->getParsedBody();
-        $email = trim($data['email'] ?? '');
-        $password = $data['password'] ?? '';
-        $user = $this->userModel->findByEmail($email);
-
-        if (!$user || !$this->userModel->verifyPassword($password, $user['password'])) {
-            FlashMessage::error("Login Failed");
-            return $response
-                ->withHeader('Location', APP_BASE_URL . '/auth/login?error=invalid_credentials')
-                ->withStatus(302);
-        }
-
-        // if (session_status() === PHP_SESSION_NONE) {
-        //     session_start();
-        // }
-
-        // $_SESSION['user_id'] = $user['user_id'];
-        // $_SESSION['username'] = $user['username'];
-        // $_SESSION['role'] = $user['role'];
-
-        SessionManager::set('user_id', $user['user_id']);
-        SessionManager::set('username', $user['username']);
-        SessionManager::set('role', $user['role']);
-
-        // Redirect based on the role
-        if (strtolower($user['role']) === 'admin') {
-            return $response
-                ->withHeader('Location', APP_BASE_URL . '/admin/dashboard')
-                ->withStatus(302);
-        }
-
-        return $response
-            ->withHeader('Location', APP_BASE_URL . '/')
-            ->withStatus(302);
-    }
-
     public function register(Request $request, Response $response, array $args): Response
     {
         $data['data'] = [
@@ -162,8 +112,68 @@ class AuthController extends BaseController
             return $this->redirect($request, $response, 'auth.login');
         } else {
             SessionManager::set('account_info', $data);
-            FlashMessage::success('Failed to create an account. Please try again');
+            FlashMessage::error('Failed to create an account. Please try again');
             return $this->redirect($request, $response, 'auth.register');
         }
+    }
+
+    public function login(Request $request, Response $response, array $args): Response
+    {
+        $data = [
+            'title' => 'Login'
+        ];
+
+        return $this->render($response, 'auth/login.php', $data);
+    }
+
+    /**
+     * Process login form submission (POST request).
+     */
+    public function authenticate(Request $request, Response $response, array $args): Response
+    {
+        $data = $request->getParsedBody();
+
+        $identifier = trim($data['identifier'] ?? '');
+        $password = $data['password'] ?? '';
+
+        if ($identifier === '' || $password === '') {
+            FlashMessage::error('Invalid credentials. Please Try Again');
+            return $this->redirect($request, $response, 'auth.login');
+        }
+
+        $user = $this->userModel->verifyCredentials($identifier, $password);
+
+        // dd($user);
+
+        if ($user === null) {
+            FlashMessage::error('Invalid credentials. Please Try Again');
+            return $this->redirect($request, $response, 'auth.login');
+        }
+
+        SessionManager::set('user_id', $user['user_id']);
+        SessionManager::set('user_email', $user['email']);
+        SessionManager::set('username', $user['username']);
+        SessionManager::set('user_role', $user['role']);
+        SessionManager::set('is_authenticated', true);
+
+        FlashMessage::success('Welcome, ' . $user['username'] . '!');
+
+        if ($user['role'] === 'admin') {
+            return $this->redirect($request, $response, 'admin.dashboard');
+        }
+
+        return $this->redirect($request, $response, 'user.dashboard');
+    }
+
+    /**
+     * Logout the current user (GET request).
+     */
+    public function logout(Request $request, Response $response, array $args): Response
+    {
+        SessionManager::destroy();
+
+        FlashMessage::success('You have been successfully logged out');
+
+        return $this->redirect($request, $response, 'auth.login');
     }
 }

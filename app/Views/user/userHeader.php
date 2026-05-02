@@ -149,7 +149,7 @@ use App\Helpers\SessionManager;
                         </li>
 
                         <li class="nav-item">
-                            <a href="<?= APP_BASE_URL ?>/auth/login"> <!-- Click Logout button will redirect to Login page -->
+                            <a href="<?= APP_BASE_URL ?>/auth/logout"> <!-- Click Logout button will redirect to Login page -->
                                 <button type="button" class="btn btn-outline-danger">
                                     <div class="d-flex align-items-center gap-1">
                                         <?= swarm_icon('lucide:log-out') ?>
