@@ -141,6 +141,14 @@ class ItemModel extends BaseModel
         $sql = "SELECT * FROM items ORDER BY listing_date DESC LIMIT 3";
         return $this->selectAll($sql);
     }
+    public function findById(int $id): array|false
+    {
+        // TODO: Execute a SELECT query to fetch a single product by ID
+        //       - Use $this->selectOne() with a WHERE clause
+        $item = $this->selectOne('SELECT * FROM items WHERE id = :id LIMIT 1', ['id' => $id]);
+        //       - Return the product as an associative array, or false if not found
+        return $item ? $item : false;
+    }
 
     //TODO get image for an item
 }
