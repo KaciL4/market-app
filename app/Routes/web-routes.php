@@ -124,11 +124,49 @@ return static function (Slim\App $app): void {
         ->add(AuthMiddleware::class);
 
     // Cart
-    $app->get('/cart', [CartController::class,'index'])->setName('cart.index');
-    $app->post('/cart/add', [CartController::class,'add'])->setName('cart.add');
-    $app->post('/cart/update', [CartController::class,'update'])->setName('cart.update');
-    $app->post('/cart/remove', [CartController::class,'remove'])->setName('cart.remove');
-    $app->post('/cart/clear', [CartController::class,'clear'])->setName('cart.clear');
+    // $app->get('/cart', [CartController::class,'index'])->setName('cart.index');
+    // $app->post('/cart/add', [CartController::class,'add'])->setName('cart.add');
+    // $app->post('/cart/update', [CartController::class,'update'])->setName('cart.update');
+    // $app->post('/cart/remove', [CartController::class,'remove'])->setName('cart.remove');
+    // $app->post('/cart/clear', [CartController::class,'clear'])->setName('cart.clear');
 
+    $app->group('/cart', function ($group) {
+        $group->get('', [CartController::class, 'index'])->setName('cart.index');
 
+        $group->post('/add', [CartController::class, 'add'])->setName('cart.add');
+
+        $group->post('/update', [CartController::class, 'update'])->setName('cart.update');
+
+        $group->post('/remove', [CartController::class, 'remove'])->setName('cart.remove');
+
+        $group->post('/clear', [CartController::class, 'clear'])->setName('cart.clear');
+    });
+
+    $app->group('/2fa', function ($group) {
+        $group->get('/setup', [TwoFactorController::class, 'showSetup'])
+            ->setName('2fa.setup')
+            ->add(AuthMiddleware::class);
+
+        $group->post('/verify-and-enable', [TwoFactorController::class, 'verifyAndEnable'])
+            ->setName('2fa.enable')
+            ->add(AuthMiddleware::class);
+
+        $group->get('/verify', [TwoFactorController::class, 'showVerify'])
+            ->setName('2fa.verify')
+            ->add(AuthMiddleware::class);
+
+        $group->post('/verify', [TwoFactorController::class, 'verify'])
+            ->setName('2fa.verify.post')
+            ->add(AuthMiddleware::class);
+
+        $group->get('/disable', [TwoFactorController::class, 'showDisable'])
+            ->setName('2fa.disable.show')
+            ->add(TwoFactorMiddleware::class)
+            ->add(AuthMiddleware::class);
+
+        $group->post('/2fa.disable', [TwoFactorController::class, 'disable'])
+            ->setName('2fa.setup')
+            ->add(TwoFactorMiddleware::class)
+            ->add(AuthMiddleware::class);
+    });
 };
