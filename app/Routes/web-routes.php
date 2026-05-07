@@ -12,6 +12,7 @@ use App\Controllers\UserController;
 use App\Controllers\HomeController;
 use App\Controllers\UploadController;
 use App\Controllers\AuthController;
+use App\Controllers\CartController;
 use App\Controllers\ItemController;
 use App\Middleware\AdminAuthMiddleware;
 use App\Middleware\AuthMiddleware;
@@ -121,4 +122,13 @@ return static function (Slim\App $app): void {
     $app->get('/dashboard', [UserController::class, 'dashboard'])
         ->setName('user.dashboard')
         ->add(AuthMiddleware::class);
+
+    // Cart
+    $app->get('/cart', [CartController::class,'index'])->setName('cart.index');
+    $app->post('/cart/add', [CartController::class,'add'])->setName('cart.add');
+    $app->post('/cart/update', [CartController::class,'update'])->setName('cart.update');
+    $app->post('/cart/remove', [CartController::class,'remove'])->setName('cart.remove');
+    $app->post('/cart/clear', [CartController::class,'clear'])->setName('cart.clear');
+
+
 };

@@ -1,3 +1,11 @@
+<?php
+    use App\Helpers\SessionManager;
+    $cart = SessionManager::get('cart', []);
+    $cartCount = 0;
+    foreach ($cart as $item) {
+        $cartCount += $item['quantity'];
+    }
+?>
 <!DOCTYPE html>
 <html lang="en" data-bs-theme="dark">
 
@@ -72,12 +80,15 @@
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link" href="<?= APP_BASE_URL ?>/auth/login">
-                                <div class="d-flex align-items-center gap-1">
+                            <a class="nav-link" href="<?= APP_BASE_URL ?>/cart">
+                                <div class="d-flex align-items-center gap-1 position-relative">
                                     <?= swarm_icon('lucide:shopping-cart') ?>
-                                    <span class="fw-semibold">
-                                        Cart
-                                    </span>
+                                    <span class="fw-semibold">Cart</span>
+                                    <?php if ($cartCount > 0): ?>
+                                        <span class="badge rounded-pill bg-danger">
+                                            <?= $cartCount ?>
+                                        </span>
+                                    <?php endif; ?>
                                 </div>
                             </a>
                         </li>

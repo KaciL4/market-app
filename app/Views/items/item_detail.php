@@ -26,11 +26,16 @@ ViewHelper::loadHeader($title);
                    </h3>
                    <!-- add to cart button -->
                      <div class="d-grid mb-4">
-                        <a href="<?= APP_BASE_URL ?>/cart/add/<?= $item['item_id'] ?>"class ="btn btn-primary btn-lg flex-grow-1">
-                            <i class="bi bi-cart-plus me-2"></i>
-                            Add to Cart
-                        </a>
-                     </div>
+                        <form action="<?= APP_BASE_URL ?>/cart/add" method="POST">
+                            <!-- Hidden field to send the product ID to the controller -->
+                            <input type="hidden" name="product_id" value="<?= (int)$item['item_id'] ?>">
+
+                            <button type="submit" class="btn btn-primary btn-lg w-100">
+                                <i class="bi bi-cart-plus me-2"></i>
+                                Add to Cart
+                            </button>
+                        </form>
+                    </div>
                    <hr class="border-secondary">
                    <h4 class="accordion-header">Details</h4>
                    <!-- item description -->

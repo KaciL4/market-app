@@ -1,8 +1,12 @@
 <?php
 
 namespace App\Views\cart;
+use App\Helpers\ViewHelper;
+ViewHelper::loadHeader('Shopping Cart');
+?>
 
-class cartIndexView
-{
+<!-- Interface TODO -->
 
-}
+<?php
+ViewHelper::loadFooter();
+?>

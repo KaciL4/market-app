@@ -90,9 +90,23 @@ class CartController extends BaseController
 
     }
     public function remove(Request $request, Response $response, array $args): Response{
+        $params = $this->$request->getParsedBody();
+        $productId = (int)($params['product_id']??0);
+        $cart =SessionManager::get('cart',[]);
+        if(isset($cart[$productId])){
+            unset($cart[$productId]);
+            SessionManager::set('cart',$cart);
+            FlashMessage::success("Item is removed successfully.");
+        }else{
+            FlashMessage::error("An error occurred.");
+        }
+        return $this->redirect($request,$response,'cart.index');
 
     }
     public function clear(Request $request, Response $response, array $args): Response{
+        SessionManager::remove('cart');
+        FlashMessage::success("Cart has been cleared.");
 
+        return $this->redirect($request,$response,'cart.index');
     }
 }
