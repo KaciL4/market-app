@@ -14,8 +14,10 @@ use App\Controllers\UploadController;
 use App\Controllers\AuthController;
 use App\Controllers\CartController;
 use App\Controllers\ItemController;
+use App\Controllers\TwoFactorController;
 use App\Middleware\AdminAuthMiddleware;
 use App\Middleware\AuthMiddleware;
+use App\Middleware\TwoFactorMiddleware;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 

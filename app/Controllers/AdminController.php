@@ -34,6 +34,13 @@ class AdminController extends BaseController
             'totalTransactions' => $totalTransactions,
             'username' => SessionManager::get('username', 'Admin')
         ];
+
+        // TODO: Maybe for Admin Dashboard
+        // 1. Query the database to check whether the current user has
+        //    2FA enabled.
+        // 2. Render 'dashboard.php', passing the 2FA status so the
+        //    view can display the correct toggle button.
+
         return $this->render($response, 'admin/adminDashboard.php', $data);
     }
     public function showLogin(Request $request, Response $response): Response

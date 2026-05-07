@@ -6,6 +6,7 @@ namespace App\Controllers;
 use App\Helpers\FlashMessage;
 use App\Helpers\SessionManager;
 use App\Domain\Models\UserModel;
+use App\Domain\Models\TwoFactorAuthModel;
 use DI\Container;
 use App\Helpers\ViewHelper;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -144,6 +145,14 @@ class AuthController extends BaseController
         $user = $this->userModel->verifyCredentials($identifier, $password);
 
         // dd($user);
+
+        // TODO:
+        // 1. Query the database to check whether the user has 2FA enabled.
+        // 2. Store the result in the session as 'requires_2fa'.
+        // 3. Set 'two_factor_verified' in the session: if the user does not
+        //    have 2FA enabled, mark it as already verified so they are not
+        //    prompted. If they do have 2FA, mark it as not yet verified.
+        
 
         if ($user === null) {
             FlashMessage::error('Invalid credentials. Please Try Again');
