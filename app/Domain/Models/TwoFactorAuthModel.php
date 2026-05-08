@@ -49,7 +49,7 @@ class TwoFactorAuthModel extends BaseModel
     public function disable(int $userId): bool
     {
         // TODO: Update the record to mark 2FA as disabled.
-        $disable = $this->execute("UPDATE two_factor_auth SET enabled = :enabled WHERE user_id = :user_id",
+        $disable = $this->execute("UPDATE two_factor_auth SET enabled = :enabled,enabled_at = NULL WHERE user_id = :user_id",
             [
                 'user_id' => $userId,
                 'enabled' => 0
@@ -62,23 +62,23 @@ class TwoFactorAuthModel extends BaseModel
     public function isEnabled(int $userId): bool
     {
         // TODO: Check whether the user has 2FA enabled.
-        $isEnabled = $this->selectOne("SELECT * FROM WHERE user_id = :user_id AND enabled = :enabled LIMIT 1",
+        $isEnabled = $this->selectOne("SELECT 1 FROM two_factor_auth WHERE user_id = :user_id AND enabled = 1 LIMIT 1",
             [
                 'user_id' => $userId,
-                'enabled' => 1
             ]
         );
 
-        return $isEnabled > 0;
+        return $isEnabled !== null;
     }
 
     public function getSecret(int $userId): ?string
     {
         // TODO: Return the TOTP secret for the given user.
-        return (string)$this->selectOne("SELECT secret FROM two_factor_auth WHERE user_id = :user_id LIMIT 1",
+        $secret = $this->selectOne("SELECT secret FROM two_factor_auth WHERE user_id = :user_id LIMIT 1",
             [
                 'user_id' => $userId
             ]
         );
+        return $secret['secret']??null;
     }
 }
