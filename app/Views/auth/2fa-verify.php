@@ -1,7 +1,7 @@
 <?php
 
 use App\Helpers\ViewHelper;
-
+$title = $data['title'] ?? "2FA Verification";
 ViewHelper::loadHeader($title);
 ?>
 

@@ -1,7 +1,7 @@
 <?php
 
 use App\Helpers\ViewHelper;
-
+$title = $data['title'] ?? "Disable 2FA";
 ViewHelper::loadHeader($title);
 ?>
 

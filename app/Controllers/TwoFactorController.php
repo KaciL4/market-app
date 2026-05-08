@@ -99,7 +99,9 @@ class TwoFactorController extends BaseController
     public function showVerify(Request $request, Response $response): Response
     {
         // TODO: Render the 2FA verification view.
-        return $this->render($response, 'auth/2fa-verify.php');
+        return $this->render($response, 'auth/2fa-verify.php',[
+                'title' => '2FA Verification'
+            ]);
     }
 
     public function verify(Request $request, Response $response): Response
@@ -129,7 +131,9 @@ class TwoFactorController extends BaseController
                 SessionManager::destroy();
                 return $this->redirect($request,$response,'login');
             }
-            return $this->render($response,'auth/2fa-verify.php');
+            return $this->render($response,'auth/2fa-verify.php' ,[
+                'title' => '2FA Verification'
+            ]);
         }
         // 4. If the code is valid, mark 2FA as verified in the session.
         SessionManager::set('2fa_verified',true);
@@ -154,7 +158,9 @@ class TwoFactorController extends BaseController
         $user = $this->twoFactorModel->findByUserId($userId);
         if (!$user || !password_verify($password, $user['password'])) {
             FlashMessage::error('Incorrect password. Two-factor authentication was not disabled.');
-            return $this->render($response, 'auth/2fa-disable.php');
+            return $this->render($response, 'auth/2fa-disable.php', [
+                'title' => 'Disable 2FA'
+            ]);
         }
         // 3. Disable 2FA in the database for this user.
         $this->twoFactorModel->disable($userId);
@@ -166,6 +172,8 @@ class TwoFactorController extends BaseController
     public function showDisable(Request $request, Response $response): Response
     {
         // TODO: Render the disable confirmation view.
-        return $this->render($response, 'auth/2fa-disable.php');
+        return $this->render($response, 'auth/2fa-disable.php', [
+                'title' => 'Disable 2FA'
+            ]);
     }
 }
