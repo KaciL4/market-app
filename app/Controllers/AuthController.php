@@ -21,21 +21,15 @@ class AuthController extends BaseController
 
     public function register(Request $request, Response $response, array $args): Response
     {
+
         $data['data'] = [
-            'title' => 'Register | Create a new Account'
+            'title' => 'Register Page'
         ];
 
-        $account_info = SessionManager::get('account_info');
-
-        // Check if there are previously submitted user details
-        if ($account_info !== null) {
-            $data['data']['account_info'] = $account_info;
-
-            //! IMPORTANT: We do NOT remove it here anymore.
-            //* We remove it in the View or after a SUCCESSFUL save to keep it during errors.
-            // SessionManager::remove('account_info');
+        if (isset($_SESSION['account_info'])) {
+            $data['data']['account_info'] = $_SESSION['account_info'];
+            SessionManager::remove('account_info');
         }
-
         return $this->render($response, 'auth/register.php', $data);
     }
 
@@ -109,7 +103,7 @@ class AuthController extends BaseController
 
         if ($create > 0) {
             SessionManager::remove('account_info');
-            FlashMessage::success('Account created succeefully');
+            FlashMessage::success('Account created successfully');
             return $this->redirect($request, $response, 'auth.login');
         } else {
             SessionManager::set('account_info', $data);
@@ -137,23 +131,23 @@ class AuthController extends BaseController
         $identifier = trim($data['identifier'] ?? '');
         $password = $data['password'] ?? '';
 
-        if ($identifier === '' || $password === '') {
-            FlashMessage::error('Invalid credentials. Please Try Again');
+        if (empty($identifier) || empty($password)) {
+            FlashMessage::error('Please fill all the fields.');
             return $this->redirect($request, $response, 'auth.login');
         }
 
         $user = $this->userModel->verifyCredentials($identifier, $password);
 
         // dd($user);
-        if ($user === null) {
-            FlashMessage::error('Invalid credentials. Please Try Again');
+        if (!$user) {
+            FlashMessage::error('Invalid login credentials.');
             return $this->redirect($request, $response, 'auth.login');
         }
 
         SessionManager::set('user', [
             'id' => $user['id'],
             'email' => $user['email'],
-            'full_name' => $user['first_name'] . ' ' . $user['last_name'],
+            'username'=>$user['username'],
             'role' => $user['role'],
             'is_auth' => true,
         ]);

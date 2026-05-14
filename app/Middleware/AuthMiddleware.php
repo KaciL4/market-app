@@ -21,26 +21,19 @@ class AuthMiddleware implements MiddlewareInterface
     public function process(Request $request, RequestHandler $handler): Response
     {
         // TODO: Retrieve the user's authentication status from the session.
+        $user =SessionManager::get('user');
+        $authStatus= isset($user['is_auth'])&& $user['is_auth']===true;
         //       If not authenticated, display an error flash message and redirect to the login page.
-        //       If authenticated, allow the request to proceed.
-        //
-        //       Use the following to generate the login URL and create a redirect response:
-        //       $routeParser = RouteContext::fromRequest($request)->getRouteParser();
-        //       $loginUrl = $routeParser->urlFor('auth.login');
-        //       $response = $this->responseFactory->createResponse(302);
-        //       return $response->withHeader('Location', $loginUrl);
-        $is_authenticated = SessionManager::get('is_authenticated');
-
-        if (!$is_authenticated) {
-            FlashMessage::error('Please log in to access this page');
-
+        if(!$authStatus){
+            FlashMessage::error('Please login before accessing this page.');
             $routeParser = RouteContext::fromRequest($request)->getRouteParser();
-            $loginUrl = $routeParser->urlFor('auth.login');
 
+            $loginUrl = $routeParser->urlFor('auth.login');
             $response = $this->responseFactory->createResponse(302);
             return $response->withHeader('Location', $loginUrl);
         }
 
+        //       If authenticated, allow the request to proceed.
         return $handler->handle($request);
     }
 }
