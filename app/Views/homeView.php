@@ -19,7 +19,7 @@ ViewHelper::loadHeader($page_title);
 <p> Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos. </p> -->
 
 <header>
-    <nav class="navbar navbar-expand-lg bg-body-secondary py-1">
+    <nav class="navbar navbar-expand-lg bg-body-secondary py-1 ">
         <div class="container-fluid">
             <ul class="navbar-nav">
                 <li class="nav-item dropdown">
@@ -155,19 +155,27 @@ $recentItemImages = [
         <?php if (!empty($recentItems)): ?>
             <?php foreach ($recentItems as $item): ?>
                 <div class="col-md-4">
-                    <div class="card h-100 shadow-sm">
-                        <img
-                            src="<?= $recentItemImages[$item['listing_product']] ?? $defaultRecentImage ?>"
-                            class="card-img-top"
-                            alt="<?= hs($item['listing_product']) ?>"
-                            style="height: 200px; object-fit: cover;">
+                    <a href="<?= APP_BASE_URL ?>/items/<?= $item['item_id'] ?>" class="text-decoration-none text-reset">
+                        <div class="card h-100 border-0 shadow bg-dark text-white rounded-4 overflow-hidden item-card">
+                            <img
+                                src="<?= $recentItemImages[$item['listing_product']] ?? $defaultRecentImage ?>"
+                                class="card-img-top"
+                                alt="<?= hs($item['listing_product']) ?>"
+                                style="height: 200px; object-fit: cover;">
 
-                        <div class="card-body">
-                            <h5 class="card-title"><?= hs($item['listing_product']) ?></h5>
-                            <p class="card-text"><?= hs($item['detail']) ?></p>
-                            <p class="fw-bold">$<?= number_format((float)$item['price'], 2) ?></p>
+                            <div class="card-body">
+                                <h5 class="card-title fw-bold text-primary"><?= hs($item['listing_product']) ?></h5>
+                                <p class="card-text text-muted small">
+                                    <?= hs(mb_strimwidth($item['detail'], 0, 80, '...')) ?>
+                                </p>
+                                <div class="mt-auto">
+                                    <p class="fw-bold fs-5 mb-0 text-dark">
+                                        $<?= number_format((float)$item['price'], 2) ?>
+                                    </p>
+                                </div>
+                            </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
             <?php endforeach; ?>
         <?php else: ?>

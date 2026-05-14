@@ -5,22 +5,35 @@ use App\Helpers\ViewHelper;
 ViewHelper::loadItemHeader($title);
 ?>
 
-<div class="container my-3">
-    <input
-        type="text"
-        id="liveSearchInput"
-        class="form-control"
-        placeholder="Search items"
-        autocomplete="off">
+<div class="container">
+        <div class="row justify-content-center mb-5">
+            <div class="col-lg-8 text-center">
+                <h1 class="display-5 fw-bold text-white mb-3">Discover Unique Items</h1>
+                <p class="lead text-secondary mb-4">Browse high-quality pre-owned products from our community.</p>
 
-    <div class="text-center mt-3">
-        <div id="loadingSpinner" class="spinner-border text-primary" style="display:none;">
-            <span class="visually-hidden">Loading...</span>
+                <div class="input-group input-group-lg shadow-sm">
+                    <span class="input-group-text bg-secondary bg-opacity-10 border-secondary-subtle border-end-0 rounded-start-pill ps-4 text-secondary">
+                        <i class="bi bi-search"></i>
+                    </span>
+                    <input
+                        type="text"
+                        id="liveSearchInput"
+                        class="form-control bg-secondary bg-opacity-10 border-secondary-subtle border-start-0 border-end-0 text-white shadow-none"
+                        placeholder="Search for anything..."
+                        autocomplete="off">
+                    <button class="btn btn-primary px-5 rounded-end-pill fw-bold" type="button" id="button-search">
+                        Search
+                    </button>
+                </div>
+
+                <div class="mt-3">
+                    <div id="loadingSpinner" class="spinner-border spinner-border-sm text-primary" style="display:none;">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
 </div>
-
-<div class="row g-4">
 
     <div id="searchResults" class="row g-4"></div>
 

@@ -28,8 +28,7 @@ ViewHelper::loadHeader($title);
                      <div class="d-grid mb-4">
                         <form action="<?= APP_BASE_URL ?>/cart/add" method="POST">
                             <!-- Hidden field to send the product ID to the controller -->
-                            <input type="hidden" name="product_id" value="<?= (int)$item['item_id'] ?>">
-
+                            <input type="hidden" name="item_id" value="<?= (int)$item['item_id'] ?>">
                             <button type="submit" class="btn btn-primary btn-lg w-100">
                                 <i class="bi bi-cart-plus me-2"></i>
                                 Add to Cart
@@ -65,6 +64,27 @@ ViewHelper::loadHeader($title);
         </div>
     </div>
  </div>
+ <!-- notification pop-up when add a item to cart -->
+ <?php if (isset($_GET['added'])): ?>
+<div class="modal fade" id="cartModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0 shadow">
+      <div class="modal-body p-4 text-center">
+        <i class="bi bi-check-circle-fill text-success mb-3" style="font-size: 3rem;"></i>
+        <h4 class="fw-bold">Item added to cart</h4>
+        <p class="text-muted">You have 1 new item in your cart.</p>
+        <div class="d-grid gap-2 mt-4">
+          <a href="<?= APP_BASE_URL ?>/cart" class="btn btn-primary rounded-pill py-2 fw-bold">View Cart</a>
+          <button type="button" class="btn btn-outline-secondary rounded-pill py-2" data-bs-dismiss="modal">Continue Shopping</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+    new bootstrap.Modal(document.getElementById('cartModal')).show();
+</script>
+<?php endif; ?>
 <?php
 
 ViewHelper::loadJsScripts();

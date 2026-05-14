@@ -40,19 +40,22 @@
                     </div>
                 </a>
 
-                <form method="GET" action="<?= APP_BASE_URL ?>/items?search=<?= $items['listing_product'] ?>" class="d-flex col-6 ">
+                <div class="flex-grow-1 mx-lg-5 mx-md-3 d-none d-md-block">
+                <form action="<?= APP_BASE_URL ?>/items" method="GET">
                     <div class="input-group">
-                        <input type="text" id="searchInput" name="search" class="form-control border-start-0" placeholder="Search">
-
-                        <button class="btn btn-primary" id="searchBtn">
-                            <?= swarm_icon('tabler:search') ?>
+                        <span class="input-group-text bg-body border-end-0 rounded-start-pill ps-3">
+                            <i class="bi bi-search text-secondary"></i>
+                        </span>
+                        <input type="text" name="search"
+                               class="form-control bg-body border-start-0 border-end-0 py-2 shadow-none"
+                               placeholder="Search for anything..."
+                               value="<?= htmlspecialchars($_GET['search'] ?? '') ?>">
+                        <button class="btn btn-primary px-4 rounded-end-pill fw-semibold" type="submit">
+                            Search
                         </button>
                     </div>
                 </form>
-
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+            </div>
 
                 <div class="collapse navbar-collapse" id="navbarText">
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-center gap-3">

@@ -21,13 +21,13 @@ class CartController extends BaseController
     public function index(Request $request, Response $response, array $args): Response{
         $cart = SessionManager::get('cart', []);
         // TODO:Calculate the total number of items by summing the quantity of every entry in the cart.
-        $itemCount=0;
+        $itemCount = 0;
 
         // TODO: Calculate the grand total price by summing price * quantity for every entry.
         $totalPrice = 0;
         foreach ($cart as $item) {
-            $itemCount += $item['quantity'];
-            $totalPrice += ($item['price'] * $item['quantity']);
+            $itemCount += (int)($item['quantity'] ?? 1);
+            $totalPrice += ($item['price']);
         }
         return $this->render($response, 'cart/cartIndexView.php',[
             "cart"=>$cart,
@@ -47,24 +47,25 @@ class CartController extends BaseController
         $item = $this->itemModel->findById($itemId);
         if(!$item){
             FlashMessage::error("The item does not exist.");
-            $this->redirect($request, $response, 'cart.index');
+            return $this->redirect($request, $response, 'cart.index');
         }
         $cart=SessionManager::get('cart',[]);
 
-        if(isset($cart[$itemId])){
-            $cart[$itemId]['quantity']++;
-        }
-        else {
-            $cart[$itemId] = [
-                'id' => $item['id'],
-                'name' => $item['name'],
-                'price' => $item['price'],
-                'quantity' => 1
-            ];
-        }
+        // if(isset($cart[$itemId])){
+        //     $cart[$itemId]['quantity']++;
+        // }
+
+        $cart[$itemId] = [
+            'item_id' => $item['item_id'],
+            'name'    => $item['listing_product'],
+            'price'   => (float)$item['price'],
+            'image'   => $item['image_path'] ?? '',
+            'quantity' => 1
+         ];
+
         SessionManager::set('cart',$cart);
         FlashMessage::success("'{name}' was added to your cart.");
-        return $this->redirect($request, $response, 'cart.index');
+        return $response->withHeader('Location', APP_BASE_URL . "/items/$itemId?added=1")->withStatus(302);
     }
 
     public function update(Request $request, Response $response, array $args): Response{
@@ -90,15 +91,15 @@ class CartController extends BaseController
 
     }
     public function remove(Request $request, Response $response, array $args): Response{
-        $params = $this->$request->getParsedBody();
-        $productId = (int)($params['product_id']??0);
+        $params = $request->getParsedBody();
+        $itemId = (int)($params['item_id']??0);
         $cart =SessionManager::get('cart',[]);
-        if(isset($cart[$productId])){
-            unset($cart[$productId]);
+        if(isset($cart[$itemId])){
+            unset($cart[$itemId]);
             SessionManager::set('cart',$cart);
             FlashMessage::success("Item is removed successfully.");
         }else{
-            FlashMessage::error("An error occurred.");
+            FlashMessage::error("Could not find that item in your cart");
         }
         return $this->redirect($request,$response,'cart.index');
 

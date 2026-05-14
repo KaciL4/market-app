@@ -38,18 +38,13 @@ class ItemModel extends BaseModel
     }
 
     //TODO get item by ID
-    public function getItemById(int $id): array|false
-    {
+    public function getItemById(int $id): array|false {
         $sql = "SELECT i.*, c.category_name, u.username
                 FROM items i
                 JOIN category c ON i.category_id = c.category_id
                 JOIN users u ON i.user_id = u.user_id
-                WHERE i.item_id = :id
-                LIMIT 1";
-
-        $stmt = $this->pdo->prepare($sql);
-        $stmt->execute(['id' => $id]);
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+                WHERE i.item_id = :id LIMIT 1";
+        return $this->selectOne($sql, ['id' => $id]);
     }
 
     //*search items by name
@@ -145,9 +140,12 @@ class ItemModel extends BaseModel
     {
         // TODO: Execute a SELECT query to fetch a single product by ID
         //       - Use $this->selectOne() with a WHERE clause
-        $item = $this->selectOne('SELECT * FROM items WHERE id = :id LIMIT 1', ['id' => $id]);
-        //       - Return the product as an associative array, or false if not found
-        return $item ? $item : false;
+        $sql = "SELECT i.*, c.category_name, u.username
+                FROM items i
+                JOIN category c ON i.category_id = c.category_id
+                JOIN users u ON i.user_id = u.user_id
+                WHERE i.item_id = :id LIMIT 1";
+        return $this->selectOne($sql, ['id' => $id]);
     }
 
     //TODO get image for an item
