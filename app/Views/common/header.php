@@ -5,6 +5,9 @@
     foreach ($cart as $item) {
         $cartCount += $item['quantity'];
     }
+    // Check if user is logged in
+    $user = SessionManager::get('user');
+    $isLoggedIn = !empty($user);
 ?>
 <!DOCTYPE html>
 <html lang="en" data-bs-theme="dark">
@@ -71,16 +74,28 @@
                             </a>
                         </li>
 
-                        <li class="nav-item">
-                            <a class="nav-link" href="<?= APP_BASE_URL ?>/auth/login">
-                                <div class="d-flex align-items-center gap-1">
+                        <?php if ($isLoggedIn): ?>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle d-flex align-items-center gap-1" href="#" role="button" data-bs-toggle="dropdown">
                                     <?= swarm_icon('lucide:user') ?>
-                                    <span class="fw-semibold">
-                                        Sign in
-                                    </span>
-                                </div>
-                            </a>
-                        </li>
+                                    <span class="fw-semibold"><?= htmlspecialchars($user['username']) ?></span>
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    <li><a class="dropdown-item" href="<?= APP_BASE_URL ?>/dashboard">Dashboard</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item text-danger" href="<?= APP_BASE_URL ?>/auth/logout">Logout</a></li>
+                                </ul>
+                            </li>
+                        <?php else: ?>
+                            <li class="nav-item">
+                                <a class="nav-link" href="<?= APP_BASE_URL ?>/auth/login">
+                                    <div class="d-flex align-items-center gap-1">
+                                        <?= swarm_icon('lucide:user') ?>
+                                        <span class="fw-semibold">Sign in</span>
+                                    </div>
+                                </a>
+                            </li>
+                        <?php endif; ?>
 
                         <li class="nav-item">
                             <a class="nav-link" href="<?= APP_BASE_URL ?>/cart">
