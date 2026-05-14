@@ -68,9 +68,9 @@ ViewHelper::loadHeader('Shopping Cart');
                             <span class="h4 fw-bold">Total</span>
                             <span class="h4 fw-bold">$<?= number_format($totalPrice, 2) ?></span>
                         </div>
-                        <button class="btn btn-primary w-100 py-3 rounded-pill fw-bold" <?= empty($cart) ? 'disabled' : '' ?>>
-                            Go to checkout
-                        </button>
+                        <a href="<?= APP_BASE_URL ?>/cart/checkout" class="btn  btn-primary w-100 py-3 rounded-pill fw-bold <?= empty($cart) ? 'disabled' : '' ?>">
+                            Checkout
+                        </a>
                     </div>
                 </div>
             </div>

@@ -133,7 +133,7 @@ class ItemModel extends BaseModel
 
     public function getRecentItems(): array
     {
-        $sql = "SELECT * FROM items ORDER BY listing_date DESC LIMIT 3";
+        $sql = "SELECT * FROM items WHERE status = 'Available' ORDER BY listing_date DESC LIMIT 3";
         return $this->selectAll($sql);
     }
     public function findById(int $id): array|false
@@ -146,6 +146,11 @@ class ItemModel extends BaseModel
                 JOIN users u ON i.user_id = u.user_id
                 WHERE i.item_id = :id LIMIT 1";
         return $this->selectOne($sql, ['id' => $id]);
+    }
+    public function markAsSold(int $itemId): bool
+    {
+        $sql = "UPDATE items SET status = 'Sold' WHERE item_id = :id";
+        return $this->execute($sql, ['id' => $itemId]) > 0;
     }
 
     //TODO get image for an item

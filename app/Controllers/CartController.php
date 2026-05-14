@@ -7,13 +7,15 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use App\Helpers\SessionManager;
 use App\Domain\Models\ItemModel;
 use App\Helpers\FlashMessage;
+use App\Domain\Models\TransactionModel;
 
 
 class CartController extends BaseController
 {
     public function __construct(
         Container $container,
-        private ItemModel $itemModel
+        private ItemModel $itemModel,
+        private TransactionModel $transactionModel
         )
     {
         parent::__construct($container);
@@ -109,5 +111,90 @@ class CartController extends BaseController
         FlashMessage::success("Cart has been cleared.");
 
         return $this->redirect($request,$response,'cart.index');
+    }
+    public function checkout(Request $request, Response $response, array $args): Response
+    {
+        $cart = SessionManager::get('cart', []);
+        if (empty($cart)) {
+            FlashMessage::info("Your cart is empty.");
+            return $this->redirect($request, $response, 'cart.index');
+        }
+
+        $user = SessionManager::get('user');
+        $isLoggedIn = !empty($user);
+
+        //Calculate Subtotal
+        $subtotal = 0;
+        foreach ($cart as $item) {
+            $subtotal += ($item['price'] * $item['quantity']);
+        }
+
+        //Calculate tax (15%)
+        $taxRate = 0.15;
+        $taxAmount = $subtotal * $taxRate;
+
+        //Calculate final total
+        $totalPrice = $subtotal + $taxAmount;
+
+        return $this->render($response, 'cart/checkoutView.php', [
+            'title' => 'Checkout',
+            'cart' => $cart,
+            'subtotal' => $subtotal,
+            'taxAmount' => $taxAmount,
+            'totalPrice' => $totalPrice,
+            'user' => $user,
+            'isLoggedIn' => $isLoggedIn
+        ]);
+    }
+    // *process the transaction of the checkout
+    public function process(Request $request, Response $response, array $args): Response
+    {
+        // get the user ID from the session
+        $userId = SessionManager::get('user_id');
+        $cart = SessionManager::get('cart', []);
+
+        if (!$userId || empty($cart)) {
+            FlashMessage::error("You must be logged in to place an order.");
+            return $this->redirect($request, $response, 'cart.checkout');
+        }
+
+        try {
+            $lastId = 0;
+            foreach ($cart as $itemId => $details) {
+                // 3. Use the $userId variable here instead of $user['user_id']
+                $lastId = $this->transactionModel->createTransaction(
+                    (int)$userId,
+                    (int)$itemId,
+                    (float)($details['price'] * 1.15) // Adding tax
+                );
+
+                $this->itemModel->markAsSold((int)$itemId);
+            }
+
+            SessionManager::remove('cart');
+            FlashMessage::success("Purchase completed!");
+
+            // 4. Ensure this route name matches your web-routes.php (cart.receipt)
+            return $this->redirect($request, $response, 'cart.receipt', ['transaction_id' => $lastId]);
+
+        } catch (\Exception $e) {
+            FlashMessage::error("Checkout failed: " . $e->getMessage());
+            return $this->redirect($request, $response, 'cart.checkout');
+        }
+    }
+    // * function for the purchase receipt
+    public function receipt(Request $request, Response $response, array $args): Response
+    {
+        $transactionId = (int)$args['transaction_id'];
+        $transaction = $this->transactionModel->getTransactionDetails($transactionId);
+
+        if (!$transaction) {
+            return $this->redirect($request, $response, 'home.index');
+        }
+
+        return $this->render($response, './cart/transactionBillView.php', [
+            'title' => 'Your Receipt',
+            'transaction' => $transaction
+        ]);
     }
 }
