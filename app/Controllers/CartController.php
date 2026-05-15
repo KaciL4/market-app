@@ -29,7 +29,7 @@ class CartController extends BaseController
         $totalPrice = 0;
         foreach ($cart as $item) {
             $itemCount += (int)($item['quantity'] ?? 1);
-            $totalPrice += ($item['price']);
+            $totalPrice += ($item['price']* ($item['quantity'] ?? 1));
         }
         return $this->render($response, 'cart/cartIndexView.php',[
             "cart"=>$cart,
@@ -149,35 +149,87 @@ class CartController extends BaseController
     // *process the transaction of the checkout
     public function process(Request $request, Response $response, array $args): Response
     {
-        // get the user ID from the session
+
+        $params = $request->getParsedBody();
+        // Get user from session
         $userId = SessionManager::get('user_id');
+        $user = SessionManager::get('user');
+        // If user_id not found in session, try to get from user array
+        if (!$userId && $user && isset($user['user_id'])) {
+            $userId = $user['user_id'];
+        }
         $cart = SessionManager::get('cart', []);
 
-        if (!$userId || empty($cart)) {
+        // Validate user is logged in
+        if (!$userId) {
             FlashMessage::error("You must be logged in to place an order.");
+            return $this->redirect($request, $response, 'auth.login');
+        }
+        // Validate cart is not empty
+        if (empty($cart)) {
+            FlashMessage::error("Your cart is empty.");
+            return $this->redirect($request, $response, 'cart.index');
+        }
+        // Get shipping address and payment method from form
+        $shippingAddress = trim($params['address'] ?? '');
+        $paymentMethod = trim($params['paymentMethod'] ?? 'credit');
+        // Validate shipping address
+        if (empty($shippingAddress)) {
+            FlashMessage::error("Please provide a shipping address.");
             return $this->redirect($request, $response, 'cart.checkout');
         }
+        // Calculate totals
+        $subtotal = 0;
+        foreach ($cart as $item) {
+            $subtotal += ($item['price'] * $item['quantity']);
+        }
+        $taxAmount = $subtotal * 0.15;
+        $totalPrice = $subtotal + $taxAmount;
 
         try {
-            $lastId = 0;
+            // Start transaction using public TransactionModel method
+            $this->transactionModel->beginTransaction();
+
+            $lastId = null;
+            $successCount = 0;
+
             foreach ($cart as $itemId => $details) {
-                // 3. Use the $userId variable here instead of $user['user_id']
-                $lastId = $this->transactionModel->createTransaction(
+                // Create transaction record for each item
+                $transactionId = $this->transactionModel->createTransaction(
                     (int)$userId,
                     (int)$itemId,
-                    (float)($details['price'] * 1.15) // Adding tax
+                    $details['price'] * $details['quantity'],
+                    $shippingAddress,
+                    $paymentMethod
                 );
 
-                $this->itemModel->markAsSold((int)$itemId);
+                if ($transactionId) {
+                    $lastId = $transactionId;
+                    $successCount++;
+
+                    // Mark item as sold
+                    $this->itemModel->markAsSold((int)$itemId);
+                } else {
+                    throw new \Exception("Failed to create transaction for item ID: $itemId");
+                }
+            }
+            $this->transactionModel->commit();
+            // Clear the cart
+            SessionManager::remove('cart');
+
+            FlashMessage::success("Purchase completed successfully! $successCount item(s) purchased.");
+
+            // Redirect to receipt page with the last transaction ID
+            if ($lastId) {
+                return $this->redirect($request, $response, 'cart.receipt', ['transaction_id' => $lastId]);
+            } else {
+                return $this->redirect($request, $response, 'cart.checkout');
             }
 
-            SessionManager::remove('cart');
-            FlashMessage::success("Purchase completed!");
-
-            // 4. Ensure this route name matches your web-routes.php (cart.receipt)
-            return $this->redirect($request, $response, 'cart.receipt', ['transaction_id' => $lastId]);
-
         } catch (\Exception $e) {
+            $this->transactionModel->rollback();
+            error_log("Checkout failed: " . $e->getMessage());
+            error_log("Stack trace: " . $e->getTraceAsString());
             FlashMessage::error("Checkout failed: " . $e->getMessage());
             return $this->redirect($request, $response, 'cart.checkout');
         }
@@ -191,7 +243,6 @@ class CartController extends BaseController
         if (!$transaction) {
             return $this->redirect($request, $response, 'home.index');
         }
-
         return $this->render($response, './cart/transactionBillView.php', [
             'title' => 'Your Receipt',
             'transaction' => $transaction

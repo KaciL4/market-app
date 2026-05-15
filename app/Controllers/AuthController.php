@@ -143,9 +143,20 @@ class AuthController extends BaseController
             FlashMessage::error('Invalid login credentials.');
             return $this->redirect($request, $response, 'auth.login');
         }
+        //store user_id for checkout access
+        $userId = $user['user_id'] ?? null;
+
+        if (!$userId) {
+            FlashMessage::error('User ID not found.');
+            return $this->redirect($request, $response, 'auth.login');
+        }
+
+        // Store user_id in session (what CartController expects)
+        SessionManager::set('user_id', $userId);
 
         SessionManager::set('user', [
-            'id' => $user['id'],
+            'user_id' => $userId,
+            'id' => $userId,// same as user_id but keep it because their is some complexity in other files
             'email' => $user['email'],
             'username'=>$user['username'],
             'role' => $user['role'],

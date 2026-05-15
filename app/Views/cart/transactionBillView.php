@@ -20,12 +20,12 @@ ViewHelper::loadHeader('Receipt');
                     </div>
                     <div class="d-flex justify-content-between mb-2">
                         <span>Date:</span>
-                        <span><?= date('M d, Y H:i', strtotime($transaction['created_at'])) ?></span>
+                        <span><?= date('M d, Y', strtotime($transaction['transaction_date'])) ?></span>
                     </div>
                     <hr>
                     <div class="d-flex justify-content-between fs-4 fw-bold text-primary">
-                        <span>Total Paid:</span>
-                        <span>$<?= number_format($transaction['total'], 2) ?></span>
+                        <span>Total Paid (incl. 15% tax):</span>
+                        <span>$<?= number_format($transaction['total_paid'], 2) ?></span>
                     </div>
 
                     <div class="d-grid gap-2 mt-4">

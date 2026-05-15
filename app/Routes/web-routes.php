@@ -143,7 +143,9 @@ return static function (Slim\App $app): void {
 
         $group->post('/clear', [CartController::class, 'clear'])->setName('cart.clear');
         $group->get('/checkout', [CartController::class, 'checkout'])->setName('cart.checkout');
+
         $group->post('/process', [CartController::class, 'process'])->setName('cart.process');
+
         $group->get('/bill/{transaction_id}', [CartController::class, 'receipt'])->setName('cart.receipt');
     });
 
