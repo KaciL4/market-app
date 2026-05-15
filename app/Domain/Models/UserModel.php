@@ -109,4 +109,34 @@ class UserModel extends BaseModel
         $stmt = $this->pdo->prepare("DELETE FROM users WHERE user_id = :user_id");
         return $stmt->execute(['user_id' => $userId]);
     }
+    // get user profile for profile page
+     public function getUserProfile(int $id): ?array
+    {
+        return $this->selectOne(
+            'SELECT user_id, username, email, role, created_at FROM users WHERE user_id = :user_id',
+            ['user_id' => $id]
+        ) ?: null;
+    }
+    //  * Update user profile
+    public function updateUserProfile(int $userId, array $data): bool
+    {
+        $sql ="UPDATE users SET username = :username, email = :email WHERE user_id = :user_id";
+        $result = $this->execute($sql, [
+            'user_id'=>$userId,
+            'username'=>$data['username'],
+            'email'=>$data['email']
+        ]);
+        return $result > 0;
+    }
+    // function to update user password
+    public function updatePassword(int $userId, string $newPassword): bool
+    {
+        $hashedPassword = password_hash($newPassword, PASSWORD_BCRYPT);
+        $sql = "UPDATE users SET password = :password WHERE user_id = :user_id";
+        $result = $this->execute($sql, [
+            'user_id' => $userId,
+            'password' => $hashedPassword
+        ]);
+        return $result > 0;
+    }
 }

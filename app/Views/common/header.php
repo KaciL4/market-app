@@ -78,10 +78,12 @@
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle d-flex align-items-center gap-1" href="#" role="button" data-bs-toggle="dropdown">
                                     <?= swarm_icon('lucide:user') ?>
-                                    <span class="fw-semibold"><?= htmlspecialchars($user['username']) ?></span>
+                                    <span class="fw-semibold"><?= hs($user['username']) ?></span>
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end">
                                     <li><a class="dropdown-item" href="<?= APP_BASE_URL ?>/dashboard">Dashboard</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" href="<?= APP_BASE_URL ?>/profile">Profile</a></li>
                                     <li><hr class="dropdown-divider"></li>
                                     <li><a class="dropdown-item text-danger" href="<?= APP_BASE_URL ?>/auth/logout">Logout</a></li>
                                 </ul>

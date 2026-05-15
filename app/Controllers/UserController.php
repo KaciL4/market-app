@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Domain\Models\UserModel;
 use DI\Container;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -10,7 +11,9 @@ use App\Helpers\SessionManager;
 
 class UserController extends BaseController
 {
-    public function __construct(Container $container)
+    public function __construct(
+        Container $container,
+        private UserModel $userModel,)
     {
         parent::__construct($container);
     }
@@ -30,5 +33,105 @@ class UserController extends BaseController
         //    view can display the correct toggle button.
 
         return $this->render($response, 'user/userDashboard.php', $data);
+    }
+     public function profile(Request $request, Response $response): Response
+    {
+        // Get user ID from session
+        $userId = SessionManager::get('user_id');
+
+        if (!$userId) {
+            FlashMessage::error('You must be logged in to view your profile.');
+            return $this->redirect($request, $response, 'auth.login');
+        }
+
+        // Get user profile data
+        $profile = $this->userModel->getUserProfile($userId);
+
+        if (!$profile) {
+            FlashMessage::error('Profile not found.');
+            return $this->redirect($request, $response, 'user.dashboard');
+        }
+
+        $data = [
+            'title' => 'My Profile',
+            'username' => SessionManager::get('username', $profile['username'] ?? 'User'),
+            'profile' => $profile
+        ];
+
+        return $this->render($response, 'profile/profileView.php', $data);
+    }
+
+    /**
+     * Update user profile
+     */
+    public function updateProfile(Request $request, Response $response): Response
+    {
+        $userId = SessionManager::get('user_id');
+
+        if (!$userId) {
+            FlashMessage::error('You must be logged in to update your profile.');
+            return $this->redirect($request, $response, 'auth.login');
+        }
+
+        $params = $request->getParsedBody();
+        $username = trim($params['username'] ?? '');
+        $email = trim($params['email'] ?? '');
+
+        // Validation
+        $errors = [];
+
+        if (empty($username)) {
+            $errors[] = 'Username is required';
+        }
+
+        if (empty($email)) {
+            $errors[] = 'Email is required';
+        }
+
+        if (!empty($email) && !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $errors[] = 'Invalid email format';
+        }
+
+        // Check if email exists for another user
+        if (!empty($email)) {
+            $existingUser = $this->userModel->findByEmail($email);
+            if ($existingUser && $existingUser['user_id'] != $userId) {
+                $errors[] = 'Email already exists';
+            }
+        }
+        //check if username exists for another user
+        if (!empty($username)) {
+            $existingUser = $this->userModel->findByUsername($username);
+            if ($existingUser && $existingUser['user_id'] != $userId) {
+                $errors[] = 'Username already exists';
+            }
+        }
+        if (!empty($errors)) {
+            foreach ($errors as $error) {
+                FlashMessage::error($error);
+            }
+            return $this->redirect($request, $response, 'profile.index');
+        }
+        // Update user profile
+        $updated = $this->userModel->updateUserProfile($userId, [
+            'username' => $username,
+            'email' => $email
+        ]);
+        if ($updated) {
+            // Update session data
+            $user = SessionManager::get('user');
+            if ($user) {
+                $user['username'] = $username;
+                $user['email'] = $email;
+                SessionManager::set('user', $user);
+            }
+            SessionManager::set('username', $username);
+
+            FlashMessage::success('Profile updated successfully!');
+        } else {
+            FlashMessage::error('Failed to update profile.');
+        }
+
+        return $this->redirect($request, $response, 'profile.index');
     }
 }

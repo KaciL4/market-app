@@ -125,13 +125,15 @@ return static function (Slim\App $app): void {
         ->setName('user.dashboard')
         ->add(AuthMiddleware::class);
 
-    // Cart
-    // $app->get('/cart', [CartController::class,'index'])->setName('cart.index');
-    // $app->post('/cart/add', [CartController::class,'add'])->setName('cart.add');
-    // $app->post('/cart/update', [CartController::class,'update'])->setName('cart.update');
-    // $app->post('/cart/remove', [CartController::class,'remove'])->setName('cart.remove');
-    // $app->post('/cart/clear', [CartController::class,'clear'])->setName('cart.clear');
 
+    // profile page
+    $app->group('/profile', function ($group) {
+        $group->get('', [UserController::class, 'profile'])->setName('profile.index');
+        $group->post('/update', [UserController::class, 'updateProfile'])->setName('profile.update');
+    })->add(AuthMiddleware::class);
+
+
+    //* Cart
     $app->group('/cart', function ($group) {
         $group->get('', [CartController::class, 'index'])->setName('cart.index');
 
