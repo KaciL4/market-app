@@ -2,7 +2,7 @@
 
 use App\Helpers\ViewHelper;
 $title = $data['title'] ?? "2FA Verification";
-ViewHelper::loadHeader($title);
+ViewHelper::loadAuthHeader($title);
 ?>
 
 <div class="container mt-5" style="max-width: 400px;">
@@ -39,10 +39,10 @@ ViewHelper::loadHeader($title);
     </form>
 
     <div class="mt-4 text-center">
-        <form method="POST" action="<?= APP_BASE_URL ?>/logout">
+        <form method="GET" action="<?= APP_BASE_URL ?>/auth/logout">
             <button type="submit" class="btn btn-link">Cancel and Logout</button>
         </form>
     </div>
 </div>
 
-<?php ViewHelper::loadFooter(); ?>
+<?php ViewHelper::loadAuthFooter(); ?>

@@ -88,7 +88,10 @@ return static function (Slim\App $app): void {
 
         $group->post('/upload/delete', [UploadController::class, 'delete'])
             ->setName('upload.delete');
-    })->add(AdminAuthMiddleware::class);
+    })
+        ->add(TwoFactorMiddleware::class)
+        ->add(AdminAuthMiddleware::class)
+        ->add(AuthMiddleware::class);
 
     // Route for to show Auth
     $app->group('/auth', function ($group) {
@@ -109,6 +112,9 @@ return static function (Slim\App $app): void {
         // User Input Store (POST)
         $group->post('/register', [AuthController::class, 'store'])
             ->setName('auth.store');
+
+        // $group->post('/logout', [AuthController::class, 'logout'])
+        //     ->setName('auth.logout.post'); // If use POST method in 2fa-verify.php
     });
 
     // Items routes
@@ -123,6 +129,7 @@ return static function (Slim\App $app): void {
     // User Dashboard
     $app->get('/dashboard', [UserController::class, 'dashboard'])
         ->setName('user.dashboard')
+        ->add(TwoFactorMiddleware::class)
         ->add(AuthMiddleware::class);
 
 
@@ -173,8 +180,8 @@ return static function (Slim\App $app): void {
             ->add(TwoFactorMiddleware::class)
             ->add(AuthMiddleware::class);
 
-        $group->post('/2fa.disable', [TwoFactorController::class, 'disable'])
-            ->setName('2fa.setup')
+        $group->post('/disable', [TwoFactorController::class, 'disable'])
+            ->setName('2fa.disable')
             ->add(TwoFactorMiddleware::class)
             ->add(AuthMiddleware::class);
     });

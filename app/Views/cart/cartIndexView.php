@@ -1,6 +1,11 @@
 <?php
+
 namespace App\Views\cart;
+
 use App\Helpers\ViewHelper;
+
+$itemCount = $data['itemCount'] ?? 0;
+$totalPrice = $data['totalPrice'] ?? 0;
 ViewHelper::loadHeader('Shopping Cart');
 ?>
 

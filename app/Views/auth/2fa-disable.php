@@ -1,8 +1,9 @@
 <?php
 
 use App\Helpers\ViewHelper;
+
 $title = $data['title'] ?? "Disable 2FA";
-ViewHelper::loadHeader($title);
+ViewHelper::loadAuthHeader($title);
 ?>
 
 <div class="container mt-5" style="max-width: 400px;">
@@ -24,4 +25,4 @@ ViewHelper::loadHeader($title);
     </form>
 </div>
 
-<?php ViewHelper::loadFooter(); ?>
+<?php ViewHelper::loadAuthFooter(); ?>

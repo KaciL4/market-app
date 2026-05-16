@@ -2,7 +2,7 @@
 
 use App\Helpers\ViewHelper;
 $title = $data['title'] ?? "2FA Setup";
-ViewHelper::loadHeader($title);
+ViewHelper::loadAuthHeader($title);
 ?>
 
 <div class="container mt-5" style="max-width: 500px;">
@@ -26,7 +26,7 @@ ViewHelper::loadHeader($title);
     </div>
 
     <div class="bg-light p-3 my-4">
-        <p><strong>Can't scan?</strong> Enter this code manually:</p>
+        <p class="text-dark"><strong>Can't scan?</strong> Enter this code manually:</p>
         <code style="font-size: 1.2em; letter-spacing: 2px;"><?= hs($secret ?? '') ?></code>
     </div>
 
@@ -50,4 +50,4 @@ ViewHelper::loadHeader($title);
     </form>
 </div>
 
-<?php ViewHelper::loadFooter(); ?>
+<?php ViewHelper::loadAuthFooter(); ?>

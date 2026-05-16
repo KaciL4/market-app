@@ -14,7 +14,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 
 class AuthController extends BaseController
 {
-    public function __construct(Container $container, private UserModel $userModel,private TwoFactorAuthModel $twoFactorModel,)
+    public function __construct(Container $container, private UserModel $userModel, private TwoFactorAuthModel $twoFactorModel,)
     {
         parent::__construct($container);
     }
@@ -151,29 +151,25 @@ class AuthController extends BaseController
             return $this->redirect($request, $response, 'auth.login');
         }
 
-        // Store user_id in session (what CartController expects)
-        SessionManager::set('user_id', $userId);
+        SessionManager::set('user_id', $user['user_id']);
+        SessionManager::set('user_email', $user['email']);
+        SessionManager::set('username', $user['username']);
+        SessionManager::set('user_role', strtolower($user['role']));
+        SessionManager::set('is_auth', true);
 
-        SessionManager::set('user', [
-            'user_id' => $userId,
-            'id' => $userId,// same as user_id but keep it because their is some complexity in other files
-            'email' => $user['email'],
-            'username'=>$user['username'],
-            'role' => $user['role'],
-            'is_auth' => true,
-        ]);
         // TODO:
         // 1. Query the database to check whether the user has 2FA enabled.
-        $twoFAEnabled=$this->twoFactorModel->isEnabled($user['user_id']);
+        $twoFAEnabled = $this->twoFactorModel->isEnabled($user['user_id']);
+
         // 2. Store the result in the session as 'requires_2fa'.
-        SessionManager::set('requires_2fa',$twoFAEnabled);
+        SessionManager::set('requires_2fa', $twoFAEnabled);
+
         // 3. Set 'two_factor_verified' in the session: if the user does not
         //    have 2FA enabled, mark it as already verified so they are not
         //    prompted. If they do have 2FA, mark it as not yet verified.
         SessionManager::set('2fa_verified', !$twoFAEnabled);
 
-
-         FlashMessage::success("Welcome back, {$user['first_name']}!");
+        FlashMessage::success("Welcome back, {$user['username']}!");
 
         if ($user['role'] === 'admin') {
             return $this->redirect($request, $response, 'admin.dashboard');
@@ -193,18 +189,18 @@ class AuthController extends BaseController
 
         return $this->redirect($request, $response, 'auth.login');
     }
-    public function dashboard(Request $request, Response $response): Response
-    {
-        // TODO:
-        // 1. Query the database to check whether the current user has
-        //    2FA enabled.
-        $userId = SessionManager::get('user_id');
-        $twoFAEnabled=$this->twoFactorModel->isEnabled($userId);
-        // 2. Render 'dashboard.php', passing the 2FA status so the
-        //    view can display the correct toggle button.
-        return$this->render($response, 'dashboard.php', [
-            'title'           => 'Dashboard',
-            'twoFactorEnabled' => $twoFAEnabled,
-        ]);
-    }
+    // public function dashboard(Request $request, Response $response): Response
+    // {
+    //     // TODO:
+    //     // 1. Query the database to check whether the current user has
+    //     //    2FA enabled.
+    //     $userId = SessionManager::get('user_id');
+    //     $twoFAEnabled = $this->twoFactorModel->isEnabled($userId);
+    //     // 2. Render 'dashboard.php', passing the 2FA status so the
+    //     //    view can display the correct toggle button.
+    //     return $this->render($response, 'dashboard.php', [
+    //         'title'           => 'Dashboard',
+    //         'twoFactorEnabled' => $twoFAEnabled,
+    //     ]);
+    // }
 }
