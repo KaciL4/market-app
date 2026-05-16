@@ -157,6 +157,14 @@ class AuthController extends BaseController
         SessionManager::set('user_role', strtolower($user['role']));
         SessionManager::set('is_auth', true);
 
+        SessionManager::set('user', [
+            'user_id' => $user['user_id'],
+            'email' => $user['email'],
+            'username' => $user['username'],
+            'role' => strtolower($user['role']),
+            'is_auth' => true,
+        ]);
+
         // TODO:
         // 1. Query the database to check whether the user has 2FA enabled.
         $twoFAEnabled = $this->twoFactorModel->isEnabled($user['user_id']);
