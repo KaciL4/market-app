@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Middleware;
 
+use App\Domain\Models\TrustedDeviceModel;
 use App\Domain\Models\TwoFactorAuthModel;
 use App\Helpers\SessionManager;
 use Psr\Http\Message\ResponseFactoryInterface;
@@ -17,24 +18,51 @@ class TwoFactorMiddleware implements MiddlewareInterface
 {
     public function __construct(
         private TwoFactorAuthModel $twoFactorModel,
+        private TrustedDeviceModel $trustedDeviceModel,
         private ResponseFactoryInterface $responseFactory
     ) {}
 
     public function process(Request $request, RequestHandler $handler): ResponseInterface
     {
         // Get the logged-in user from the session
-        $user = SessionManager::get('user');
-
         // If user is not authenticated, continue normally
-        if (!$user || empty($user['is_auth'])) {
+        $authStatus = SessionManager::get('is_auth');
+        if (!$authStatus) {
             return $handler->handle($request);
         }
 
         // Get user ID from session
-        $userId = $user['id'];
+        $userId = SessionManager::get('user_id');
+        if (!$userId) {
+            return $handler->handle($request);
+        }
+
+        // If user has no 2FA record, redirect to setup
+        $record = $this->twoFactorModel->findByUserId($userId);
+        if (!$record) {
+            $routeParser = RouteContext::fromRequest($request)->getRouteParser();
+            $setupUrl = $routeParser->urlFor('2fa.setup');
+
+            return $this->responseFactory->createResponse(302)
+                ->withHeader('Location', $setupUrl);
+        }
 
         // Check if the user has 2FA enabled
         $twoFactorEnabled = $this->twoFactorModel->isEnabled($userId);
+
+        $cookies = $request->getCookieParams();
+        $deviceToken = $cookies['trusted_device'] ?? null;
+
+        if ($deviceToken) {
+            if ($this->trustedDeviceModel->isValid($deviceToken, $userId)) {
+                SessionManager::set('2fa_verified', true);
+                $this->trustedDeviceModel->updateLastUsed($deviceToken);
+
+                return $handler->handle($request);
+            } else {
+                setcookie('trusted_device', '', time() - 3600, '/' . APP_ROOT_DIR_NAME);
+            }
+        }
 
         // Check if 2FA has already been verified this session
         $twoFactorVerified = SessionManager::get('2fa_verified');

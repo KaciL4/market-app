@@ -1,5 +1,13 @@
 <?php
+
 use App\Helpers\ViewHelper;
+
+$user = $data['user'] ?? [];
+$cart = $data['cart'] ?? [];
+$subtotal = $data['subtotal'] ?? 0;
+$taxAmount = $data['taxAmount'] ?? 0.0;
+$totalPrice = $data['totalPrice'] ?? 0.0;
+
 ViewHelper::loadHeader('Checkout');
 $isLoggedIn = !empty($user);
 ?>
@@ -21,66 +29,66 @@ $isLoggedIn = !empty($user);
                 </div>
             <?php else: ?>
                 <form action="<?= APP_BASE_URL ?>/cart/process" method="POST">
-                <div class="row g-3 mb-4">
-                    <div class="col-12">
-                        <label class="form-label">First Name</label>
-                        <input type="text" class="form-control" name="name" required>
+                    <div class="row g-3 mb-4">
+                        <div class="col-12">
+                            <label class="form-label">First Name</label>
+                            <input type="text" class="form-control" name="name" required>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label">Last Name</label>
+                            <input type="text" class="form-control" name="name" required>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label">Username</label>
+                            <input type="text" class="form-control" name="name"
+                                value="<?= $isLoggedIn ? hs($user['username']) : '' ?>" required>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label">Email Address</label>
+                            <input type="email" class="form-control" name="email"
+                                value="<?= $isLoggedIn ? hs($user['email']) : '' ?>" required>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label">Shipping Address</label>
+                            <textarea class="form-control" name="address" rows="3" required></textarea>
+                        </div>
                     </div>
-                    <div class="col-12">
-                        <label class="form-label">Last Name</label>
-                        <input type="text" class="form-control" name="name" required>
-                    </div>
-                    <div class="col-12">
-                        <label class="form-label">Username</label>
-                        <input type="text" class="form-control" name="name"
-                               value="<?= $isLoggedIn ? hs($user['username']) : '' ?>" required>
-                    </div>
-                    <div class="col-12">
-                        <label class="form-label">Email Address</label>
-                        <input type="email" class="form-control" name="email"
-                               value="<?= $isLoggedIn ? hs($user['email']) : '' ?>" required>
-                    </div>
-                    <div class="col-12">
-                        <label class="form-label">Shipping Address</label>
-                        <textarea class="form-control" name="address" rows="3" required></textarea>
-                    </div>
-                </div>
 
-                <hr class="my-4">
+                    <hr class="my-4">
 
-                <h4 class="mb-3 fw-bold">Payment</h4>
-                <div class="my-3">
-                    <div class="form-check">
-                        <input id="credit" name="paymentMethod" type="radio" class="form-check-input" checked required>
-                        <label class="form-check-label" for="credit">Credit Card</label>
+                    <h4 class="mb-3 fw-bold">Payment</h4>
+                    <div class="my-3">
+                        <div class="form-check">
+                            <input id="credit" name="paymentMethod" type="radio" class="form-check-input" checked required>
+                            <label class="form-check-label" for="credit">Credit Card</label>
+                        </div>
+                        <div class="form-check">
+                            <input id="debit" name="paymentMethod" type="radio" class="form-check-input" required>
+                            <label class="form-check-label" for="debit">Debit Card</label>
+                        </div>
                     </div>
-                    <div class="form-check">
-                        <input id="debit" name="paymentMethod" type="radio" class="form-check-input" required>
-                        <label class="form-check-label" for="debit">Debit Card</label>
-                    </div>
-                </div>
 
-                <div class="row gy-3">
-                    <div class="col-md-6">
-                        <label class="form-label">Name on card</label>
-                        <input type="text" class="form-control" required>
+                    <div class="row gy-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Name on card</label>
+                            <input type="text" class="form-control" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Card number</label>
+                            <input type="text" class="form-control" placeholder="0000 0000 0000 0000" required>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Expiration</label>
+                            <input type="text" class="form-control" placeholder="MM/YY" required>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">CVV</label>
+                            <input type="text" class="form-control" placeholder="123" required>
+                        </div>
                     </div>
-                    <div class="col-md-6">
-                        <label class="form-label">Card number</label>
-                        <input type="text" class="form-control" placeholder="0000 0000 0000 0000" required>
-                    </div>
-                    <div class="col-md-3">
-                        <label class="form-label">Expiration</label>
-                        <input type="text" class="form-control" placeholder="MM/YY" required>
-                    </div>
-                    <div class="col-md-3">
-                        <label class="form-label">CVV</label>
-                        <input type="text" class="form-control" placeholder="123" required>
-                    </div>
-                </div>
 
-                <button class="w-100 btn btn-primary btn-lg mt-5 rounded-pill" type="submit">Place Order</button>
-            </form>
+                    <button class="w-100 btn btn-primary btn-lg mt-5 rounded-pill" type="submit">Place Order</button>
+                </form>
             <?php endif; ?>
         </div>
 
@@ -93,13 +101,13 @@ $isLoggedIn = !empty($user);
 
                 <ul class="list-group mb-3 list-group-flush">
                     <?php foreach ($cart as $item): ?>
-                    <li class="list-group-item d-flex justify-content-between lh-sm px-0 border-0">
-                        <div>
-                            <h6 class="my-0"><?= htmlspecialchars($item['name']) ?></h6>
-                            <small class="text-muted">Qty: <?= $item['quantity'] ?></small>
-                        </div>
-                        <span class="text-muted">$<?= number_format($item['price'] * $item['quantity'], 2) ?></span>
-                    </li>
+                        <li class="list-group-item d-flex justify-content-between lh-sm px-0 border-0">
+                            <div>
+                                <h6 class="my-0"><?= htmlspecialchars($item['name']) ?></h6>
+                                <small class="text-muted">Qty: <?= $item['quantity'] ?></small>
+                            </div>
+                            <span class="text-muted">$<?= number_format($item['price'] * $item['quantity'], 2) ?></span>
+                        </li>
                     <?php endforeach; ?>
 
                     <hr class="my-2">

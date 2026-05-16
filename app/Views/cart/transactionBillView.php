@@ -1,5 +1,8 @@
 <?php
+
 use App\Helpers\ViewHelper;
+
+$transaction = $data['transaction'] ?? [];
 ViewHelper::loadHeader('Receipt');
 ?>
 
