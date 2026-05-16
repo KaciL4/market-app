@@ -9,6 +9,7 @@ use App\Domain\Models\AdminModel;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use DI\Container;
+use App\Helpers\SessionManager;
 
 class ItemController extends BaseController
 {
@@ -22,13 +23,15 @@ class ItemController extends BaseController
         $params = $request->getQueryParams();
         $categoryId = isset($params['category']) ? (int)$params['category'] : null;
         $search = trim($params['search'] ?? '');
+        // Get current logged-in user ID (null if not logged in)
+        $currentUserId = SessionManager::get('user_id');
         // fetch items by search
         if ($search !== '') {
-            $items = $this->itemModel->searchItems($search);
+            $items = $this->itemModel->searchItems($search,$currentUserId);
         } else if ($categoryId) {
-            $items = $this->itemModel->getItemsByCategory($categoryId);
+            $items = $this->itemModel->getItemsByCategory($categoryId,$currentUserId);
         } else {
-            $items = $this->itemModel->getAllItems();
+            $items = $this->itemModel->getAllItems($currentUserId);
         }
 
         // fetch categories
@@ -53,9 +56,20 @@ class ItemController extends BaseController
         if (!$item) {
             return $response->withHeader('Location', '/items')->withStatus(302);
         }
+        //get current logged-in user id for filtering recent items
+        $currentUserId =SessionManager::get('user_id');
+
+        // Fetch recent items (excluding current item if needed)
+        $recentItems=$this->itemModel->getRecentItems($currentUserId);
+
+        //filter out the current item from recent items to avoid duplication
+        $recentItems =array_filter($recentItems,function($recentItem)use($id) {
+            return $recentItem['item_id']!= $id;
+        });
         $data = [
             'title' => $item['listing_product'],
             'item' => $item,
+            'recentItems' => $recentItems,
         ];
 
         return $this->render($response, 'items/item_detail.php', $data);
@@ -68,12 +82,15 @@ class ItemController extends BaseController
         $search = trim($params['q'] ?? '');
         $categoryId = isset($params['category']) ? (int)$params['category'] : null;
 
+        // Get current logged in user ID ->null if not logged in
+        $currentUserId = SessionManager::get('user_id');
+
         // limit length
         if (strlen($search) > 100) {
             $search = substr($search, 0, 100);
         }
 
-        $items = $this->itemModel->searchItemsApi($search, $categoryId);
+        $items = $this->itemModel->searchItemsApi($search, $categoryId,$currentUserId);
         $data = [
             'success' => true,
             'count' => count($items),

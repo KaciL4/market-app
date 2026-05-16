@@ -149,15 +149,18 @@ class CartController extends BaseController
     // *process the transaction of the checkout
     public function process(Request $request, Response $response, array $args): Response
     {
-
+        // Get form data from the checkout page
         $params = $request->getParsedBody();
+
         // Get user from session
         $userId = SessionManager::get('user_id');
         $user = SessionManager::get('user');
+
         // If user_id not found in session, try to get from user array
         if (!$userId && $user && isset($user['user_id'])) {
             $userId = $user['user_id'];
         }
+
         $cart = SessionManager::get('cart', []);
 
         // Validate user is logged in
@@ -165,19 +168,23 @@ class CartController extends BaseController
             FlashMessage::error("You must be logged in to place an order.");
             return $this->redirect($request, $response, 'auth.login');
         }
+
         // Validate cart is not empty
         if (empty($cart)) {
             FlashMessage::error("Your cart is empty.");
             return $this->redirect($request, $response, 'cart.index');
         }
+
         // Get shipping address and payment method from form
         $shippingAddress = trim($params['address'] ?? '');
         $paymentMethod = trim($params['paymentMethod'] ?? 'credit');
+
         // Validate shipping address
         if (empty($shippingAddress)) {
             FlashMessage::error("Please provide a shipping address.");
             return $this->redirect($request, $response, 'cart.checkout');
         }
+
         // Calculate totals
         $subtotal = 0;
         foreach ($cart as $item) {
@@ -187,10 +194,10 @@ class CartController extends BaseController
         $totalPrice = $subtotal + $taxAmount;
 
         try {
-            // Start transaction using public TransactionModel method
+            // Start transaction
             $this->transactionModel->beginTransaction();
 
-            $lastId = null;
+            $transactionIds = []; // Store ALL transaction IDs
             $successCount = 0;
 
             foreach ($cart as $itemId => $details) {
@@ -204,7 +211,7 @@ class CartController extends BaseController
                 );
 
                 if ($transactionId) {
-                    $lastId = $transactionId;
+                    $transactionIds[] = $transactionId; // Store each transaction ID
                     $successCount++;
 
                     // Mark item as sold
@@ -213,23 +220,32 @@ class CartController extends BaseController
                     throw new \Exception("Failed to create transaction for item ID: $itemId");
                 }
             }
+
+            // Commit transaction
             $this->transactionModel->commit();
+
             // Clear the cart
             SessionManager::remove('cart');
 
+            // Store ALL transaction IDs in session for the receipt
+            SessionManager::set('receipt_transaction_ids', $transactionIds);
+
             FlashMessage::success("Purchase completed successfully! $successCount item(s) purchased.");
 
-            // Redirect to receipt page with the last transaction ID
-            if ($lastId) {
-                return $this->redirect($request, $response, 'cart.receipt', ['transaction_id' => $lastId]);
+            // Redirect to receipt page with the FIRST transaction ID (we'll fetch all from session)
+            if (!empty($transactionIds)) {
+                return $this->redirect($request, $response, 'cart.receipt', ['transaction_id' => $transactionIds[0]]);
             } else {
                 return $this->redirect($request, $response, 'cart.checkout');
             }
 
         } catch (\Exception $e) {
+            // Rollback transaction
             $this->transactionModel->rollback();
+
             error_log("Checkout failed: " . $e->getMessage());
             error_log("Stack trace: " . $e->getTraceAsString());
+
             FlashMessage::error("Checkout failed: " . $e->getMessage());
             return $this->redirect($request, $response, 'cart.checkout');
         }
@@ -237,15 +253,48 @@ class CartController extends BaseController
     // * function for the purchase receipt
     public function receipt(Request $request, Response $response, array $args): Response
     {
-        $transactionId = (int)$args['transaction_id'];
-        $transaction = $this->transactionModel->getTransactionDetails($transactionId);
-
-        if (!$transaction) {
+       $transactionId = (int)$args['transaction_id'];
+        // Get all transaction IDs from session
+        $transactionIds = SessionManager::get('receipt_transaction_ids', []);
+        $transactions = [];
+        // If user has transaction Ids in session, use them
+        if (!empty($transactionIds)) {
+            $transactions = $this->transactionModel->getTransactionsByIds($transactionIds);
+            // clear session data after retrieving
+            SessionManager::remove('receipt_transaction_ids');
+        }
+        else {
+            $singleTransaction = $this->transactionModel->getTransactionDetails($transactionId);
+            if ($singleTransaction) {
+                $transactions = [$singleTransaction];
+            }
+        }
+        if (empty($transactions)) {
+            FlashMessage::error("Receipt not found.");
             return $this->redirect($request, $response, 'home.index');
         }
-        return $this->render($response, './cart/transactionBillView.php', [
+        // calculate total from all transactions
+        $subtotal = 0;
+        foreach ($transactions as $transaction) {
+            $itemTotal = $transaction['total_price'] ?? ($transaction['price'] * ($transaction['item_purchased'] ?? 1));
+            $subtotal += $itemTotal;
+        }
+        $taxRate = 0.15;
+        $taxAmount = $subtotal * $taxRate;
+        $totalPaid = $subtotal + $taxAmount;
+
+        //get user info
+        $user = SessionManager::get('user');
+
+        return $this->render($response, 'cart/transactionBillView.php', [
             'title' => 'Your Receipt',
-            'transaction' => $transaction
+            'transactions' => $transactions,
+            'subtotal' => $subtotal,
+            'taxAmount' => $taxAmount,
+            'totalPaid' => $totalPaid,
+            'orderId' => $transactionId,
+            'user' => $user,
+            'transaction_date' => $transactions[0]['transaction_date'] ?? date('Y-m-d H:i:s')
         ]);
     }
 }

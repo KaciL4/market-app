@@ -53,17 +53,53 @@ ViewHelper::loadHeader($title);
     </div>
 </div>
 <!-- buttom section for items recommendation -->
- <div class="mt-5">
-    <h5 class="fw-bold mb-4">
-        <i class="bi bi-grid me-2"></i>
-        Similar Items
-    </h5>
-    <div class="row g-3">
-        <div class="col-12 text-muted text-center py-3">
-        <!-- TODO: fetch similar item by category -->
-        </div>
+<?php
+$defaultRecentImage = 'https://placehold.co/300x200/adb5bd/white?text=Item';
+
+$recentItemImages = [
+    'Chair' => APP_BASE_URL . '/public/assets/images/items/chair.jpg',
+    'Laptop' => APP_BASE_URL . '/public/assets/images/items/macbook.jpg',
+    'Winter Jacket' => APP_BASE_URL . '/public/assets/images/items/jacket.jpg'
+];
+?>
+<div class="container my-5">
+    <h4 class="mb-4 fw-bold">Recent Uploaded Items</h4>
+
+    <div class="row g-4">
+        <?php if (!empty($recentItems)): ?>
+            <?php foreach ($recentItems as $item): ?>
+                <div class="col-md-4">
+                    <a href="<?= APP_BASE_URL ?>/items/<?= $item['item_id'] ?>" class="text-decoration-none text-reset">
+                        <div class="card h-100 border-0 shadow bg-dark text-white rounded-4 overflow-hidden item-card">
+                            <img
+                                src="<?= $recentItemImages[$item['listing_product']] ?? $defaultRecentImage ?>"
+                                class="card-img-top"
+                                alt="<?= hs($item['listing_product']) ?>"
+                                style="height: 200px; object-fit: cover;">
+
+                            <div class="card-body">
+                                <h5 class="card-title fw-bold text-primary"><?= hs($item['listing_product']) ?></h5>
+                                <p class="card-text text-muted small">
+                                    <?= hs(mb_strimwidth($item['detail'], 0, 80, '...')) ?>
+                                </p>
+                                <div class="mt-auto">
+                                    <p class="fw-bold fs-5 mb-0 text-dark">
+                                        $<?= number_format((float)$item['price'], 2) ?>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <div class="col-12 text-center text-muted">
+                No recent items available.
+            </div>
+        <?php endif; ?>
     </div>
- </div>
+</div>
+
  <!-- notification pop-up when add a item to cart -->
  <?php if (isset($_GET['added'])): ?>
 <div class="modal fade" id="cartModal" tabindex="-1" aria-hidden="true">

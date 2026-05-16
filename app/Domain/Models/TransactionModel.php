@@ -68,4 +68,22 @@ class TransactionModel extends BaseModel
 
         return $result;
     }
+    // function to get a order that have more than one item  (multiple transaction Id.)
+    public function getTransactionsByIds(array $transactionIds): array
+    {
+        if (empty($transactionIds)) {
+            return [];
+        }
+
+        $placeholders = implode(',', array_fill(0, count($transactionIds), '?'));
+        $sql = "SELECT t.*, i.listing_product, i.price, i.detail
+                FROM transactions t
+                JOIN items i ON t.item_id = i.item_id
+                WHERE t.transaction_id IN ($placeholders)
+                ORDER BY t.transaction_id DESC";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute($transactionIds);
+        return $stmt->fetchAll();
+    }
 }

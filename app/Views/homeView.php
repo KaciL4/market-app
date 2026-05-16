@@ -51,34 +51,35 @@ ViewHelper::loadHeader($page_title);
 
     <div class="carousel-inner">
         <div class="carousel-item active" data-bs-interval="3000">
-            <img src="https://placehold.co/600x200/orange/white?text=Item 1" class="d-block w-100" alt="">
+        <img src="<?= APP_BASE_URL . '/public/assets/images/carousels/carousel1.png' ?>" class="d-block w-100" alt="">
+        <div class="carousel-caption d-none d-md-block" style="left: 10%; right: auto; bottom: 50%; transform: translateY(50%); text-align: left;">
+            <h1><strong>Ready to score some amazing deals?</strong></h1>
+            <h3>Welcome to your new favorite marketplace!</h3>
+        </div>
+    </div>
+
+        <div class="carousel-item" data-bs-interval="3000">
+            <img src="<?= APP_BASE_URL . '/public/assets/images/carousels/carousel2.png' ?>" class="d-block w-100" alt="">
             <div class="carousel-caption d-none d-md-block">
-                <h5>First slide label</h5>
-                <p>Some representative placeholder content for the first slide.</p>
+                <h1 style="color: white;"><strong>Save Money and Save our Planet.</strong></h1>
+                <a href="<?= APP_BASE_URL ?>/items" class="btn btn-primary btn-lg mt-3 rounded-pill">
+                    Click Here to Shop Now</i>
+                </a>
             </div>
         </div>
 
         <div class="carousel-item" data-bs-interval="3000">
-            <img src="https://placehold.co/600x200/lightblue/white?text=Item 2" class="d-block w-100" alt="">
-            <div class="carousel-caption d-none d-md-block">
-                <h5>Second slide label</h5>
-                <p>Some representative placeholder content for the second slide.</p>
+            <img src="<?= APP_BASE_URL . '/public/assets/images/carousels/carousel3.png' ?>" class="d-block w-100" alt="">
+            <div class="carousel-caption d-none d-md-block" style="left: auto; right: 10%; bottom: 50%; transform: translateY(50%); text-align: left;">
+                <h1 style="color: white;"><strong>"Member or new?</strong></h1>
+                <h2 style="color: white;">Sign in or create your account to start saving.</h2>
             </div>
         </div>
 
         <div class="carousel-item" data-bs-interval="3000">
-            <img src="https://placehold.co/600x200/teal/white?text=Item 3" class="d-block w-100" alt="">
+            <img src="<?= APP_BASE_URL . '/public/assets/images/carousels/carousel4.png' ?>"  class="d-block w-100" alt="">
             <div class="carousel-caption d-none d-md-block">
-                <h5>Third slide label</h5>
-                <p>Some representative placeholder content for the third slide.</p>
-            </div>
-        </div>
-
-        <div class="carousel-item" data-bs-interval="3000">
-            <img src="https://placehold.co/600x200/red/white?text=Item 4" class="d-block w-100" alt="">
-            <div class="carousel-caption d-none d-md-block">
-                <h5>Fourth slide label</h5>
-                <p>Some representative placeholder content for the Fourth slide.</p>
+                <h1 style="color: white;"><strong>Take your Time and Enjoy Every Find.</strong></h1>
             </div>
         </div>
     </div>
