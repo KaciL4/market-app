@@ -1,5 +1,7 @@
 <?php
+
 use App\Helpers\SessionManager;
+
 $cart = SessionManager::get('cart', []);
 $cartCount = 0;
 foreach ($cart as $item) {
@@ -20,13 +22,18 @@ $isLoggedIn = !empty($user);
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
     <!-- TODO: include your CSS files here -->
+     <style>
+        body {
+            padding-top: 65px;
+        }
+     </style>
 </head>
 
 <body>
 
     <header>
         <!-- Navbar -->
-        <nav class="navbar navbar-expand-lg bg-body-tertiary px-1">
+        <nav class="navbar navbar-expand-lg bg-body-tertiary px-1 fixed-top">
             <div class="container-fluid py-1">
                 <a class="navbar-brand" href="<?= APP_BASE_URL ?>">
                     <div class="d-flex align-items-center gap-1">
@@ -55,7 +62,7 @@ $isLoggedIn = !empty($user);
                             </a>
                         </li>
 
-                         <?php if ($isLoggedIn): ?>
+                        <?php if ($isLoggedIn): ?>
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle d-flex align-items-center gap-1" href="#" role="button" data-bs-toggle="dropdown">
                                     <?= swarm_icon('lucide:user') ?>
@@ -63,7 +70,9 @@ $isLoggedIn = !empty($user);
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end">
                                     <li><a class="dropdown-item" href="<?= APP_BASE_URL ?>/profile">Profile</a></li>
-                                    <li><hr class="dropdown-divider"></li>
+                                    <li>
+                                        <hr class="dropdown-divider">
+                                    </li>
                                     <li><a class="dropdown-item text-danger" href="<?= APP_BASE_URL ?>/auth/logout">Logout</a></li>
                                 </ul>
                             </li>
@@ -95,4 +104,52 @@ $isLoggedIn = !empty($user);
                 </div>
             </div>
         </nav>
+
+        <?php if ($isLoggedIn): ?>
+            <!-- Second Layer Navigation - Sub Navbar for Logged in users -->
+            <nav class="navbar navbar-expand-lg bg-secondary bg-opacity-25 px-1">
+                <div class="container-fluid">
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#subNavbar" aria-controls="subNavbar" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="subNavbar">
+                        <ul class="navbar-nav mx-auto mb-2 mb-lg-0 gap-4 py-2">
+                            <li class="nav-item">
+                                <a class="nav-link fw-semibold <?= basename($_SERVER['REQUEST_URI']) == 'dashboard' ? 'active' : '' ?>" href="<?= APP_BASE_URL ?>/dashboard">
+                                    <div class="d-flex align-items-center gap-2">
+                                        <?= swarm_icon('tabler:home') ?>
+                                        <span>Home</span>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link fw-semibold <?= strpos($_SERVER['REQUEST_URI'], '/items') !== false ? 'active' : '' ?>" href="<?= APP_BASE_URL ?>/items">
+                                    <div class="d-flex align-items-center gap-2">
+                                        <?= swarm_icon('tabler:list-search') ?>
+                                        <span>Browse Items</span>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link fw-semibold" href="#">
+                                    <div class="d-flex align-items-center gap-2">
+                                        <?= swarm_icon('tabler:upload') ?>
+                                        <span>Upload Item</span>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link fw-semibold" href="#">
+                                    <div class="d-flex align-items-center gap-2">
+                                        <?= swarm_icon('tabler:box') ?>
+                                        <span>My Items</span>
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        <?php endif; ?>
+
     </header>

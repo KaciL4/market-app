@@ -111,17 +111,6 @@ $isLoggedIn = !empty($user);
                                 </div>
                             </a>
                         </li>
-
-                        <li class="nav-item">
-                            <a href="<?= APP_BASE_URL ?>/auth/logout"> <!-- Click Logout button will redirect to Login page -->
-                                <button type="button" class="btn btn-outline-danger">
-                                    <div class="d-flex align-items-center gap-1">
-                                        <?= swarm_icon('lucide:log-out') ?>
-                                        <span class="fw-semibold">Logout</span>
-                                    </div>
-                                </button>
-                            </a>
-                        </li>
                     </ul>
                 </div>
             </div>
