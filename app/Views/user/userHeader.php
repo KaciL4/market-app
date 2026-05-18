@@ -1,5 +1,7 @@
 <?php
+
 use App\Helpers\SessionManager;
+
 $cart = SessionManager::get('cart', []);
 $cartCount = 0;
 foreach ($cart as $item) {
@@ -51,9 +53,9 @@ $isLoggedIn = !empty($user);
                                     <i class="bi bi-search text-secondary"></i>
                                 </span>
                                 <input type="text" name="search"
-                                       class="form-control bg-body border-start-0 border-end-0 py-2 shadow-none"
-                                       placeholder="Search for anything..."
-                                       value="<?= htmlspecialchars($_GET['search'] ?? '') ?>">
+                                    class="form-control bg-body border-start-0 border-end-0 py-2 shadow-none"
+                                    placeholder="Search for anything..."
+                                    value="<?= htmlspecialchars($_GET['search'] ?? '') ?>">
                                 <button class="btn btn-primary px-4 rounded-end-pill fw-semibold" type="submit">
                                     Search
                                 </button>
@@ -83,7 +85,9 @@ $isLoggedIn = !empty($user);
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end">
                                     <li><a class="dropdown-item" href="<?= APP_BASE_URL ?>/profile">Profile</a></li>
-                                    <li><hr class="dropdown-divider"></li>
+                                    <li>
+                                        <hr class="dropdown-divider">
+                                    </li>
                                     <li><a class="dropdown-item text-danger" href="<?= APP_BASE_URL ?>/auth/logout">Logout</a></li>
                                 </ul>
                             </li>
@@ -149,7 +153,7 @@ $isLoggedIn = !empty($user);
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link fw-semibold" href="#">
+                            <a class="nav-link fw-semibold" href="<?= APP_BASE_URL ?>/my-items">
                                 <div class="d-flex align-items-center gap-2">
                                     <?= swarm_icon('tabler:box') ?>
                                     <span>My Items</span>

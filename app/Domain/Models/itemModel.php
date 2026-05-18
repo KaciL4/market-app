@@ -36,7 +36,7 @@ class ItemModel extends BaseModel
     }
 
     //* get items by category
-    public function getItemsByCategory(int $categoryId,?int $currentUserId = null)
+    public function getItemsByCategory(int $categoryId, ?int $currentUserId = null)
     {
         $sql = "SELECT i.*, c.category_name, u.username
                 FROM items i
@@ -63,7 +63,8 @@ class ItemModel extends BaseModel
     }
 
     //TODO get item by ID
-    public function getItemById(int $id): array|false {
+    public function getItemById(int $id): array|false
+    {
         $sql = "SELECT i.*, c.category_name, u.username
                 FROM items i
                 JOIN category c ON i.category_id = c.category_id
@@ -73,7 +74,7 @@ class ItemModel extends BaseModel
     }
 
     //*search items by name
-    public function searchItems(string $search,?int $currentUserId = null): array
+    public function searchItems(string $search, ?int $currentUserId = null): array
     {
         $sql = "SELECT i.*, c.category_name, u.username
                 FROM items i
@@ -99,7 +100,7 @@ class ItemModel extends BaseModel
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function searchItemsApi(string $searchTerm = '', ?int $categoryId = null,?int $currentUserId = null): array
+    public function searchItemsApi(string $searchTerm = '', ?int $categoryId = null, ?int $currentUserId = null): array
     {
         $sql = "SELECT i.*, c.category_name, u.username
             FROM items i
@@ -200,6 +201,50 @@ class ItemModel extends BaseModel
     {
         $sql = "UPDATE items SET status = 'Sold' WHERE item_id = :id";
         return $this->execute($sql, ['id' => $itemId]) > 0;
+    }
+    //TODO get item by user
+    public function getItemsByUser(int $userId): array|false
+    {
+        $sql = "SELECT i.*, c.category_name, u.username, u.email
+            FROM items i
+            JOIN category c ON i.category_id = c.category_id
+            JOIN users u ON i.user_id = u.user_id
+            WHERE i.user_id = :user_id
+            ORDER BY i.listing_date DESC";
+
+        return $this->selectAll($sql, ['user_id' => $userId]);
+    }
+    //* Search items for a user
+    public function searchMyItems(int $userId, string $searchTerm = ''): array
+    {
+        $sql = "SELECT i.*, c.category_name, u.username
+            FROM items i
+            JOIN category c ON i.category_id = c.category_id
+            JOIN users u ON i.user_id = u.user_id
+            WHERE i.user_id = :user_id";
+
+        $params = ['user_id' => $userId];
+
+        // Search only by product name
+        if (!empty($searchTerm)) {
+            $sql .= " AND i.listing_product LIKE CONCAT('%', :search, '%')";
+            $params['search'] = $searchTerm;
+        }
+
+        $sql .= " ORDER BY i.listing_date DESC";
+
+        return $this->selectAll($sql, $params);
+    }
+    public function deleteItem(int $itemId): bool
+    {
+        $result = $this->execute(
+            "DELETE FROM items WHERE item_id = :item_id",
+            [
+                'item_id' => $itemId
+            ]
+        );
+
+        return $result > 0;
     }
 
     //TODO get image for an item

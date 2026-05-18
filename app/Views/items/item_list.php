@@ -2,6 +2,8 @@
 
 use App\Helpers\ViewHelper;
 
+$title = 'Items for Sale';
+
 ViewHelper::loadItemHeader($title);
 ?>
 
@@ -46,7 +48,7 @@ ViewHelper::loadItemHeader($title);
             </div>
         <?php else: ?>
             <?php foreach ($items as $item): ?>
-                <div class="col-md-3 col-sm-6">
+                <div class="col-md-3 col-sm-6 mb-4">
                     <a href="<?= APP_BASE_URL ?>/items/<?= $item['item_id'] ?>" class="text-decoration-none">
 
                         <div class="card h-100 border-0 shadow bg-dark text-white rounded-4 overflow-hidden item-card">
@@ -61,7 +63,7 @@ ViewHelper::loadItemHeader($title);
                                     <?= hs($item['listing_product']) ?>
                                 </h5>
 
-                                <p>
+                                <p class="small text-secondary">
                                     <?= hs(mb_strimwidth($item['detail'], 0, 60, '...')) ?>
                                 </p>
 

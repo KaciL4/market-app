@@ -22,11 +22,11 @@ $isLoggedIn = !empty($user);
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
     <!-- TODO: include your CSS files here -->
-     <style>
+    <style>
         body {
             padding-top: 65px;
         }
-     </style>
+    </style>
 </head>
 
 <body>
@@ -139,7 +139,7 @@ $isLoggedIn = !empty($user);
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link fw-semibold" href="#">
+                                <a class="nav-link fw-semibold" href="<?= APP_BASE_URL ?>/my-items">
                                     <div class="d-flex align-items-center gap-2">
                                         <?= swarm_icon('tabler:box') ?>
                                         <span>My Items</span>
@@ -153,3 +153,8 @@ $isLoggedIn = !empty($user);
         <?php endif; ?>
 
     </header>
+
+    <!-- Flash Messages -->
+    <div class="mb-3">
+        <?= App\Helpers\FlashMessage::render() ?>
+    </div>

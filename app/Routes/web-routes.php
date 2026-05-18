@@ -132,6 +132,16 @@ return static function (Slim\App $app): void {
         ->add(TwoFactorMiddleware::class)
         ->add(AuthMiddleware::class);
 
+    // My Items
+    $app->get('/my-items', [ItemController::class, 'myItemIndex'])
+        ->setName('myItems.index');
+
+    // Live My Item Search
+    $app->get('/api/my-items/search', [ItemController::class, 'searchMyItemsApi'])
+        ->setName('api.myItems.search');
+
+    $app->get('/items/{id}/delete', [ItemController::class, 'deleteItem'])
+        ->setName('items.delete');
 
     // profile page
     $app->group('/profile', function ($group) {
