@@ -149,6 +149,14 @@ return static function (Slim\App $app): void {
     $app->get('/api/my-items/search', [ItemController::class, 'searchMyItemsApi'])
         ->setName('api.myItems.search');
 
+    //  My Item Update
+    $app->get('/items/{id}/edit', [ItemController::class, 'editItem'])
+        ->setName('items.edit');
+
+    $app->post('/items/{id}', [ItemController::class, 'updateItem'])
+        ->setName('items.update');
+
+    // My Item Delete
     $app->get('/items/{id}/delete', [ItemController::class, 'deleteItem'])
         ->setName('items.delete');
 

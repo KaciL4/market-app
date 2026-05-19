@@ -210,6 +210,66 @@ class ItemController extends BaseController
         return $this->redirect($request, $response, 'myItems.index');
     }
 
+    public function editItem(Request $request, Response $response, array $args): Response
+    {
+        $item_id = (int)$args['id'];
+
+        $item = $this->itemModel->findById($item_id);
+
+        if (!$item) {
+            FlashMessage::error('Item not found!');
+            $this->redirect($request, $response, 'myItems.index');
+        }
+
+        $categories = $this->itemModel->getAllCategories();
+
+        $data = [
+            'title' => 'Edit Item',
+            'item' => $item,
+            'categories' => $categories
+        ];
+
+        return $this->render($response, 'user/userItemEditView.php', $data);
+    }
+
+    public function updateItem(Request $request, Response $response, array $args): Response
+    {
+        $item_id = $args['id'];
+
+        $data = $request->getParsedBody();
+
+        $category_id = $data['category_id'];
+        $listing_product = $data['listing_product'];
+        $price = $data['price'];
+        $detail = $data['detail'];
+
+        if (empty($category_id)) {
+            FlashMessage::error('Please select a category');
+            return $this->redirect($request, $response, 'products.edit');
+        }
+
+        if (empty($listing_product)) {
+            FlashMessage::error('Please put a valid product name');
+            return $this->redirect($request, $response, 'items.edit');
+        }
+
+        if (empty($price)) {
+            FlashMessage::error('Please put a valid price');
+            return $this->redirect($request, $response, 'items.edit');
+        }
+
+        if (empty($detail)) {
+            FlashMessage::error('Please put a description');
+            return $this->redirect($request, $response, 'items.edit');
+        }
+
+        $this->itemModel->update($item_id, $data);
+
+        FlashMessage::success('Product has been updated successfully');
+
+        return $this->redirect($request, $response, 'myItems.index');
+    }
+
     public function deleteItem(Request $request, Response $response, array $args): Response
     {
         $item_id = (int)$args['id'];

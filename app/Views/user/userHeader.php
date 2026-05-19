@@ -34,6 +34,15 @@ $dashboardUrl = $userRole === 'admin'
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
     <link href="<?= asset_url('/css/style.css') ?>" rel="stylesheet">
+    <style>
+        .stat-card {
+            transition: transform 0.2s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+        }
+    </style>
 </head>
 
 <body>

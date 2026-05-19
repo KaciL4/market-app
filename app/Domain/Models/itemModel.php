@@ -232,7 +232,13 @@ class ItemModel extends BaseModel
 
         return $this->selectOne($sql, ['id' => $id]);
     }
-
+    /**
+     * Fetch all categories for the product form dropdown.
+     */
+    public function getAllCategories(): array
+    {
+        return $this->selectAll("SELECT category_id, category_name FROM category ORDER BY category_name ASC");
+    }
     public function markAsSold(int $itemId): bool
     {
         $sql = "UPDATE items SET status = 'Sold' WHERE item_id = :id";
@@ -272,7 +278,26 @@ class ItemModel extends BaseModel
 
         return $this->selectAll($sql, $params);
     }
-
+    //* User update item
+     public function update(int $item_id, array $data): int
+    {
+        return $this->execute(
+            "UPDATE items
+            SET category_id = :category_id,
+                listing_product = :listing_product,
+                price = :price,
+                detail = :detail
+            WHERE item_id = :item_id",
+            [
+                'item_id' => $item_id,
+                'category_id' => $data['category_id'],
+                'listing_product' => $data['listing_product'],
+                'price' => $data['price'],
+                'detail' => $data['detail']
+            ]
+        );
+    }
+    //* User delete item
     public function deleteItem(int $itemId): bool
     {
         $result = $this->execute(
@@ -282,6 +307,15 @@ class ItemModel extends BaseModel
 
         return $result > 0;
     }
+    //* Count user items
+    public function countItemsByUser(int $userId): int
+    {
+        return $this->count(
+            "SELECT COUNT(*) FROM items WHERE user_id = :user_id",
+            ['user_id' => $userId]
+        );
+    }
+
 
     public function createPendingItem(array $data): int
     {

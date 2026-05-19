@@ -11,12 +11,12 @@ class TransactionModel extends BaseModel
     {
         return $this->pdo->beginTransaction();
     }
-     // called function from the BaseModel
+    // called function from the BaseModel
     public function commit(): bool
     {
         return $this->pdo->commit();
     }
-     // called function from the BaseModel
+    // called function from the BaseModel
     public function rollback(): bool
     {
         return $this->pdo->rollback();
@@ -85,5 +85,13 @@ class TransactionModel extends BaseModel
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute($transactionIds);
         return $stmt->fetchAll();
+    }
+    //* User total item in cart count
+    public function countCartItems(int $userId): int
+    {
+        return $this->count(
+            "SELECT COUNT(*) FROM cart WHERE user_id = :user_id",
+            ['user_id' => $userId]
+        );
     }
 }

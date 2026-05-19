@@ -113,7 +113,7 @@ ViewHelper::loadItemHeader($title);
                             </div>
 
                             <div class="d-flex align-items-center justify-content-between mt-2 gap-2">
-                                <a class="btn btn-primary flex-fill">
+                                <a class="btn btn-primary flex-fill" href="<?= APP_BASE_URL ?>/items/<?= $item['item_id'] ?>/edit">
                                     <?= hs(trans('common.edit')) ?>
                                 </a>
 

@@ -2,7 +2,7 @@
 
 use App\Helpers\SessionManager;
 
-$page_title = $page_title ?? $title ?? 'User Dashboard';
+$page_title = $page_title ?? $title ?? 'Edit Profile';
 
 global $translator;
 $currentLocale = $translator->getLocale();
@@ -56,7 +56,8 @@ $dashboardUrl = $userRole === 'admin'
                 </button>
 
                 <div class="collapse navbar-collapse" id="navbarMain">
-                    <div class="flex-grow-1 mx-lg-5 mx-md-3">
+                    <<<<<<< Updated upstream
+                        <div class="flex-grow-1 mx-lg-5 mx-md-3">
                         <form action="<?= APP_BASE_URL ?>/items" method="GET" class="d-flex">
                             <input type="hidden" name="lang" value="<?= hs($currentLocale) ?>">
 
@@ -73,90 +74,105 @@ $dashboardUrl = $userRole === 'admin'
                                 </button>
                             </div>
                         </form>
-                    </div>
-
-                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-center gap-3">
-
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                                <?= swarm_icon('tabler:world') ?>
-                                <span class="fw-semibold"><?= strtoupper($currentLocale) ?></span>
-                            </a>
-
-                            <ul class="dropdown-menu dropdown-menu-end">
-                                <?php foreach ($availableLocales as $locale): ?>
-                                    <li>
-                                        <a class="dropdown-item <?= $locale === $currentLocale ? 'active' : '' ?>"
-                                            href="<?= hs(strtok($_SERVER['REQUEST_URI'], '?') . '?lang=' . $locale) ?>">
-                                            <?= $locale === 'en' ? '🇬🇧 English' : '🇫🇷 Français' ?>
-                                        </a>
-                                    </li>
-                                <?php endforeach; ?>
-                            </ul>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <?= swarm_icon('lucide:sun') ?>
-                            </a>
-                        </li>
-
-                        <?php if ($isLoggedIn): ?>
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle d-flex align-items-center gap-1" href="#" role="button" data-bs-toggle="dropdown">
-                                    <?= swarm_icon('lucide:user') ?>
-                                    <span class="fw-semibold"><?= hs($user['username']) ?></span>
-                                </a>
-                                <ul class="dropdown-menu dropdown-menu-end">
-                                    <li>
-                                        <a class="dropdown-item" href="<?= $dashboardUrl ?>">
-                                            <?= $userRole === 'admin' ? hs(trans('admin.dashboard')) : hs(trans('nav.dashboard')) ?>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <hr class="dropdown-divider">
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item"
-                                            href="<?= $userRole === 'admin' ? APP_BASE_URL . '/admin/profile?lang=' . hs($currentLocale) : APP_BASE_URL . '/profile?lang=' . hs($currentLocale) ?>">
-                                            <?= hs(trans('nav.profile')) ?>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <hr class="dropdown-divider">
-                                    </li>
-                                    <li><a class="dropdown-item text-danger" href="<?= APP_BASE_URL ?>/auth/logout?lang=<?= hs($currentLocale) ?>"><?= hs(trans('nav.logout')) ?></a></li>
-                                </ul>
-                            </li>
-                        <?php else: ?>
-                            <li class="nav-item">
-                                <a class="nav-link" href="<?= APP_BASE_URL ?>/auth/login?lang=<?= hs($currentLocale) ?>">
-                                    <div class="d-flex align-items-center gap-1">
-                                        <?= swarm_icon('lucide:user') ?>
-                                        <span class="fw-semibold"><?= hs(trans('nav.sign_in')) ?></span>
-                                    </div>
-                                </a>
-                            </li>
-                        <?php endif; ?>
-
-                        <li class="nav-item">
-                            <a class="nav-link" href="<?= APP_BASE_URL ?>/cart?lang=<?= hs($currentLocale) ?>">
-                                <div class="d-flex align-items-center gap-1 position-relative">
-                                    <?= swarm_icon('lucide:shopping-cart') ?>
-                                    <span class="fw-semibold"><?= hs(trans('nav.cart')) ?></span>
-                                    <?php if ($cartCount > 0): ?>
-                                        <span class="badge rounded-pill bg-danger position-absolute top-0 start-100 translate-middle">
-                                            <?= $cartCount ?>
-                                        </span>
-                                    <?php endif; ?>
-                                </div>
-                            </a>
-                        </li>
-                    </ul>
                 </div>
+                =======
+                >>>>>>> Stashed changes
+
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-center gap-3">
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            <?= swarm_icon('tabler:world') ?>
+                            <span class="fw-semibold"><?= strtoupper($currentLocale) ?></span>
+                        </a>
+
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <?php foreach ($availableLocales as $locale): ?>
+                                <li>
+                                    <a class="dropdown-item <?= $locale === $currentLocale ? 'active' : '' ?>"
+                                        href="<?= hs(strtok($_SERVER['REQUEST_URI'], '?') . '?lang=' . $locale) ?>">
+                                        <?= $locale === 'en' ? '🇬🇧 English' : '🇫🇷 Français' ?>
+                                    </a>
+                                </li>
+                            <?php endforeach; ?>
+                        </ul>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <?= swarm_icon('lucide:sun') ?>
+                        </a>
+                    </li>
+
+                    <?php if ($isLoggedIn): ?>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle d-flex align-items-center gap-1" href="#" role="button" data-bs-toggle="dropdown">
+                                <?= swarm_icon('lucide:user') ?>
+                                <span class="fw-semibold"><?= hs($user['username']) ?></span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <<<<<<< Updated upstream
+                                    <li>
+                                    <a class="dropdown-item" href="<?= $dashboardUrl ?>">
+                                        <?= $userRole === 'admin' ? hs(trans('admin.dashboard')) : hs(trans('nav.dashboard')) ?>
+                                    </a>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li>
+                            <a class="dropdown-item"
+                                href="<?= $userRole === 'admin' ? APP_BASE_URL . '/admin/profile?lang=' . hs($currentLocale) : APP_BASE_URL . '/profile?lang=' . hs($currentLocale) ?>">
+                                <?= hs(trans('nav.profile')) ?>
+                            </a>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item text-danger" href="<?= APP_BASE_URL ?>/auth/logout?lang=<?= hs($currentLocale) ?>"><?= hs(trans('nav.logout')) ?></a></li>
+                        =======
+                        <li><a class="dropdown-item" href="<?= APP_BASE_URL ?>/dashboard">Dashboard</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item" href="<?= APP_BASE_URL ?>/profile">Profile</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item text-danger" href="<?= APP_BASE_URL ?>/auth/logout">Logout</a></li>
+                        >>>>>>> Stashed changes
+                </ul>
+                </li>
+            <?php else: ?>
+                <li class="nav-item">
+                    <a class="nav-link" href="<?= APP_BASE_URL ?>/auth/login?lang=<?= hs($currentLocale) ?>">
+                        <div class="d-flex align-items-center gap-1">
+                            <?= swarm_icon('lucide:user') ?>
+                            <span class="fw-semibold"><?= hs(trans('nav.sign_in')) ?></span>
+                        </div>
+                    </a>
+                </li>
+            <?php endif; ?>
+
+            <li class="nav-item">
+                <a class="nav-link" href="<?= APP_BASE_URL ?>/cart?lang=<?= hs($currentLocale) ?>">
+                    <div class="d-flex align-items-center gap-1 position-relative">
+                        <?= swarm_icon('lucide:shopping-cart') ?>
+                        <span class="fw-semibold"><?= hs(trans('nav.cart')) ?></span>
+                        <?php if ($cartCount > 0): ?>
+                            <span class="badge rounded-pill bg-danger position-absolute top-0 start-100 translate-middle">
+                                <?= $cartCount ?>
+                            </span>
+                        <?php endif; ?>
+                    </div>
+                </a>
+            </li>
+            </ul>
+            </div>
             </div>
         </nav>
         <div style="margin-top: 70px;"></div>
     </header>
 
-    <main class="user-content">
+    <<<<<<< Updated upstream=======>>>>>>> Stashed changes
+        <main class="user-content">

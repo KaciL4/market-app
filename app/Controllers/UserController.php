@@ -2,6 +2,8 @@
 
 namespace App\Controllers;
 
+use App\Domain\Models\ItemModel;
+use App\Domain\Models\TransactionModel;
 use App\Domain\Models\UserModel;
 use DI\Container;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -13,17 +15,27 @@ class UserController extends BaseController
 {
     public function __construct(
         Container $container,
-        private UserModel $userModel,)
-    {
+        private UserModel $userModel,
+        private ItemModel $itemModel,
+        private TransactionModel $transactionModel
+    ) {
         parent::__construct($container);
     }
 
     public function dashboard(Request $resquest, Response $response, array $args): Response
     {
+        $userId = SessionManager::get('user_id');
+
+        $totalUserItems = $this->itemModel->countItemsByUser($userId);
+        $totalCartItems = $this->transactionModel->countCartItems($userId);
+
+
         $title = 'User Dashboard';
         $data = [
             'title' => $title,
-            'username' => SessionManager::get('username', 'User')
+            'username' => SessionManager::get('username', 'User'),
+            'totalUserItems' => $totalUserItems,
+            'totalCartItems' => $totalCartItems
         ];
 
         // TODO: Our user dashboard is in UserController rather than AuthController as indicated in Lab-13
@@ -34,7 +46,7 @@ class UserController extends BaseController
 
         return $this->render($response, 'user/userDashboard.php', $data);
     }
-     public function profile(Request $request, Response $response): Response
+    public function profile(Request $request, Response $response): Response
     {
         // Get user ID from session
         $userId = SessionManager::get('user_id');

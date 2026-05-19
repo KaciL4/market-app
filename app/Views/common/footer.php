@@ -1,6 +1,6 @@
-</body>
+    <div style="height: 100px;"></div>
 
-    <footer class="mt-auto shadow">
+    <footer class="mt-auto shadow bg-body-tertiary">
         <div class="container ">
             <div class="row py-5 g-4">
                 <div class="col-sm-4 ">
@@ -12,11 +12,11 @@
                         </li>
                         <li class="mb-2">
                             <i class="bi bi-telephone-fill me-2 text-primary"></i>
-                             <a href="tel:+11111111111" class="text-white-50 text-decoration-none">+1 (111) 111-1111</a>
+                            <a href="tel:+11111111111" class="text-white-50 text-decoration-none">+1 (111) 111-1111</a>
                         </li>
                         <li class="mb-2">
-                                <i class="bi bi-geo-alt-fill me-2 text-primary"></i>
-                                <span class="text-white-50">821 Sainte-Croix Avenue, Montréal, QC H4L 3X9</span>
+                            <i class="bi bi-geo-alt-fill me-2 text-primary"></i>
+                            <span class="text-white-50">821 Sainte-Croix Avenue, Montréal, QC H4L 3X9</span>
                         </li>
                     </ul>
                 </div>
@@ -60,4 +60,6 @@
             </div>
         </div>
     </footer>
-</html>
+    </body>
+
+    </html>
