@@ -11,6 +11,8 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use DI\Container;
 use App\Helpers\SessionManager;
+use App\Helpers\FileUploadHelper;
+
 
 class ItemController extends BaseController
 {
@@ -141,6 +143,71 @@ class ItemController extends BaseController
         return $response
             ->withHeader('Content-Type', 'application/json')
             ->withStatus(200);
+    }
+    public function showUploadForm(Request $request, Response $response, array $args): Response
+    {
+        $categories = $this->adminModel->getAllCategories();
+
+        return $this->render($response, 'items/upload_item.php', [
+            'title' => trans('items.upload_new_item'),
+            'categories' => $categories
+        ]);
+    }
+
+    public function storeUploadedItem(Request $request, Response $response, array $args): Response
+    {
+        $data = $request->getParsedBody();
+        $uploadedFiles = $request->getUploadedFiles();
+
+        $userId = SessionManager::get('user_id');
+
+        if (!$userId) {
+            FlashMessage::error(trans('flash.fill_all_fields'));
+            return $this->redirect($request, $response, 'auth.login');
+        }
+
+        $categoryId = (int)($data['category_id'] ?? 0);
+        $listingProduct = trim($data['listing_product'] ?? '');
+        $price = (float)($data['price'] ?? 0);
+        $detail = trim($data['detail'] ?? '');
+
+        if ($categoryId <= 0 || empty($listingProduct) || $price <= 0 || empty($detail)) {
+            FlashMessage::error(trans('flash.fill_all_fields'));
+            return $this->redirect($request, $response, 'items.upload');
+        }
+
+        $itemId = $this->itemModel->createPendingItem([
+            'user_id' => $userId,
+            'category_id' => $categoryId,
+            'listing_product' => $listingProduct,
+            'price' => $price,
+            'detail' => $detail
+        ]);
+
+        if (!$itemId) {
+            FlashMessage::error(trans('flash.account_create_failed'));
+            return $this->redirect($request, $response, 'items.upload');
+        }
+
+        $this->itemModel->addItemApproval($itemId);
+
+        if (isset($uploadedFiles['item_image'])) {
+            $uploadResult = FileUploadHelper::upload($uploadedFiles['item_image'], [
+                'directory' => dirname(__DIR__, 2) . '/public/uploads/images',
+                'allowedTypes' => ['image/jpeg', 'image/png', 'image/gif'],
+                'maxSize' => 5 * 1024 * 1024,
+                'filenamePrefix' => 'item_'
+            ]);
+
+            if ($uploadResult->isSuccess()) {
+                $filename = $uploadResult->getData()['filename'];
+                $filePath = '/uploads/images/' . $filename;
+                $this->itemModel->addItemImage($itemId, $filePath, 1);
+            }
+        }
+
+        FlashMessage::success(trans('flash.item_submitted'));
+        return $this->redirect($request, $response, 'myItems.index');
     }
 
     public function deleteItem(Request $request, Response $response, array $args): Response

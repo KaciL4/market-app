@@ -45,39 +45,39 @@ class AuthController extends BaseController
         $confirm_password = $data['confirm_password'] ?? '';
 
         if (empty($username)) {
-            $errors[] = 'Username is required';
+            $errors[] = trans('flash.username_required');
         }
 
         if (empty($email)) {
-            $errors[] = 'Email is required';
+            $errors[] = trans('flash.email_required');
         }
 
         if (empty($password)) {
-            $errors[] = 'Password is required';
+            $errors[] = trans('flash.password_required');
         }
 
         if (empty($confirm_password)) {
-            $errors[] = 'Password confirmation is required';
+            $errors[] = trans('flash.password_confirmation_required');
         }
 
         if (!empty($email) && !filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            $errors[] = 'Invalid email format';
+            $errors[] = trans('flash.invalid_email');
         }
 
         if ($this->userModel->emailExists($email)) {
-            $errors[] = 'Email already exist';
+            $errors[] = trans('flash.email_exists');
         }
 
         if ($this->userModel->usernameExists($username)) {
-            $errors[] = 'Username already exist';
+            $errors[] = trans('flash.username_exists');
         }
 
         if (strlen($password) < 8 || !preg_match('/\d/', $password)) { // or preg_match('/[0-9]/', $password)
-            $errors[] = 'Password must be at least 8 characters and contain at least one number';
+            $errors[] = trans('flash.password_requirements');
         }
 
         if ($password !== $confirm_password) {
-            $errors[] = 'Password and confirmation must match';
+            $errors[] = trans('flash.passwords_must_match');
         }
 
         if (!empty($errors)) {
@@ -103,11 +103,11 @@ class AuthController extends BaseController
 
         if ($create > 0) {
             SessionManager::remove('account_info');
-            FlashMessage::success('Account created successfully');
+            FlashMessage::success(trans('flash.account_created'));
             return $this->redirect($request, $response, 'auth.login');
         } else {
             SessionManager::set('account_info', $data);
-            FlashMessage::error('Failed to create an account. Please try again');
+            FlashMessage::error(trans('flash.account_create_failed'));
             return $this->redirect($request, $response, 'auth.register');
         }
     }
@@ -132,7 +132,7 @@ class AuthController extends BaseController
         $password = $data['password'] ?? '';
 
         if (empty($identifier) || empty($password)) {
-            FlashMessage::error('Please fill all the fields.');
+            FlashMessage::error(trans('flash.fill_all_fields'));
             return $this->redirect($request, $response, 'auth.login');
         }
 
@@ -140,14 +140,14 @@ class AuthController extends BaseController
 
         // dd($user);
         if (!$user) {
-            FlashMessage::error('Invalid login credentials.');
+            FlashMessage::error(trans('flash.invalid_login'));
             return $this->redirect($request, $response, 'auth.login');
         }
         //store user_id for checkout access
         $userId = $user['user_id'] ?? null;
 
         if (!$userId) {
-            FlashMessage::error('User ID not found.');
+            FlashMessage::error(trans('flash.user_id_not_found'));
             return $this->redirect($request, $response, 'auth.login');
         }
 
@@ -177,7 +177,7 @@ class AuthController extends BaseController
         //    prompted. If they do have 2FA, mark it as not yet verified.
         SessionManager::set('2fa_verified', !$twoFAEnabled);
 
-        FlashMessage::success("Welcome back, {$user['username']}!");
+        FlashMessage::success(trans('flash.welcome_back') . ' ' . $user['username'] . '!');
 
         if ($user['role'] === 'admin') {
             return $this->redirect($request, $response, 'admin.dashboard');
@@ -193,10 +193,11 @@ class AuthController extends BaseController
     {
         SessionManager::destroy();
 
-        FlashMessage::success('You have been successfully logged out');
+        FlashMessage::success(trans('flash.logout_success'));
 
         return $this->redirect($request, $response, 'auth.login');
     }
+
     // public function dashboard(Request $request, Response $response): Response
     // {
     //     // TODO:

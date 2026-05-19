@@ -3,21 +3,19 @@
 declare(strict_types=1);
 
 use App\Middleware\SessionMiddleware;
+use App\Middleware\LocaleMiddleware;
 use App\Middleware\ExceptionMiddleware;
 use Slim\App;
 
 return function (App $app) {
-    //TODO: Add your middleware here.
-
     $app->addBodyParsingMiddleware();
     $app->addRoutingMiddleware();
-    //!NOTE: the error handling middleware MUST be added last.
-    //!NOTE: You can add override the default error handler with your custom error handler.
-    //* For more details, refer to Slim framework's documentation.
-    // Add your middleware here.
-    // Start the session at the application level.
-    // Add the session middleware to the application (applies to ALL routes)
+
+    // Slim runs middleware in reverse order.
+    // So Session must be added AFTER Locale to run BEFORE Locale.
+    $app->add(LocaleMiddleware::class);
     $app->add(SessionMiddleware::class);
-    //$app->add(SessionStartMiddleware::class);
+
+    // Error/exception middleware last.
     $app->add(ExceptionMiddleware::class);
 };

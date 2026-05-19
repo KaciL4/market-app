@@ -3,6 +3,8 @@
 use App\Helpers\ViewHelper;
 use App\Helpers\FlashMessage;
 
+$title = $data['title'] ?? trans('admin.upload_image');
+
 ViewHelper::loadAdminHeader($title);
 ?>
 
@@ -10,12 +12,12 @@ ViewHelper::loadAdminHeader($title);
 
 <div class="card mb-4">
     <div class="card-header">
-        <h5>Upload an Image</h5>
-    </div>
+        <h5><?= hs(trans('admin.upload_image')) ?></h5>
+    </div>C
     <div class="card-body">
         <form method="POST" action="<?= APP_BASE_URL ?>/admin/upload" enctype="multipart/form-data">
             <div class="mb-3">
-                <label for="myfile" class="form-label">Choose a file:</label>
+                <label for="myfile" class="form-label"><?= hs(trans('admin.choose_file')) ?></label>
                 <input
                     type="file"
                     class="form-control"
@@ -24,11 +26,11 @@ ViewHelper::loadAdminHeader($title);
                     accept="image/*"
                     required>
                 <div class="form-text">
-                    Select an image file to upload (JPEG, PNG, GIF).
+                    <?= hs(trans('admin.select_image')) ?>
                 </div>
             </div>
 
-            <button type="submit" class="btn btn-primary">Upload File</button>
+            <button type="submit" class="btn btn-primary"><?= hs(trans('admin.upload_file')) ?></button>
         </form>
     </div>
 </div>
@@ -36,7 +38,7 @@ ViewHelper::loadAdminHeader($title);
 <?php if (!empty($files)): ?>
     <div class="card mt-4">
         <div class="card-header">
-            <h5>Uploaded Files</h5>
+            <h5><?= hs(trans('admin.uploaded_files')) ?></h5>
         </div>
         <div class="card-body">
             <div class="row">
@@ -58,7 +60,7 @@ ViewHelper::loadAdminHeader($title);
                                     <input type="hidden" name="filename" value="<?= htmlspecialchars($filename) ?>">
 
                                     <button type="submit" class="btn btn-danger btn-sm">
-                                        Delete
+                                        <?= hs(trans('common.delete')) ?>
                                     </button>
                                 </form>
                             </div>

@@ -27,6 +27,8 @@ use Slim\Psr7\Factory\UriFactory;
 use Slim\Views\PhpRenderer;
 use App\Controllers\HomeController;
 use App\Domain\Models\AdminModel;
+use App\Helpers\TranslationHelper;
+use App\Middleware\LocaleMiddleware;
 
 $definitions = [
     AppSettings::class => function () {
@@ -139,6 +141,20 @@ $definitions = [
         return new HomeController(
             $container,
             $container->get(AdminModel::class)
+        );
+    },
+
+    TranslationHelper::class => function (ContainerInterface $container): TranslationHelper {
+        return new TranslationHelper(
+            APP_LANG_PATH,
+            'en',
+            ['en', 'fr']
+        );
+    },
+
+    LocaleMiddleware::class => function (ContainerInterface $container): LocaleMiddleware {
+        return new LocaleMiddleware(
+            $container->get(TranslationHelper::class)
         );
     },
 ];

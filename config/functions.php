@@ -177,3 +177,16 @@ function getErrorName(int $error_no): string
 
     return $error_types[$error_no] ?? "UNKNOWN_ERROR";
 }
+
+if (!function_exists('trans')) {
+    function trans(string $key, array $parameters = [], ?string $locale = null): string
+    {
+        global $translator;
+
+        if (!isset($translator)) {
+            return $key;
+        }
+
+        return $translator->trans($key, $parameters, $locale);
+    }
+}

@@ -75,7 +75,7 @@ function createItemCard(item) {
         <a href="${window.APP_BASE_URL}/items/${item.item_id}" class="text-decoration-none">
             <div class="card h-100 border-0 shadow bg-dark text-white rounded-4 overflow-hidden">
 
-                <img src="https://placehold.co/600x300/343a40/white?text=No+Image"
+                <img src="${item.file_path ? window.APP_BASE_URL + "/public/" + item.file_path.replace(/^\/+/, "") : "https://placehold.co/600x300/343a40/white?text=No+Image"}"
                     class="card-img-top"
                     style="height:220px;object-fit:cover;">
 

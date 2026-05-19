@@ -117,6 +117,15 @@ return static function (Slim\App $app): void {
         //     ->setName('auth.logout.post'); // If use POST method in 2fa-verify.php
     });
 
+    $app->get('/items/upload', [ItemController::class, 'showUploadForm'])
+        ->setName('items.upload')
+        ->add(AuthMiddleware::class);
+
+    $app->post('/items/upload', [ItemController::class, 'storeUploadedItem'])
+        ->setName('items.upload.store')
+        ->add(AuthMiddleware::class);
+
+
     // Items routes
     $app->get('/items', [ItemController::class, 'index'])->setName('items.index');
 

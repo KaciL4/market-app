@@ -1,10 +1,19 @@
+<?php
+
+$page_title = $page_title ?? $title ?? 'Admin Panel';
+
+global $translator;
+$currentLocale = $translator->getLocale();
+$availableLocales = $translator->getAvailableLocales();
+?>
+
 <!DOCTYPE html>
-<html lang="en" data-bs-theme="dark">
+<html lang="<?= hs($currentLocale) ?>" data-bs-theme="dark">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= $page_title ?></title>
+    <title><?= hs($page_title) ?></title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
     <link href="<?= asset_url('/css/style.css') ?>" rel="stylesheet">
@@ -49,11 +58,11 @@
 <body>
 
     <?php
-    // Helper to mark the active sidebar link
 
     use App\Helpers\SessionManager;
 
     $currentUri = $_SERVER['REQUEST_URI'];
+
     function isActive(string $path): string
     {
         global $currentUri;
@@ -64,7 +73,7 @@
     <header>
         <nav class="navbar navbar-expand-lg bg-body-tertiary px-1 fixed-top">
             <div class="container-fluid py-1">
-                <a class="navbar-brand" href="<?= APP_BASE_URL ?>">
+                <a class="navbar-brand" href="<?= APP_BASE_URL ?>?lang=<?= hs($currentLocale) ?>">
                     <div class="d-flex align-items-center gap-1">
                         <?= swarm_icon('tabler:building-store') ?>
                         <span class="fw-bold">
@@ -79,10 +88,23 @@
 
                 <div class="collapse navbar-collapse" id="navbarText">
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-center gap-3">
-                        <li class="nav-item">
-                            <a class="nav-link" aria-current="page" href="#">
+
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
                                 <?= swarm_icon('tabler:world') ?>
+                                <span class="fw-semibold"><?= strtoupper($currentLocale) ?></span>
                             </a>
+
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <?php foreach ($availableLocales as $locale): ?>
+                                    <li>
+                                        <a class="dropdown-item <?= $locale === $currentLocale ? 'active' : '' ?>"
+                                            href="<?= hs(strtok($_SERVER['REQUEST_URI'], '?') . '?lang=' . $locale) ?>">
+                                            <?= $locale === 'en' ? '🇬🇧 English' : '🇫🇷 Français' ?>
+                                        </a>
+                                    </li>
+                                <?php endforeach; ?>
+                            </ul>
                         </li>
 
                         <li class="nav-item">
@@ -92,8 +114,7 @@
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link" href="<?= APP_ADMIN_URL ?>/profile"> <!-- Click username will redirect to Admin Profile page -->
-                                <!-- show logged in admin username -->
+                            <a class="nav-link" href="<?= APP_ADMIN_URL ?>/profile?lang=<?= hs($currentLocale) ?>">
                                 <div class="d-flex align-items-center">
                                     <span class="me-1"><?= swarm_icon('tabler:user-circle') ?></span>
                                     <span class="fw-semibold"><?= hs(SessionManager::get('username', 'Admin')) ?></span>
@@ -102,11 +123,11 @@
                         </li>
 
                         <li class="nav-item">
-                            <a href="<?= APP_BASE_URL ?>/auth/logout"> <!-- Click Logout button will redirect to Login page -->
+                            <a href="<?= APP_BASE_URL ?>/auth/logout?lang=<?= hs($currentLocale) ?>">
                                 <button type="button" class="btn btn-outline-danger">
                                     <div class="d-flex align-items-center gap-1">
                                         <?= swarm_icon('lucide:log-out') ?>
-                                        <span class="fw-semibold">Logout</span>
+                                        <span class="fw-semibold"><?= hs(trans('nav.logout')) ?></span>
                                     </div>
                                 </button>
                             </a>
@@ -122,59 +143,59 @@
             <nav class="col-md-3 col-lg-2 d-md-block admin-sidebar p-0">
                 <ul class="nav flex-column px-2 mt-2">
                     <li class="nav-item">
-                        <!-- active class set dynamically for each link -->
-                        <a class="nav-link <?= isActive('dashboard') ?>" href="<?= APP_BASE_URL ?>/admin/dashboard">
-                            <i class="bi bi-speedometer2 me-2"></i>Dashboard
+                        <a class="nav-link <?= isActive('dashboard') ?>" href="<?= APP_BASE_URL ?>/admin/dashboard?lang=<?= hs($currentLocale) ?>">
+                            <i class="bi bi-speedometer2 me-2"></i><?= hs(trans('admin.dashboard')) ?>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link <?= isActive('user_management') ?>" href="<?= APP_BASE_URL ?>/admin/user_management">
-                            <i class="bi bi-people me-2"></i>User Management
+                        <a class="nav-link <?= isActive('user_management') ?>" href="<?= APP_BASE_URL ?>/admin/user_management?lang=<?= hs($currentLocale) ?>">
+                            <i class="bi bi-people me-2"></i><?= hs(trans('admin.user_management')) ?>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link <?= isActive('upload') ?>" href="<?= APP_BASE_URL ?>/admin/upload">
-                            <i class="bi bi-upload me-2"></i>File Upload
+                        <a class="nav-link <?= isActive('upload') ?>" href="<?= APP_BASE_URL ?>/admin/upload?lang=<?= hs($currentLocale) ?>">
+                            <i class="bi bi-upload me-2"></i><?= hs(trans('admin.file_upload')) ?>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link <?= isActive('item_management') ?>" href="<?= APP_BASE_URL ?>/admin/item_management">
-                            <i class="bi bi-box-seam me-2"></i>Item Management
+                        <a class="nav-link <?= isActive('item_management') ?>" href="<?= APP_BASE_URL ?>/admin/item_management?lang=<?= hs($currentLocale) ?>">
+                            <i class="bi bi-box-seam me-2"></i><?= hs(trans('admin.item_management')) ?>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link <?= isActive('transactions') ?>" href="<?= APP_BASE_URL ?>/admin/transactions">
-                            <i class="bi bi-receipt me-2"></i>Transactions
+                        <a class="nav-link <?= isActive('transactions') ?>" href="<?= APP_BASE_URL ?>/admin/transactions?lang=<?= hs($currentLocale) ?>">
+                            <i class="bi bi-receipt me-2"></i><?= hs(trans('admin.transactions')) ?>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link <?= isActive('categories') ?>" href="<?= APP_BASE_URL ?>/admin/categories">
-                            <i class="bi bi-tags me-2"></i>Categories
+                        <a class="nav-link <?= isActive('categories') ?>" href="<?= APP_BASE_URL ?>/admin/categories?lang=<?= hs($currentLocale) ?>">
+                            <i class="bi bi-tags me-2"></i><?= hs(trans('admin.categories')) ?>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link <?= isActive('reports') ?>" href="<?= APP_BASE_URL ?>/admin/reports">
-                            <i class="bi bi-bar-chart me-2"></i>Reports
+                        <a class="nav-link <?= isActive('reports') ?>" href="<?= APP_BASE_URL ?>/admin/reports?lang=<?= hs($currentLocale) ?>">
+                            <i class="bi bi-bar-chart me-2"></i><?= hs(trans('admin.reports')) ?>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link <?= isActive('system_notices') ?>" href="<?= APP_BASE_URL ?>/admin/system_notices">
-                            <i class="bi bi-bell me-2"></i>System Notices
+                        <a class="nav-link <?= isActive('system_notices') ?>" href="<?= APP_BASE_URL ?>/admin/system_notices?lang=<?= hs($currentLocale) ?>">
+                            <i class="bi bi-bell me-2"></i><?= hs(trans('admin.system_notices')) ?>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link <?= isActive('activity_log') ?>" href="<?= APP_BASE_URL ?>/admin/activity_log">
-                            <i class="bi bi-clock-history me-2"></i>Activity Log
+                        <a class="nav-link <?= isActive('activity_log') ?>" href="<?= APP_BASE_URL ?>/admin/activity_log?lang=<?= hs($currentLocale) ?>">
+                            <i class="bi bi-clock-history me-2"></i><?= hs(trans('admin.activity_log')) ?>
                         </a>
                     </li>
                 </ul>
+
                 <hr class="text-secondary">
+
                 <div class="px-2">
-                    <a class="nav-link text-muted" href="<?= APP_BASE_URL ?>/">
-                        &larr; Back to Store
+                    <a class="nav-link text-muted" href="<?= APP_BASE_URL ?>/?lang=<?= hs($currentLocale) ?>">
+                        &larr; <?= hs(trans('admin.back_to_store')) ?>
                     </a>
                 </div>
             </nav>
 
-            <!-- Main Content -->
             <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 pt-4 admin-content">

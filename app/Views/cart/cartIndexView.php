@@ -4,23 +4,29 @@ namespace App\Views\cart;
 
 use App\Helpers\ViewHelper;
 
+global $translator;
+$currentLocale = $translator->getLocale();
+
 $itemCount = $data['itemCount'] ?? 0;
 $totalPrice = $data['totalPrice'] ?? 0;
-ViewHelper::loadHeader('Shopping Cart');
+
+ViewHelper::loadHeader(trans('cart.title'));
 ?>
 
 <div class="container py-5">
     <div class="row justify-content-center">
         <div class="col-xl-10 col-12">
-            <h1 class="fw-bold h2 mb-4">Shopping cart</h1>
+            <h1 class="fw-bold h2 mb-4"><?= hs(trans('cart.title')) ?></h1>
 
             <div class="row g-4">
                 <div class="col-lg-8">
                     <?php if (empty($cart)): ?>
                         <div class="card border-0 shadow text-center py-5">
                             <i class="bi bi-cart-x text-muted mb-3" style="font-size: 3rem;"></i>
-                            <h4>Your cart is empty</h4>
-                            <a href="<?= APP_BASE_URL ?>/items" class="btn btn-primary rounded-pill mt-3 px-4">Continue Shopping</a>
+                            <h4><?= hs(trans('cart.empty')) ?></h4>
+                            <a href="<?= APP_BASE_URL ?>/items?lang=<?= hs($currentLocale) ?>" class="btn btn-primary rounded-pill mt-3 px-4">
+                                <?= hs(trans('cart.continue_shopping')) ?>
+                            </a>
                         </div>
                     <?php else: ?>
                         <?php foreach ($cart as $id => $item): ?>
@@ -44,7 +50,6 @@ ViewHelper::loadHeader('Shopping Cart');
 
                                         <div class="col-md-6">
                                             <h5 class="fw-bold mb-1"><?= hs($item['name']) ?></h5>
-
                                         </div>
 
                                         <div class="col-md-3 text-md-end mt-3 mt-md-0">
@@ -59,22 +64,27 @@ ViewHelper::loadHeader('Shopping Cart');
 
                 <div class="col-lg-4">
                     <div class="card border-0 shadow p-4 sticky-top" style="top: 20px;">
-                        <h4 class="fw-bold mb-4">Order summary</h4>
+                        <h4 class="fw-bold mb-4"><?= hs(trans('cart.order_summary')) ?></h4>
+
                         <div class="d-flex justify-content-between mb-2">
-                            <span>Items (<?= $itemCount ?>)</span>
+                            <span><?= hs(trans('cart.items')) ?> (<?= $itemCount ?>)</span>
                             <span>$<?= number_format($totalPrice, 2) ?></span>
                         </div>
+
                         <div class="d-flex justify-content-between mb-3">
-                            <span>Shipping</span>
-                            <span class="text-success fw-bold">Free</span>
+                            <span><?= hs(trans('cart.shipping')) ?></span>
+                            <span class="text-success fw-bold"><?= hs(trans('cart.free')) ?></span>
                         </div>
+
                         <hr>
+
                         <div class="d-flex justify-content-between mb-4">
-                            <span class="h4 fw-bold">Total</span>
+                            <span class="h4 fw-bold"><?= hs(trans('cart.total')) ?></span>
                             <span class="h4 fw-bold">$<?= number_format($totalPrice, 2) ?></span>
                         </div>
-                        <a href="<?= APP_BASE_URL ?>/cart/checkout" class="btn  btn-primary w-100 py-3 rounded-pill fw-bold <?= empty($cart) ? 'disabled' : '' ?>">
-                            Checkout
+
+                        <a href="<?= APP_BASE_URL ?>/cart/checkout?lang=<?= hs($currentLocale) ?>" class="btn btn-primary w-100 py-3 rounded-pill fw-bold <?= empty($cart) ? 'disabled' : '' ?>">
+                            <?= hs(trans('cart.checkout')) ?>
                         </a>
                     </div>
                 </div>
@@ -90,19 +100,26 @@ ViewHelper::loadHeader('Shopping Cart');
                 <div class="mb-3">
                     <i class="bi bi-exclamation-circle text-danger" style="font-size: 4rem;"></i>
                 </div>
-                <h4 class="fw-bold">Remove Item?</h4>
-                <p class="text-muted">Are you sure you want to remove <span id="modalItemName" class="fw-bold "></span> from your cart?</p>
+
+                <h4 class="fw-bold"><?= hs(trans('cart.remove_item_question')) ?></h4>
+                <p class="text-muted">
+                    <?= hs(trans('cart.remove_item_confirm')) ?>
+                    <span id="modalItemName" class="fw-bold"></span>?
+                </p>
 
                 <div class="d-grid gap-2 mt-4">
-                    <button type="button" id="confirmDeleteBtn" class="btn btn-danger rounded-pill py-2 fw-bold">Remove Item</button>
-                    <button type="button" class="btn btn-outline-secondary rounded-pill py-2" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" id="confirmDeleteBtn" class="btn btn-danger rounded-pill py-2 fw-bold">
+                        <?= hs(trans('cart.remove_item')) ?>
+                    </button>
+                    <button type="button" class="btn btn-outline-secondary rounded-pill py-2" data-bs-dismiss="modal">
+                        <?= hs(trans('common.cancel')) ?>
+                    </button>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
 <script src="<?= APP_BASE_URL ?>/public/assets/js/cart.js"></script>
 
-<?php
-ViewHelper::loadFooter();
-?>
+<?php ViewHelper::loadFooter(); ?>

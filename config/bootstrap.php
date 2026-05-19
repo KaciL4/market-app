@@ -29,6 +29,8 @@ $container = (new ContainerBuilder())
 // Boot the IconManager so the global swarm_icon() helper is available in views.
 $container->get(\Frostybee\SwarmIcons\IconManager::class);
 
+global $translator;
+$translator = $container->get(\App\Helpers\TranslationHelper::class);
 // Create and return an App instance.
 $app = $container->get(App::class);
 return $app;

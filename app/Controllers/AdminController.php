@@ -178,7 +178,7 @@ class AdminController extends BaseController
             }
 
             return $response
-                ->withHeader('Location', APP_BASE_URL . '/admin/item_management')
+                ->withHeader('Location', APP_BASE_URL . '/admin/item_management?lang=' . SessionManager::get('locale', 'en'))
                 ->withStatus(302);
         }
 
