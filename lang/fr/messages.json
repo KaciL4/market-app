@@ -258,5 +258,17 @@
         "explore": "Explorer",
         "upload_item": "Mettre un article à vendre",
         "sell": "Vendre"
+    },
+    "footer": {
+        "contact_us": "Nous joindre",
+        "follow_us": "Suivez-nous",
+        "follow_text": "Suivez-nous sur les réseaux sociaux pour des offres exclusives et des mises à jour.",
+        "marketplace": "Marché",
+        "home_page": "Page d’accueil",
+        "privacy_policy": "Politique de confidentialité",
+        "terms": "Conditions générales",
+        "copyright": "Droits d’auteur",
+        "rights_reserved": "Tous droits réservés.",
+        "project": "Collège Vanier 420-411-VA E-COMMERCE – Projet final d’équipe"
     }
 }

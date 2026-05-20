@@ -191,11 +191,15 @@ class AuthController extends BaseController
      */
     public function logout(Request $request, Response $response, array $args): Response
     {
+        $lang = $request->getQueryParams()['lang'] ?? 'en';
+
         SessionManager::destroy();
 
         FlashMessage::success(trans('flash.logout_success'));
 
-        return $this->redirect($request, $response, 'auth.login');
+        return $response
+            ->withHeader('Location', APP_BASE_URL . '/auth/login?lang=' . $lang)
+            ->withStatus(302);
     }
 
     // public function dashboard(Request $request, Response $response): Response

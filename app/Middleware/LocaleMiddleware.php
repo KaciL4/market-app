@@ -37,7 +37,7 @@ class LocaleMiddleware implements MiddlewareInterface
             }
         }
 
-        // Store current locale as a request attribute (useful in controllers/views)
+        // Store current locale as a request attribute
         $request = $request->withAttribute('locale', $this->translator->getLocale());
 
         return $handler->handle($request);

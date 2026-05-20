@@ -258,5 +258,17 @@
         "explore": "Explore",
         "upload_item": "Upload Item for Sale",
         "sell": "Sell"
+    },
+    "footer": {
+        "contact_us": "Contact Us",
+        "follow_us": "Follow Us",
+        "follow_text": "Follow us on social media for exclusive offers and updates.",
+        "marketplace": "Marketplace",
+        "home_page": "Home Page",
+        "privacy_policy": "Privacy Policy",
+        "terms": "Terms & Conditions",
+        "copyright": "Copyright",
+        "rights_reserved": "All Rights Reserved.",
+        "project": "Vanier College 420-411-VA E-COMMERCE – Final Team Project"
     }
 }

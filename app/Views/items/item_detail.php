@@ -6,6 +6,8 @@ global $translator;
 $currentLocale = $translator->getLocale();
 
 $item = $data['item'] ?? [];
+$title = $data['title'] ?? ($item['listing_product'] ?? trans('items.title'));
+
 ViewHelper::loadHeader($title);
 ?>
 
