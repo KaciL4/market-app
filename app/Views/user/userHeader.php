@@ -94,7 +94,7 @@ $dashboardUrl = $userRole === 'admin'
                                     <li>
                                         <a class="dropdown-item <?= $locale === $currentLocale ? 'active' : '' ?>"
                                             href="<?= hs(strtok($_SERVER['REQUEST_URI'], '?') . '?lang=' . $locale) ?>">
-                                            <?= $locale === 'en' ? '🇬🇧 English' : '🇫🇷 Français' ?>
+                                            <?= $locale === 'en' ? 'ᴇɴ English' : '🇫🇷 Français' ?>
                                         </a>
                                     </li>
                                 <?php endforeach; ?>
@@ -168,7 +168,7 @@ $dashboardUrl = $userRole === 'admin'
                 <div class="collapse navbar-collapse" id="subNavbar">
                     <ul class="navbar-nav mx-auto mb-2 mb-lg-0 gap-4 py-2">
                         <li class="nav-item">
-                            <a class="nav-link fw-semibold <?= str_contains($_SERVER['REQUEST_URI'], 'dashboard') ? 'active' : '' ?>" href="<?= $dashboardUrl ?>">
+                            <a class="nav-link fw-semibold <?= str_contains($_SERVER['REQUEST_URI'], 'dashboard') ? 'active' : '' ?>" href="<?= APP_BASE_URL ?>">
                                 <div class="d-flex align-items-center gap-2">
                                     <?= swarm_icon('tabler:home') ?>
                                     <span><?= hs(trans('nav.home')) ?></span>

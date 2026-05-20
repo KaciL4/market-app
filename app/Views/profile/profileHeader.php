@@ -88,7 +88,7 @@ $dashboardUrl = $userRole === 'admin'
                                 <li>
                                     <a class="dropdown-item <?= $locale === $currentLocale ? 'active' : '' ?>"
                                         href="<?= hs(strtok($_SERVER['REQUEST_URI'], '?') . '?lang=' . $locale) ?>">
-                                        <?= $locale === 'en' ? '🇬🇧 English' : '🇫🇷 Français' ?>
+                                        <?= $locale === 'en' ? 'ᴇɴ English' : '🇫🇷 Français' ?>
                                     </a>
                                 </li>
                             <?php endforeach; ?>

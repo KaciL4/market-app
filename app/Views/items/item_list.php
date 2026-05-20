@@ -4,7 +4,7 @@ use App\Helpers\ViewHelper;
 
 global $translator;
 $currentLocale = $translator->getLocale();
-
+$categories = $data['categories'] ?? [];
 $title = trans('items.title');
 
 ViewHelper::loadItemHeader($title);
@@ -16,19 +16,42 @@ ViewHelper::loadItemHeader($title);
             <h1 class="display-5 fw-bold text-white mb-3"><?= hs(trans('items.discover_unique')) ?></h1>
             <p class="lead text-secondary mb-4"><?= hs(trans('items.browse_subtitle')) ?></p>
 
-            <div class="input-group input-group-lg shadow-sm">
-                <span class="input-group-text bg-secondary bg-opacity-10 border-secondary-subtle border-end-0 rounded-start-pill ps-4 text-secondary">
-                    <i class="bi bi-search"></i>
-                </span>
-                <input
-                    type="text"
-                    id="liveSearchInput"
-                    class="form-control bg-secondary bg-opacity-10 border-secondary-subtle border-start-0 border-end-0 text-white shadow-none"
-                    placeholder="<?= hs(trans('nav.search_placeholder')) ?>"
-                    autocomplete="off">
-                <button class="btn btn-primary px-5 rounded-end-pill fw-bold" type="button" id="button-search">
-                    <?= hs(trans('nav.search_btn')) ?>
-                </button>
+            <div class="search-wrapper bg-dark bg-opacity-50 rounded-4 p-3 p-lg-4">
+                <div class="d-flex flex-column flex-sm-row gap-2">
+
+                    <!-- Search Input Group -->
+                    <div class="input-group input-group-lg flex-grow-1 shadow-sm">
+                        <span class="input-group-text bg-secondary bg-opacity-10 border-secondary-subtle border-end-0 rounded-start-pill ps-4 text-secondary">
+                            <i class="bi bi-search"></i>
+                        </span>
+                        <input
+                            type="text"
+                            id="liveSearchInput"
+                            class="form-control bg-secondary bg-opacity-10 border-secondary-subtle border-start-0 border-end-0 text-white shadow-none"
+                            placeholder="<?= hs(trans('nav.search_placeholder')) ?>"
+                            autocomplete="off">
+                        <button class="btn btn-primary px-5 rounded-end-pill fw-bold" type="button" id="button-search">
+                            <i class="bi bi-search me-2"></i>
+                            <?= hs(trans('nav.search_btn')) ?>
+                        </button>
+                    </div>
+                    <!-- Categories Dropdown -->
+                    <div class="dropdown">
+                        <button class="btn rounded-pill px-5 py-2 dropdown-toggle" type="button" data-bs-toggle="dropdown" style="min-width: 150px;">
+                            <strong><?= hs(trans('nav.categories')) ?> </strong>
+                        </button>
+                        <ul class="dropdown-menu shadow-lg border-0 mt-2" style="min-width: 220px;">
+                            <?php foreach ($categories as $category): ?>
+                                <li>
+                                    <a class="dropdown-item py-2" href="<?= APP_BASE_URL ?>/items?category=<?= $category['category_id'] ?>&lang=<?= hs($currentLocale) ?>">
+                                        <i class="bi bi-tag-fill me-2 text-primary"></i>
+                                        <?= hs($category['category_name']) ?>
+                                    </a>
+                                </li>
+                            <?php endforeach; ?>
+                        </ul>
+                    </div>
+                </div>
             </div>
 
             <div class="mt-3">
