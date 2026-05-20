@@ -167,7 +167,8 @@ $availableLocales = $translator->getAvailableLocales();
                             <i class="bi bi-receipt me-2"></i><?= hs(trans('admin.transactions')) ?>
                         </a>
                     </li>
-                    <li class="nav-item">
+                    <!-- Do implement if we have time -->
+                    <!-- <li class="nav-item">
                         <a class="nav-link <?= isActive('categories') ?>" href="<?= APP_BASE_URL ?>/admin/categories?lang=<?= hs($currentLocale) ?>">
                             <i class="bi bi-tags me-2"></i><?= hs(trans('admin.categories')) ?>
                         </a>
@@ -186,7 +187,7 @@ $availableLocales = $translator->getAvailableLocales();
                         <a class="nav-link <?= isActive('activity_log') ?>" href="<?= APP_BASE_URL ?>/admin/activity_log?lang=<?= hs($currentLocale) ?>">
                             <i class="bi bi-clock-history me-2"></i><?= hs(trans('admin.activity_log')) ?>
                         </a>
-                    </li>
+                    </li> -->
                 </ul>
 
                 <hr class="text-secondary">
