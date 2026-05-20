@@ -56,7 +56,6 @@ $dashboardUrl = $userRole === 'admin'
                 </button>
 
                 <div class="collapse navbar-collapse" id="navbarMain">
-                    <<<<<<< Updated upstream
                         <div class="flex-grow-1 mx-lg-5 mx-md-3">
                         <form action="<?= APP_BASE_URL ?>/items" method="GET" class="d-flex">
                             <input type="hidden" name="lang" value="<?= hs($currentLocale) ?>">
@@ -75,8 +74,6 @@ $dashboardUrl = $userRole === 'admin'
                             </div>
                         </form>
                 </div>
-                =======
-                >>>>>>> Stashed changes
 
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-center gap-3">
 
@@ -111,7 +108,6 @@ $dashboardUrl = $userRole === 'admin'
                                 <span class="fw-semibold"><?= hs($user['username']) ?></span>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end">
-                                <<<<<<< Updated upstream
                                     <li>
                                     <a class="dropdown-item" href="<?= $dashboardUrl ?>">
                                         <?= $userRole === 'admin' ? hs(trans('admin.dashboard')) : hs(trans('nav.dashboard')) ?>
@@ -130,17 +126,7 @@ $dashboardUrl = $userRole === 'admin'
                             <hr class="dropdown-divider">
                         </li>
                         <li><a class="dropdown-item text-danger" href="<?= APP_BASE_URL ?>/auth/logout?lang=<?= hs($currentLocale) ?>"><?= hs(trans('nav.logout')) ?></a></li>
-                        =======
-                        <li><a class="dropdown-item" href="<?= APP_BASE_URL ?>/dashboard">Dashboard</a></li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li><a class="dropdown-item" href="<?= APP_BASE_URL ?>/profile">Profile</a></li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li><a class="dropdown-item text-danger" href="<?= APP_BASE_URL ?>/auth/logout">Logout</a></li>
-                        >>>>>>> Stashed changes
+
                 </ul>
                 </li>
             <?php else: ?>
@@ -174,5 +160,4 @@ $dashboardUrl = $userRole === 'admin'
         <div style="margin-top: 70px;"></div>
     </header>
 
-    <<<<<<< Updated upstream=======>>>>>>> Stashed changes
         <main class="user-content">

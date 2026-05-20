@@ -2,19 +2,19 @@
 
 use App\Helpers\ViewHelper;
 
-$title = $data['title'] ?? 'Transactions';
+$title = trans('admin.transactions');
 $transactions = $data['transactions'] ?? [];
 
 ViewHelper::loadAdminHeader($title);
 ?>
 
 <div class="mb-4 border-bottom">
-    <h2>Transactions</h2>
-    <p class="text-secondary mb-3">View all platform transactions</p>
+    <h2><?= hs(trans('admin.transactions')) ?></h2>
+    <p class="text-secondary mb-3"><?= hs(trans('admin.view_transactions')) ?></p>
 </div>
 
 <p class="text-muted small mb-2">
-    Total transactions: <strong><?= count($transactions) ?></strong>
+    <?= hs(trans('admin.total_transactions')) ?>: <strong><?= count($transactions) ?></strong>
 </p>
 
 <div class="card border-0 shadow-sm">

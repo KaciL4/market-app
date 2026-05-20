@@ -2,8 +2,6 @@
             </div>
             </div>
 
-            <div style="height: 100px;"></div>
-
             <footer class="mt-auto shadow bg-body-tertiary">
             <div class="container">
                 <div class="row py-5 g-4">

@@ -4,14 +4,14 @@ use App\Helpers\FlashMessage;
 use App\Helpers\ViewHelper;
 
 $users = $data['users'] ?? [];
-$title = $data['title'] ?? "User Management";
+$title = trans('admin.user_management');
 
 ViewHelper::loadAdminHeader($title); // ← this loads the sidebar automatically
 ?>
 
 <div class="mb-4 border-bottom">
-    <h2>User Management</h2>
-    <p class="text-secondary mb-3">View and manage all registered users</p>
+    <h2><?= hs(trans('admin.user_management')) ?></h2>
+    <p class="text-secondary mb-3"><?= hs(trans('admin.view_users')) ?></p>
 </div>
 
 <!-- Success message -->
@@ -34,14 +34,14 @@ ViewHelper::loadAdminHeader($title); // ← this loads the sidebar automatically
                 type="text"
                 id="searchInput"
                 class="form-control border-start-0"
-                placeholder="Search by username..."
+                placeholder="<?= hs(trans('admin.search_by_username')) ?>"
                 value="<?= htmlspecialchars($_GET['search'] ?? '') ?>">
             <button class="btn btn-primary" id="searchBtn">
-                Search
+                <?= hs(trans('admin.search')) ?>
             </button>
             <?php if (!empty($_GET['search'])): ?>
                 <a href="<?= APP_BASE_URL ?>/admin/user_management" class="btn btn-secondary">
-                    <i class="bi bi-x"></i> Clear
+                    <i class="bi bi-x"></i> <?= hs(trans('admin.clear')) ?>
                 </a>
             <?php endif; ?>
         </div>
@@ -53,7 +53,7 @@ ViewHelper::loadAdminHeader($title); // ← this loads the sidebar automatically
         Showing results for: <strong><?= htmlspecialchars($_GET['search']) ?></strong>
         — <?= count($users) ?> user(s) found
     <?php else: ?>
-        Total users: <strong><?= count($users) ?></strong>
+        <?= hs(trans('admin.total_users')) ?>: <strong><?= count($users) ?></strong>
     <?php endif; ?>
 </p>
 <!-- Users Table -->

@@ -133,7 +133,7 @@
         "fill_all_fields": "Veuillez remplir tous les champs.",
         "invalid_login": "Identifiants invalides.",
         "user_id_not_found": "ID utilisateur introuvable.",
-        "welcome_back": "Bon retour, %username%!",
+        "welcome_back": "Bon retour, ",
         "logout_success": "Vous avez été déconnecté avec succès."
     },
     "security": {
@@ -241,10 +241,22 @@
         "reports": "Rapports",
         "system_notices": "Avis système",
         "activity_log": "Journal d'activité",
-        "back_to_store": "Retour à la boutique"
+        "back_to_store": "Retour à la boutique",
+        "view_transactions": "Voir toutes les transactions de la plateforme",
+        "total_transactions": "Transactions totales",
+        "view_users": "Afficher et gérer tous les utilisateurs enregistrés",
+        "search_by_username": "Rechercher par nom d'utilisateur..."
     },
     "dashboard": {
         "welcome": "Bienvenue",
         "subtitle": "Votre tableau de bord du marché étudiant"
+    },
+    "card": {
+        "my_listings": "Mes annonces",
+        "shopping_cart": "Panier",
+        "browse_items": "Parcourir les articles",
+        "explore": "Explorer",
+        "upload_item": "Mettre un article à vendre",
+        "sell": "Vendre"
     }
 }

@@ -133,7 +133,7 @@
         "fill_all_fields": "Please fill all the fields.",
         "invalid_login": "Invalid login credentials.",
         "user_id_not_found": "User ID not found.",
-        "welcome_back": "Welcome back, %username%!",
+        "welcome_back": "Welcome back, ",
         "logout_success": "You have been successfully logged out."
     },
     "security": {
@@ -241,10 +241,22 @@
         "reports": "Reports",
         "system_notices": "System Notices",
         "activity_log": "Activity Log",
-        "back_to_store": "Back to Store"
+        "back_to_store": "Back to Store",
+        "view_transactions": "View all platform transactions",
+        "total_transactions": "Total transactions",
+        "view_users": "View and manage all registered users",
+        "search_by_username": "Search by username..."
     },
     "dashboard": {
         "welcome": "Welcome",
         "subtitle": "Your Student Marketplace Dashboard"
+    },
+    "card": {
+        "my_listings": "My Listings",
+        "shopping_cart": "Shopping Cart",
+        "browse_items": "Browse Items",
+        "explore": "Explore",
+        "upload_item": "Upload Item for Sale",
+        "sell": "Sell"
     }
 }

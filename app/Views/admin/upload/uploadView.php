@@ -13,7 +13,7 @@ ViewHelper::loadAdminHeader($title);
 <div class="card mb-4">
     <div class="card-header">
         <h5><?= hs(trans('admin.upload_image')) ?></h5>
-    </div>C
+    </div>
     <div class="card-body">
         <form method="POST" action="<?= APP_BASE_URL ?>/admin/upload" enctype="multipart/form-data">
             <div class="mb-3">
