@@ -85,7 +85,7 @@ function createItemCard(item) {
                         ${escapeHtml(item.listing_product)}
                     </h5>
 
-                    <p>${escapeHtml(description)}</p>
+                    <p class="small text-secondary">${escapeHtml(description)}</p>
 
                     <p>Seller: ${escapeHtml(item.username || "")}</p>
 

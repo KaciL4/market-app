@@ -19,13 +19,13 @@ ViewHelper::loadItemHeader($title);
             <form method="POST" action="<?= APP_BASE_URL ?>/items/upload?lang=<?= hs($currentLocale) ?>" enctype="multipart/form-data">
 
                 <div class="mb-3">
-                    <label class="form-label"><?= hs(trans('items.listing_product')) ?></label>
-                    <input type="text" name="listing_product" class="form-control" required>
+                    <label for="listing_product" class="form-label"><?= hs(trans('items.listing_product')) ?></label>
+                    <input type="text" id="listing_product" name="listing_product" class="form-control" required>
                 </div>
 
                 <div class="mb-3">
-                    <label class="form-label"><?= hs(trans('items.category')) ?></label>
-                    <select name="category_id" class="form-select" required>
+                    <label for="category_id" class="form-label"><?= hs(trans('items.category')) ?></label>
+                    <select name="category_id" id="category_id" class="form-select" required>
                         <option value=""><?= hs(trans('common.confirm')) ?></option>
                         <?php foreach ($categories as $category): ?>
                             <option value="<?= hs($category['category_id']) ?>">
@@ -36,18 +36,18 @@ ViewHelper::loadItemHeader($title);
                 </div>
 
                 <div class="mb-3">
-                    <label class="form-label"><?= hs(trans('items.price')) ?></label>
-                    <input type="number" step="0.01" min="0.01" name="price" class="form-control" required>
+                    <label for="price" class="form-label"><?= hs(trans('items.price')) ?></label>
+                    <input type="number" id="price" step="0.01" min="0.01" name="price" class="form-control" required>
                 </div>
 
                 <div class="mb-3">
-                    <label class="form-label"><?= hs(trans('items.detail')) ?></label>
-                    <textarea name="detail" class="form-control" rows="4" required></textarea>
+                    <label for="detail" class="form-label"><?= hs(trans('items.detail')) ?></label>
+                    <textarea name="detail" id="detail" class="form-control" rows="4" required></textarea>
                 </div>
 
                 <div class="mb-4">
-                    <label class="form-label"><?= hs(trans('items.upload_images')) ?></label>
-                    <input type="file" name="item_image" class="form-control" accept="image/*">
+                    <label for="item_image" class="form-label"><?= hs(trans('items.upload_images')) ?></label>
+                    <input type="file" id="item_image" name="item_image" class="form-control" accept="image/*">
                 </div>
 
                 <button type="submit" class="btn btn-primary w-100 py-2">

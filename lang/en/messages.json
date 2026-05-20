@@ -49,10 +49,13 @@
         "seller": "Seller",
         "manage_items": "Manage your items for sale",
         "upload_new_item": "Upload New Item",
+        "edit_item": "Edit Item",
         "available": "Available",
         "sold": "Sold",
         "waiting_admin": "Waiting for admin approval",
-        "listed_on": "Listed on"
+        "listed_on": "Listed on",
+        "update_listing": "Update",
+        "cancel": "Cancel"
     },
     "common": {
         "save": "Save",

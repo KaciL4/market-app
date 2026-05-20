@@ -49,10 +49,13 @@
         "seller": "Vendeur",
         "manage_items": "Gérez vos articles en vente",
         "upload_new_item": "Téléverser un nouvel article",
+        "edit_item": "Modifier l'article",
         "available": "Disponible",
         "sold": "Vendu",
         "waiting_admin": "En attente de l’approbation de l’administrateur",
-        "listed_on": "Publié le"
+        "listed_on": "Publié le",
+        "update_listing": "Mise à jour",
+        "cancel": "Annuler"
     },
     "common": {
         "save": "Enregistrer",

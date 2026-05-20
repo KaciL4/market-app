@@ -63,7 +63,7 @@ function renderItems(items) {
 
 function createItemCard(item) {
     const col = document.createElement("div");
-    col.className = "col-md-3 col-sm-6";
+    col.className = "col-md-3 col-sm-6 mb-4";
 
     const description = item.detail
         ? item.detail.length > 60
@@ -71,33 +71,89 @@ function createItemCard(item) {
             : item.detail
         : "";
 
+    let statusBadge = "";
+
+    switch (item.status) {
+        case "Pending":
+            statusBadge = `<span class="badge rounded-pill text-warning">Pending Approval</span>`;
+            break;
+
+        case "Available":
+            statusBadge = `<span class="badge rounded-pill bg-success">Available</span>`;
+            break;
+
+        case "Sold":
+            statusBadge = `<span class="badge rounded-pill bg-danger">Sold</span>`;
+            break;
+    }
+
     col.innerHTML = `
-        <a href="${window.APP_BASE_URL}/items/${item.item_id}" class="text-decoration-none">
-            <div class="card h-100 border-0 shadow bg-dark text-white rounded-4 overflow-hidden">
+        <div class="card h-100 border-0 shadow bg-dark text-white rounded-4 overflow-hidden item-card">
 
-                <img src="https://placehold.co/600x300/343a40/white?text=No+Image"
-                    class="card-img-top"
-                    style="height:220px;object-fit:cover;">
+            <img
+                src="${
+                    item.file_path
+                        ? window.APP_BASE_URL +
+                          "/public/" +
+                          item.file_path.replace(/^\/+/, "")
+                        : "https://placehold.co/600x300/343a40/white?text=No+Image"
+                }"
+                class="card-img-top"
+                style="height: 300px; object-fit: cover;">
 
-                <div class="card-body d-flex flex-column px-3 pt-3 pb-4">
+            <div class="card-body d-flex flex-column px-3 pt-3 pb-4">
 
-                    <h5 class="fw-bold">
+                <div class="d-flex justify-content-between mt-2">
+                    <h5 class="fw-bold text-white">
                         ${escapeHtml(item.listing_product)}
                     </h5>
 
-                    <p>${escapeHtml(description)}</p>
+                    ${statusBadge}
+                </div>
 
-                    <p>Seller: ${escapeHtml(item.username || "")}</p>
+                <p class="small text-secondary">
+                    ${escapeHtml(description)}
+                </p>
 
-                    <div class="mt-auto">
+                <div class="d-flex align-items-center justify-content-between mt-2">
+
+                    <div class="mt-auto mb-3">
                         <h5 class="text-primary fw-bold mb-0">
                             $${parseFloat(item.price).toFixed(2)}
                         </h5>
                     </div>
 
+                    <p class="small text-secondary">
+                        ${escapeHtml(item.listing_date || "")}
+                    </p>
+
                 </div>
+
+                <div class="d-flex align-items-center justify-content-between mt-2 gap-2">
+
+                    <a class="btn btn-primary flex-fill"
+                        href="${window.APP_BASE_URL}/items/${item.item_id}/edit">
+                        Edit
+                    </a>
+
+                    <button
+                        onclick="confirmDeleteItem(${item.item_id}, '${escapeHtml(item.listing_product)}')"
+                        class="btn btn-danger flex-fill">
+                        Delete
+                    </button>
+
+                </div>
+
+                ${
+                    item.status === "Pending"
+                        ? `<p class="text-warning mt-3 fs-6">
+                        Waiting for admin approval
+                    </p>`
+                        : ""
+                }
+
             </div>
-        </a>
+        </div>
     `;
 
     return col;

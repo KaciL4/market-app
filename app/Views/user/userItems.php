@@ -6,7 +6,7 @@ use App\Helpers\ViewHelper;
 global $translator;
 $currentLocale = $translator->getLocale();
 
-$title = $data['title'] ?? trans('items.my_items');
+$title = trans('items.my_items');
 
 ViewHelper::loadItemHeader($title);
 ?>

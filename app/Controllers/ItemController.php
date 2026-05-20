@@ -234,7 +234,7 @@ class ItemController extends BaseController
 
     public function updateItem(Request $request, Response $response, array $args): Response
     {
-        $item_id = $args['id'];
+        $item_id = (int)$args['id'];
 
         $data = $request->getParsedBody();
 
